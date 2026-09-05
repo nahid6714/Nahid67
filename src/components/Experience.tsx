@@ -1,41 +1,37 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import { 
   Briefcase, 
   Calendar, 
   MapPin, 
   CheckCircle2, 
-  Sparkles, 
   HelpCircle, 
-  Edit3, 
-  Clock,
-  Layers
+  Edit3 
 } from 'lucide-react';
 import { WORK_EXPERIENCE, PERSONAL_INFO } from '../data/portfolioData';
+import { SectionHeaderReveal, ScrollReveal } from './ScrollAnimation';
 
 export const Experience: React.FC = () => {
   const [showHelper, setShowHelper] = useState(false);
 
   return (
-    <section id="experience" className="py-20 bg-transparent">
+    <section id="experience" className="py-20 bg-transparent overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-semibold tracking-wide uppercase mb-3 border border-blue-500/20">
-            <Briefcase className="w-3.5 h-3.5" />
-            <span>Career Pathway</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-100 dark:text-slate-100 light:text-slate-900">
-            Professional Experience
-          </h2>
-          <div className="w-12 h-1 bg-blue-500 rounded-full mt-3 mb-4"></div>
-          
-          {/* Requested specific sentence */}
-          <p className="max-w-2xl text-slate-400 dark:text-slate-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-            "Work experience details will be added here."
-          </p>
+        <SectionHeaderReveal
+          badge={
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-semibold tracking-wide uppercase border border-blue-500/20">
+              <Briefcase className="w-3.5 h-3.5" />
+              <span>Career Pathway</span>
+            </div>
+          }
+          title="Professional Experience"
+          description='"Work experience details will be added here."'
+        />
 
-          <div className="mt-4 flex items-center gap-3">
+        <ScrollReveal yOffset={20} className="flex flex-col items-center mb-12 -mt-4">
+          <div className="flex items-center gap-3">
             <span className="text-xs text-slate-500">
               Role status: <strong className="text-slate-300 dark:text-slate-300 light:text-slate-700">{PERSONAL_INFO.role}</strong>
             </span>
@@ -47,29 +43,39 @@ export const Experience: React.FC = () => {
               <span>{showHelper ? 'Hide formatting details' : 'How to update this section'}</span>
             </button>
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* Developer Guide Callout if toggled */}
         {showHelper && (
-          <div className="max-w-3xl mx-auto mb-10 p-4 rounded-xl bg-blue-950/40 dark:bg-blue-950/40 light:bg-blue-50 border border-blue-800/60 dark:border-blue-800/60 light:border-blue-200 text-xs text-slate-300 dark:text-slate-300 light:text-blue-950 space-y-2">
-            <div className="flex items-center gap-2 font-bold text-blue-400">
-              <Edit3 className="w-4 h-4" />
-              <span>Updating Experience Information</span>
+          <ScrollReveal yOffset={20}>
+            <div className="max-w-3xl mx-auto mb-10 p-4 rounded-xl bg-blue-950/40 dark:bg-blue-950/40 light:bg-blue-50 border border-blue-800/60 dark:border-blue-800/60 light:border-blue-200 text-xs text-slate-300 dark:text-slate-300 light:text-blue-950 space-y-2">
+              <div className="flex items-center gap-2 font-bold text-blue-400">
+                <Edit3 className="w-4 h-4" />
+                <span>Updating Experience Information</span>
+              </div>
+              <p>
+                To update employment history or internships, simply edit <code className="font-mono bg-blue-900/40 px-1 py-0.5 rounded text-blue-300">src/data/portfolioData.ts</code> in the <code className="font-mono bg-blue-900/40 px-1 py-0.5 rounded text-blue-300">WORK_EXPERIENCE</code> array. Add real job titles, companies, durations, and key responsibilities.
+              </p>
             </div>
-            <p>
-              To update employment history or internships, simply edit <code className="font-mono bg-blue-900/40 px-1 py-0.5 rounded text-blue-300">src/data/portfolioData.ts</code> in the <code className="font-mono bg-blue-900/40 px-1 py-0.5 rounded text-blue-300">WORK_EXPERIENCE</code> array. Add real job titles, companies, durations, and key responsibilities.
-            </p>
-          </div>
+          </ScrollReveal>
         )}
 
-        {/* Experience Timeline Cards */}
+        {/* Experience Timeline Cards with scroll fly-in */}
         <div className="max-w-4xl mx-auto space-y-6">
-          {WORK_EXPERIENCE.map((exp) => (
-            <div
+          {WORK_EXPERIENCE.map((exp, index) => (
+            <motion.div
               key={exp.id}
+              initial={{ opacity: 0, y: 50, scale: 0.97 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: false, amount: 0.15 }}
+              transition={{
+                duration: 0.55,
+                delay: index * 0.15,
+                ease: [0.25, 1, 0.5, 1],
+              }}
               className="relative p-6 sm:p-8 rounded-2xl bg-slate-900/60 dark:bg-slate-900/60 light:bg-white border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 shadow-sm hover:border-slate-700 transition-colors"
             >
-              {/* Header badge for placeholder status */}
+              {/* Header badge for status */}
               <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
                 <div className="flex items-center gap-2.5">
                   <div className="p-2.5 rounded-xl bg-blue-600/10 text-blue-400 border border-blue-500/20">
@@ -136,7 +142,7 @@ export const Experience: React.FC = () => {
                   <span className="text-blue-400 font-semibold">Editable in portfolioData.ts</span>
                 </div>
               )}
-            </div>
+            </motion.div>
           ))}
         </div>
 

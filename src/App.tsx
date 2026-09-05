@@ -5,6 +5,8 @@ import { Footer } from './components/Footer';
 import { ScrollToTop } from './components/ScrollToTop';
 import { ResumeModal } from './components/ResumeModal';
 import { Toast, ToastMessage } from './components/Toast';
+import { CurvedDisplayProvider } from './context/CurvedDisplayContext';
+import { CurvedScreenOverlay } from './components/CurvedScreenOverlay';
 
 // Dedicated Separate Pages
 import { HomePage } from './pages/HomePage';
@@ -77,51 +79,56 @@ export default function App() {
 
   return (
     <HashRouter>
-      <ScrollToTop />
+      <CurvedDisplayProvider>
+        <ScrollToTop />
 
-      <div className="min-h-screen flex flex-col font-sans transition-colors duration-300">
-        {/* Consistent Top Navigation Across All Pages */}
-        <Navbar
-          theme={theme}
-          onToggleTheme={toggleTheme}
-          onOpenResume={() => setIsResumeOpen(true)}
-        />
+        <div className="min-h-screen flex flex-col font-sans transition-colors duration-300 relative preserve-3d">
+          {/* Top and Bottom Curved Screen Bezels and Horizon Lens Reflections */}
+          <CurvedScreenOverlay />
 
-        {/* Dedicated Route Views */}
-        <main className="flex-grow">
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <HomePage
-                  onOpenResume={() => setIsResumeOpen(true)}
-                  onShowToast={showToast}
-                />
-              }
-            />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/skills" element={<SkillsPage />} />
-            <Route path="/projects" element={<ProjectsPage />} />
-            <Route path="/apps" element={<AppsPage onShowToast={showToast} />} />
-            <Route path="/experience" element={<ExperiencePage />} />
-            <Route path="/certificates" element={<CertificatesPage />} />
-            <Route path="/contact" element={<ContactPage onShowToast={showToast} />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </main>
+          {/* Consistent Top Navigation Across All Pages */}
+          <Navbar
+            theme={theme}
+            onToggleTheme={toggleTheme}
+            onOpenResume={() => setIsResumeOpen(true)}
+          />
 
-        {/* Consistent Footer Across All Pages */}
-        <Footer />
+          {/* Dedicated Route Views */}
+          <main className="flex-grow">
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <HomePage
+                    onOpenResume={() => setIsResumeOpen(true)}
+                    onShowToast={showToast}
+                  />
+                }
+              />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/skills" element={<SkillsPage />} />
+              <Route path="/projects" element={<ProjectsPage />} />
+              <Route path="/apps" element={<AppsPage onShowToast={showToast} />} />
+              <Route path="/experience" element={<ExperiencePage />} />
+              <Route path="/certificates" element={<CertificatesPage />} />
+              <Route path="/contact" element={<ContactPage onShowToast={showToast} />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </main>
 
-        {/* Global Printable Resume Modal */}
-        <ResumeModal
-          isOpen={isResumeOpen}
-          onClose={() => setIsResumeOpen(false)}
-        />
+          {/* Consistent Footer Across All Pages */}
+          <Footer />
 
-        {/* Global Interactive Notification Toasts */}
-        <Toast toasts={toasts} onDismiss={dismissToast} />
-      </div>
+          {/* Global Printable Resume Modal */}
+          <ResumeModal
+            isOpen={isResumeOpen}
+            onClose={() => setIsResumeOpen(false)}
+          />
+
+          {/* Global Interactive Notification Toasts */}
+          <Toast toasts={toasts} onDismiss={dismissToast} />
+        </div>
+      </CurvedDisplayProvider>
     </HashRouter>
   );
 }

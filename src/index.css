@@ -13,6 +13,22 @@ html {
   font-family: var(--font-sans);
 }
 
+/* 3D Vertical Cylindrical Perspective */
+body {
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+  overflow-x: hidden;
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+  perspective-origin: center center;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
@@ -31,4 +47,3 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(100, 116, 139, 0.5);
 }
-

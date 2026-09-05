@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import { 
   User, 
   MapPin, 
@@ -9,12 +10,12 @@ import {
   Github, 
   Cpu, 
   Wrench, 
-  Sparkles,
-  Layers,
-  Terminal,
-  CheckCircle2
+  Sparkles, 
+  Terminal, 
+  CheckCircle2 
 } from 'lucide-react';
 import { PERSONAL_INFO, INTERESTS } from '../data/portfolioData';
+import { SectionHeaderReveal, ScrollReveal, ScrollStagger } from './ScrollAnimation';
 
 const iconMap: Record<string, React.ReactNode> = {
   code: <Code className="w-5 h-5 text-blue-400" />,
@@ -27,28 +28,25 @@ const iconMap: Record<string, React.ReactNode> = {
 
 export const About: React.FC = () => {
   return (
-    <section id="about" className="py-20 bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-50 border-t border-b border-slate-900 dark:border-slate-900 light:border-slate-200">
+    <section id="about" className="py-20 bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-50 border-t border-b border-slate-900 dark:border-slate-900 light:border-slate-200 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Header */}
-        <div className="flex flex-col items-center text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-semibold tracking-wide uppercase mb-3 border border-blue-500/20">
-            <User className="w-3.5 h-3.5" />
-            <span>Profile & Background</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-100 dark:text-slate-100 light:text-slate-900">
-            About Me
-          </h2>
-          <div className="w-12 h-1 bg-blue-500 rounded-full mt-3 mb-4"></div>
-          <p className="max-w-2xl text-slate-400 dark:text-slate-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-            A dedicated technology enthusiast balancing academic pursuits and professional work to build impactful Android applications and software tools.
-          </p>
-        </div>
+        {/* Section Header with dynamic scroll entrance & vanish */}
+        <SectionHeaderReveal
+          badge={
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-semibold tracking-wide uppercase border border-blue-500/20">
+              <User className="w-3.5 h-3.5" />
+              <span>Profile & Background</span>
+            </div>
+          }
+          title="About Me"
+          description="A dedicated technology enthusiast balancing academic pursuits and professional work to build impactful Android applications and software tools."
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           
-          {/* Biography Narrative */}
-          <div className="lg:col-span-6 space-y-6">
+          {/* Biography Narrative - flies in from left/bottom */}
+          <ScrollReveal yOffset={45} className="lg:col-span-6 space-y-6">
             <div className="p-6 sm:p-8 rounded-2xl bg-slate-900/70 dark:bg-slate-900/70 light:bg-white border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 shadow-sm space-y-4">
               <h3 className="text-xl font-bold text-slate-100 dark:text-slate-100 light:text-slate-900 flex items-center gap-2.5">
                 <Terminal className="w-5 h-5 text-blue-400" />
@@ -100,19 +98,21 @@ export const About: React.FC = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
 
-          {/* Currently Exploring / Interests Cards */}
+          {/* Currently Exploring / Interests Cards - staggered fly-in */}
           <div className="lg:col-span-6 space-y-4">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-lg font-bold text-slate-100 dark:text-slate-100 light:text-slate-900 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-amber-400" />
-                <span>Currently Exploring & Core Interests</span>
-              </h3>
-              <span className="text-xs text-slate-500 font-medium">6 Focus Areas</span>
-            </div>
+            <ScrollReveal yOffset={30}>
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-lg font-bold text-slate-100 dark:text-slate-100 light:text-slate-900 flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-amber-400" />
+                  <span>Currently Exploring & Core Interests</span>
+                </h3>
+                <span className="text-xs text-slate-500 font-medium">6 Focus Areas</span>
+              </div>
+            </ScrollReveal>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <ScrollStagger className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               {INTERESTS.map((item) => (
                 <div
                   key={item.title}
@@ -131,7 +131,7 @@ export const About: React.FC = () => {
                   </p>
                 </div>
               ))}
-            </div>
+            </ScrollStagger>
           </div>
 
         </div>

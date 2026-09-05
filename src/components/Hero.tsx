@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'motion/react';
 import { 
   ArrowRight, 
   Github, 
@@ -17,6 +18,7 @@ import {
   Download
 } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
+import { CurvedRollItem } from './CurvedRollItem';
 
 interface HeroProps {
   onOpenResume: () => void;
@@ -47,11 +49,24 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           
-          {/* Left Hero Content */}
-          <div className="lg:col-span-7 flex flex-col items-start text-left">
+          {/* Left Hero Content with scroll-reactive fly in & vanish animations */}
+          <CurvedRollItem className="lg:col-span-7">
+            <motion.div
+              initial={{ opacity: 0, y: 50, filter: 'blur(6px)' }}
+              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
+              className="flex flex-col items-start text-left"
+            >
             
             {/* Status / Location Badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/80 dark:bg-slate-900/80 light:bg-slate-100 border border-slate-800/80 dark:border-slate-800 light:border-slate-200 text-xs text-slate-300 dark:text-slate-300 light:text-slate-700 mb-6 shadow-sm backdrop-blur-md">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/80 dark:bg-slate-900/80 light:bg-slate-100 border border-slate-800/80 dark:border-slate-800 light:border-slate-200 text-xs text-slate-300 dark:text-slate-300 light:text-slate-700 mb-6 shadow-sm backdrop-blur-md"
+            >
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -59,28 +74,52 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
               <span className="font-medium">Based in {PERSONAL_INFO.country}</span>
               <span className="text-slate-600 dark:text-slate-600 light:text-slate-400">•</span>
               <span className="text-blue-400 dark:text-blue-400 light:text-blue-600 font-semibold">Available for Work & Projects</span>
-            </div>
+            </motion.div>
 
             {/* Greeting & Name */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-slate-100 dark:text-slate-100 light:text-slate-900 leading-[1.1] mb-4">
+            <motion.h1
+              initial={{ opacity: 0, y: 35 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 0.65, delay: 0.15, ease: [0.25, 1, 0.5, 1] }}
+              className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-slate-100 dark:text-slate-100 light:text-slate-900 leading-[1.1] mb-4"
+            >
               Hi, I'm{' '}
               <span className="bg-gradient-to-r from-blue-400 via-sky-400 to-indigo-400 bg-clip-text text-transparent">
                 {PERSONAL_INFO.name}
               </span>
-            </h1>
+            </motion.h1>
 
             {/* Subtitle / Roles */}
-            <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-slate-300 dark:text-slate-300 light:text-slate-700 tracking-tight mb-6">
+            <motion.h2
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-lg sm:text-xl md:text-2xl font-semibold text-slate-300 dark:text-slate-300 light:text-slate-700 tracking-tight mb-6"
+            >
               {PERSONAL_INFO.subtitle}
-            </h2>
+            </motion.h2>
 
             {/* Professional Introduction */}
-            <p className="text-base sm:text-lg text-slate-300 dark:text-slate-300 light:text-slate-700 leading-relaxed max-w-2xl mb-8 font-normal">
+            <motion.p
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.25 }}
+              className="text-base sm:text-lg text-slate-300 dark:text-slate-300 light:text-slate-700 leading-relaxed max-w-2xl mb-8 font-normal"
+            >
               "{PERSONAL_INFO.introduction}"
-            </p>
+            </motion.p>
 
             {/* Primary Action Buttons */}
-            <div className="flex flex-wrap items-center gap-3.5 mb-10 w-full sm:w-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="flex flex-wrap items-center gap-3.5 mb-10 w-full sm:w-auto"
+            >
               <Link
                 id="hero-view-projects-btn"
                 to="/projects"
@@ -115,10 +154,16 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
                 <Mail className="w-4 h-4 text-indigo-400" />
                 <span>Contact</span>
               </Link>
-            </div>
+            </motion.div>
 
             {/* Social Icons & Email Row */}
-            <div className="pt-4 border-t border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 w-full flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.35 }}
+              className="pt-4 border-t border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 w-full flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+            >
               <div className="flex items-center gap-3">
                 <span className="text-xs font-semibold text-slate-400 dark:text-slate-400 light:text-slate-600 uppercase tracking-wider">
                   Connect:
@@ -174,12 +219,20 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
               <div className="text-xs text-slate-400 dark:text-slate-400 light:text-slate-600 font-mono">
                 <code>git: nahid6714</code>
               </div>
-            </div>
+            </motion.div>
 
-          </div>
+          </motion.div>
+        </CurvedRollItem>
 
-          {/* Right Hero Visual / Interactive Card Showcase */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center">
+        {/* Right Hero Visual / Interactive Card Showcase */}
+        <CurvedRollItem className="lg:col-span-5 flex flex-col items-center justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: 60, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ duration: 0.75, delay: 0.2, ease: [0.25, 1, 0.5, 1] }}
+            className="w-full flex flex-col items-center justify-center"
+          >
             
             {/* Developer Terminal / Card Concept */}
             <div className="w-full max-w-md rounded-2xl bg-slate-900/90 dark:bg-slate-900/90 light:bg-white border border-slate-800 dark:border-slate-800 light:border-slate-200 shadow-2xl p-5 relative group overflow-hidden">
@@ -246,9 +299,10 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
 
             </div>
 
-          </div>
+          </motion.div>
+        </CurvedRollItem>
 
-        </div>
+      </div>
       </div>
     </section>
   );

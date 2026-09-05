@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import { 
   FolderGit2, 
   Github, 
@@ -7,12 +8,11 @@ import {
   Download, 
   Globe, 
   Layers, 
-  ChevronRight,
-  Sparkles,
-  Tag
+  ChevronRight, 
+  Sparkles 
 } from 'lucide-react';
 import { PROJECTS } from '../data/portfolioData';
-import { ProjectItem } from '../types/portfolio';
+import { SectionHeaderReveal } from './ScrollAnimation';
 
 interface ProjectsProps {
   onSelectProjectForApk?: (projectId: string) => void;
@@ -21,31 +21,36 @@ interface ProjectsProps {
 
 export const Projects: React.FC<ProjectsProps> = ({ onOpenAppSection }) => {
   return (
-    <section id="projects" className="py-20 bg-slate-950/40 dark:bg-slate-950/40 light:bg-slate-50 border-t border-slate-900 dark:border-slate-900 light:border-slate-200">
+    <section id="projects" className="py-20 bg-slate-950/40 dark:bg-slate-950/40 light:bg-slate-50 border-t border-slate-900 dark:border-slate-900 light:border-slate-200 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-semibold tracking-wide uppercase mb-3 border border-blue-500/20">
-            <FolderGit2 className="w-3.5 h-3.5" />
-            <span>Featured Creations</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-100 dark:text-slate-100 light:text-slate-900">
-            Projects Showcase
-          </h2>
-          <div className="w-12 h-1 bg-blue-500 rounded-full mt-3 mb-4"></div>
-          <p className="max-w-2xl text-slate-400 dark:text-slate-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-            Highlighted Android software utilities, open-source repositories, and responsive web applications built with practical functionality in mind.
-          </p>
-        </div>
+        <SectionHeaderReveal
+          badge={
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-semibold tracking-wide uppercase border border-blue-500/20">
+              <FolderGit2 className="w-3.5 h-3.5" />
+              <span>Featured Creations</span>
+            </div>
+          }
+          title="Projects Showcase"
+          description="Highlighted Android software utilities, open-source repositories, and responsive web applications built with practical functionality in mind."
+        />
 
-        {/* Projects Grid */}
+        {/* Projects Grid with scroll fly-in & vanish */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {PROJECTS.map((project) => {
+          {PROJECTS.map((project, index) => {
             const isTools = project.id === 'tools';
             return (
-              <div
+              <motion.div
                 key={project.id}
+                initial={{ opacity: 0, y: 50, scale: 0.96 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: false, amount: 0.15 }}
+                transition={{
+                  duration: 0.55,
+                  delay: (index % 3) * 0.1,
+                  ease: [0.25, 1, 0.5, 1],
+                }}
                 className={`relative rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 group ${
                   isTools
                     ? 'bg-gradient-to-b from-slate-900/90 via-slate-900/70 to-slate-950/90 dark:from-slate-900/90 dark:to-slate-950/90 light:bg-white border-2 border-blue-500/40 shadow-lg shadow-blue-500/5'
@@ -160,7 +165,7 @@ export const Projects: React.FC<ProjectsProps> = ({ onOpenAppSection }) => {
                     </button>
                   )}
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>

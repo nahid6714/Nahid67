@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'motion/react';
 import { 
   Smartphone, 
   Download, 
@@ -22,6 +23,7 @@ import {
 import { APPS_CONFIG } from '../data/appsConfig';
 import { AppRepoConfig, AppReleaseInfo } from '../types/portfolio';
 import { fetchLatestRelease, triggerDirectApkDownload } from '../services/githubReleaseService';
+import { SectionHeaderReveal, ScrollReveal } from './ScrollAnimation';
 
 interface AppsSectionProps {
   onShowToast: (message: string, type?: 'info' | 'success' | 'warning') => void;
@@ -122,43 +124,38 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold tracking-wide uppercase mb-3 border border-emerald-500/25">
-            <Smartphone className="w-3.5 h-3.5" />
-            <span>Dedicated Android Distribution</span>
-          </div>
-
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-100 dark:text-slate-100 light:text-slate-900">
-            My Apps & APK Releases
-          </h2>
-          <div className="w-16 h-1 bg-emerald-500 rounded-full mt-3 mb-4"></div>
-
-          <p className="max-w-2xl text-slate-400 dark:text-slate-400 light:text-slate-600 text-sm sm:text-base leading-relaxed">
-            Native Android applications developed by Nahid Hossain with direct APK downloads, automated GitHub release detection, and live changelog tracking.
-          </p>
-
-          {/* Real-time GitHub sync bar */}
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-            <button
-              id="refresh-github-releases-btn"
-              onClick={handleRefreshAll}
-              disabled={isRefreshingAll}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900/90 dark:bg-slate-900/90 light:bg-white hover:bg-slate-800 text-slate-200 dark:text-slate-200 light:text-slate-800 text-xs font-semibold border border-slate-800 dark:border-slate-800 light:border-slate-300 shadow-sm transition-all hover:border-slate-700 disabled:opacity-60"
-            >
-              <RefreshCw className={`w-3.5 h-3.5 text-blue-400 ${isRefreshingAll ? 'animate-spin' : ''}`} />
-              <span>{isRefreshingAll ? 'Checking GitHub API...' : 'Check Live GitHub Releases'}</span>
-            </button>
-
-            <div className="inline-flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-400 light:text-slate-600 bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-100 px-3 py-2 rounded-xl border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200">
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
-              <span>Direct APK Download (No GitHub Account Required)</span>
+        <SectionHeaderReveal
+          badge={
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold tracking-wide uppercase border border-emerald-500/25">
+              <Smartphone className="w-3.5 h-3.5" />
+              <span>Dedicated Android Distribution</span>
             </div>
+          }
+          title="My Apps & APK Releases"
+          description="Native Android applications developed by Nahid Hossain with direct APK downloads, automated GitHub release detection, and live changelog tracking."
+        />
+
+        {/* Real-time GitHub sync bar */}
+        <ScrollReveal yOffset={25} className="mt-6 mb-16 flex flex-wrap items-center justify-center gap-3">
+          <button
+            id="refresh-github-releases-btn"
+            onClick={handleRefreshAll}
+            disabled={isRefreshingAll}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900/90 dark:bg-slate-900/90 light:bg-white hover:bg-slate-800 text-slate-200 dark:text-slate-200 light:text-slate-800 text-xs font-semibold border border-slate-800 dark:border-slate-800 light:border-slate-300 shadow-sm transition-all hover:border-slate-700 disabled:opacity-60"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 text-blue-400 ${isRefreshingAll ? 'animate-spin' : ''}`} />
+            <span>{isRefreshingAll ? 'Checking GitHub API...' : 'Check Live GitHub Releases'}</span>
+          </button>
+
+          <div className="inline-flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-400 light:text-slate-600 bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-100 px-3 py-2 rounded-xl border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200">
+            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+            <span>Direct APK Download (No GitHub Account Required)</span>
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* Apps Cards Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {APPS_CONFIG.map((app) => {
+          {APPS_CONFIG.map((app, index) => {
             const release = appReleases[app.id] || app.defaultRelease;
             const isLoading = loadingState[app.id] || false;
             const isLive = liveSyncedState[app.id] || false;
@@ -166,8 +163,16 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
             const isTools = app.id === 'tools-app';
 
             return (
-              <div
+              <motion.div
                 key={app.id}
+                initial={{ opacity: 0, y: 55, scale: 0.96 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: false, amount: 0.12 }}
+                transition={{
+                  duration: 0.55,
+                  delay: index * 0.12,
+                  ease: [0.25, 1, 0.5, 1],
+                }}
                 className={`relative rounded-2xl flex flex-col justify-between transition-all duration-300 ${
                   isTools
                     ? 'bg-slate-900/90 dark:bg-slate-900/90 light:bg-white border-2 border-emerald-500/50 shadow-xl shadow-emerald-500/10'
@@ -348,63 +353,65 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                   </div>
                 </div>
 
-              </div>
+              </motion.div>
             );
           })}
         </div>
 
         {/* Architecture Spotlight: Multiple GitHub Repositories -> Auto-release */}
-        <div className="mt-16 p-6 sm:p-8 rounded-2xl bg-slate-900/50 dark:bg-slate-900/50 light:bg-white border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-6">
-            <div>
-              <div className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-400 uppercase tracking-wider mb-1">
-                <GitPullRequest className="w-3.5 h-3.5" />
-                <span>Automated Distribution Architecture</span>
+        <ScrollReveal yOffset={40} className="mt-16">
+          <div className="p-6 sm:p-8 rounded-2xl bg-slate-900/50 dark:bg-slate-900/50 light:bg-white border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-6">
+              <div>
+                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-400 uppercase tracking-wider mb-1">
+                  <GitPullRequest className="w-3.5 h-3.5" />
+                  <span>Automated Distribution Architecture</span>
+                </div>
+                <h3 className="text-xl font-bold text-slate-100 dark:text-slate-100 light:text-slate-900">
+                  Multi-Repository GitHub & APK Release Pipeline
+                </h3>
               </div>
-              <h3 className="text-xl font-bold text-slate-100 dark:text-slate-100 light:text-slate-900">
-                Multi-Repository GitHub & APK Release Pipeline
-              </h3>
-            </div>
-            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 shrink-0">
-              Future-Proof Design
-            </span>
-          </div>
-
-          <p className="text-xs sm:text-sm text-slate-300 dark:text-slate-300 light:text-slate-600 leading-relaxed mb-6">
-            This portfolio is architecturally configured to decouple app repositories (<code className="text-emerald-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">tools</code>, <code className="text-emerald-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">calculator-app</code>, <code className="text-emerald-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">expense-manager</code>) from the web presentation layer (<code className="text-blue-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">portfolio-web</code>). Whenever Nahid publishes a new GitHub Release with an APK asset, the portfolio detects the update, recalculates size and versioning, and allows visitors to initiate direct APK downloads without manual page updates.
-          </p>
-
-          {/* Workflow Steps */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-            <div className="p-3.5 rounded-xl bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-50 border border-slate-800/60 dark:border-slate-800/60 light:border-slate-200">
-              <span className="font-bold text-blue-400 block mb-1">1. Build & Push</span>
-              <span className="text-slate-400 dark:text-slate-400 light:text-slate-600">
-                Developer writes Kotlin code and compiles release APK via Android Studio or GitHub Actions.
+              <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 shrink-0">
+                Future-Proof Design
               </span>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-50 border border-slate-800/60 dark:border-slate-800/60 light:border-slate-200">
-              <span className="font-bold text-indigo-400 block mb-1">2. GitHub Release</span>
-              <span className="text-slate-400 dark:text-slate-400 light:text-slate-600">
-                New git tag and release is published with attached <code className="text-slate-300 font-mono">app-release.apk</code> asset.
-              </span>
-            </div>
+            <p className="text-xs sm:text-sm text-slate-300 dark:text-slate-300 light:text-slate-600 leading-relaxed mb-6">
+              This portfolio is architecturally configured to decouple app repositories (<code className="text-emerald-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">tools</code>, <code className="text-emerald-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">calculator-app</code>, <code className="text-emerald-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">expense-manager</code>) from the web presentation layer (<code className="text-blue-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">portfolio-web</code>). Whenever Nahid publishes a new GitHub Release with an APK asset, the portfolio detects the update, recalculates size and versioning, and allows visitors to initiate direct APK downloads without manual page updates.
+            </p>
 
-            <div className="p-3.5 rounded-xl bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-50 border border-slate-800/60 dark:border-slate-800/60 light:border-slate-200">
-              <span className="font-bold text-teal-400 block mb-1">3. Auto Detection</span>
-              <span className="text-slate-400 dark:text-slate-400 light:text-slate-600">
-                Portfolio queries GitHub public API, updating version tags, file sizes, and release notes automatically.
-              </span>
-            </div>
+            {/* Workflow Steps */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+              <div className="p-3.5 rounded-xl bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-50 border border-slate-800/60 dark:border-slate-800/60 light:border-slate-200">
+                <span className="font-bold text-blue-400 block mb-1">1. Build & Push</span>
+                <span className="text-slate-400 dark:text-slate-400 light:text-slate-600">
+                  Developer writes Kotlin code and compiles release APK via Android Studio or GitHub Actions.
+                </span>
+              </div>
 
-            <div className="p-3.5 rounded-xl bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-50 border border-slate-800/60 dark:border-slate-800/60 light:border-slate-200">
-              <span className="font-bold text-emerald-400 block mb-1">4. Direct Download</span>
-              <span className="text-slate-400 dark:text-slate-400 light:text-slate-600">
-                Visitors click Download APK to instantly receive the package directly on mobile or desktop.
-              </span>
+              <div className="p-3.5 rounded-xl bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-50 border border-slate-800/60 dark:border-slate-800/60 light:border-slate-200">
+                <span className="font-bold text-indigo-400 block mb-1">2. GitHub Release</span>
+                <span className="text-slate-400 dark:text-slate-400 light:text-slate-600">
+                  New git tag and release is published with attached <code className="text-slate-300 font-mono">app-release.apk</code> asset.
+                </span>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-50 border border-slate-800/60 dark:border-slate-800/60 light:border-slate-200">
+                <span className="font-bold text-teal-400 block mb-1">3. Auto Detection</span>
+                <span className="text-slate-400 dark:text-slate-400 light:text-slate-600">
+                  Portfolio queries GitHub public API, updating version tags, file sizes, and release notes automatically.
+                </span>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-50 border border-slate-800/60 dark:border-slate-800/60 light:border-slate-200">
+                <span className="font-bold text-emerald-400 block mb-1">4. Direct Download</span>
+                <span className="text-slate-400 dark:text-slate-400 light:text-slate-600">
+                  Visitors click Download APK to instantly receive the package directly on mobile or desktop.
+                </span>
+              </div>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
 
       </div>
     </section>

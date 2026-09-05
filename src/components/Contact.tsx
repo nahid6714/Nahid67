@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import { 
   Mail, 
   Send, 
@@ -10,13 +11,14 @@ import {
   MapPin, 
   MessageSquare, 
   Clock, 
-  Sparkles,
-  ExternalLink,
-  AlertCircle,
-  CheckCircle2
+  Sparkles, 
+  ExternalLink, 
+  AlertCircle, 
+  CheckCircle2 
 } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
 import { ContactFormData } from '../types/portfolio';
+import { SectionHeaderReveal, ScrollReveal } from './ScrollAnimation';
 
 interface ContactProps {
   onShowToast: (message: string, type?: 'info' | 'success' | 'warning') => void;
@@ -110,26 +112,21 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-semibold tracking-wide uppercase mb-3 border border-blue-500/20">
-            <Mail className="w-3.5 h-3.5" />
-            <span>Direct Inquiries</span>
-          </div>
-
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-100 dark:text-slate-100 light:text-slate-900">
-            Let's Work Together
-          </h2>
-          <div className="w-14 h-1 bg-blue-500 rounded-full mt-3 mb-4"></div>
-
-          <p className="max-w-xl text-slate-300 dark:text-slate-300 light:text-slate-700 text-base leading-relaxed">
-            "Have a project, idea, or opportunity? Feel free to get in touch."
-          </p>
-        </div>
+        <SectionHeaderReveal
+          badge={
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-semibold tracking-wide uppercase border border-blue-500/20">
+              <Mail className="w-3.5 h-3.5" />
+              <span>Direct Inquiries</span>
+            </div>
+          }
+          title="Let's Work Together"
+          description='"Have a project, idea, or opportunity? Feel free to get in touch."'
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           
           {/* Left Column: Direct Info & Social Channels */}
-          <div className="lg:col-span-5 space-y-6">
+          <ScrollReveal yOffset={45} className="lg:col-span-5 space-y-6">
             
             <div className="p-6 rounded-2xl bg-slate-900/60 dark:bg-slate-900/60 light:bg-white border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 shadow-sm space-y-5">
               <h3 className="text-lg font-bold text-slate-100 dark:text-slate-100 light:text-slate-900">
@@ -217,10 +214,10 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
               </div>
             </div>
 
-          </div>
+          </ScrollReveal>
 
           {/* Right Column: Contact Form */}
-          <div className="lg:col-span-7">
+          <ScrollReveal yOffset={45} delay={0.12} className="lg:col-span-7">
             <div className="p-6 sm:p-8 rounded-2xl bg-slate-900/60 dark:bg-slate-900/60 light:bg-white border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 shadow-sm">
               
               {isSubmitted ? (
@@ -378,7 +375,7 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
               )}
 
             </div>
-          </div>
+          </ScrollReveal>
 
         </div>
 
