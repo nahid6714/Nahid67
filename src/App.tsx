@@ -7,6 +7,7 @@ import { ResumeModal } from './components/ResumeModal';
 import { Toast, ToastMessage } from './components/Toast';
 import { RoadPerspectiveProvider } from './context/RoadPerspectiveContext';
 import { RoadPerspectiveStage } from './components/RoadPerspectiveStage';
+import { Rotation3DControls } from './components/Rotation3DControls';
 
 // Dedicated Separate Pages
 import { HomePage } from './pages/HomePage';
@@ -87,7 +88,6 @@ export default function App() {
           <Navbar
             theme={theme}
             onToggleTheme={toggleTheme}
-            onOpenResume={() => setIsResumeOpen(true)}
           />
 
           {/* Dedicated Route Views */}
@@ -116,6 +116,9 @@ export default function App() {
           {/* Consistent Footer Across All Pages */}
           <Footer />
         </RoadPerspectiveStage>
+
+        {/* Global 360° Rotate/Zoom Control Panel (visible only when enabled) */}
+        <Rotation3DControls />
 
         {/* Global Printable Resume Modal */}
         <ResumeModal

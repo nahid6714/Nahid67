@@ -5,7 +5,6 @@ import {
   Sun, 
   Moon, 
   Smartphone, 
-  FileText, 
   Github, 
   ExternalLink,
   ChevronRight,
@@ -25,7 +24,6 @@ import { useRoadPerspective } from '../context/RoadPerspectiveContext';
 interface NavbarProps {
   theme: 'dark' | 'light';
   onToggleTheme: () => void;
-  onOpenResume: () => void;
 }
 
 interface NavItem {
@@ -46,7 +44,7 @@ const NAV_LINKS: NavItem[] = [
   { name: 'Contact', path: '/contact', icon: <Mail className="w-4 h-4" /> },
 ];
 
-export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme, onOpenResume }) => {
+export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navRef = useRef<HTMLElement>(null);
@@ -121,20 +119,9 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme, onOpenResu
           })}
         </nav>
 
-        {/* Action Controls: Theme toggle + Resume button + Mobile Dropdown Menu Toggle */}
+        {/* Action Controls: 360° Toggle + Theme toggle + Mobile Dropdown Menu Toggle */}
         <div className="flex items-center gap-2 sm:gap-2.5">
-          {/* Quick Resume CTA */}
-          <button
-            id="nav-resume-btn"
-            onClick={onOpenResume}
-            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 dark:bg-slate-900 light:bg-slate-100 hover:bg-slate-800 text-slate-200 dark:text-slate-200 light:text-slate-800 border border-slate-800 dark:border-slate-800 light:border-slate-300 transition-all duration-200 hover:-translate-y-0.5"
-            title="Preview and download printable resume"
-          >
-            <FileText className="w-3.5 h-3.5 text-blue-400" />
-            <span>Resume</span>
-          </button>
-
-          {/* Rotation Effect Toggle Button (Desktop / Large Screens) */}
+          {/* 360° Rotate/Zoom Toggle Button (Desktop / Large Screens) */}
           <button
             id="rotation-toggle-btn"
             onClick={toggleRotation}
@@ -143,8 +130,8 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme, onOpenResu
                 ? 'bg-blue-600 text-white border-blue-500 shadow-sm shadow-blue-500/25'
                 : 'bg-slate-900/80 dark:bg-slate-900/80 light:bg-slate-100 hover:bg-slate-800 text-slate-300 dark:text-slate-300 light:text-slate-700 hover:text-white border-slate-800/80 dark:border-slate-800 light:border-slate-300'
             }`}
-            title={isRotationEnabled ? 'রোটেশন ইফেক্ট বন্ধ করুন' : 'রোটেশন ইফেক্ট চালু করুন'}
-            aria-label="Toggle rotation effect"
+            title={isRotationEnabled ? '৩৬০° ভিউ বন্ধ করুন' : '৩৬০° ভিউ চালু করুন'}
+            aria-label="Toggle 360 rotation view"
             aria-pressed={isRotationEnabled}
           >
             <RotateCw className="w-4 h-4" />
@@ -308,7 +295,7 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme, onOpenResu
                   <span className={isRotationEnabled ? 'text-white' : 'text-blue-400'}>
                     <RotateCw className="w-4 h-4" />
                   </span>
-                  <span>রোটেশন ইফেক্ট</span>
+                  <span>৩৬০° ভিউ</span>
                 </div>
                 <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${
                   isRotationEnabled ? 'bg-white/25 text-white' : 'bg-slate-700/50 text-slate-400'
@@ -328,17 +315,6 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme, onOpenResu
                 }}
                 className="pt-4 mt-3 border-t border-slate-800/80 dark:border-slate-800 light:border-slate-200 flex flex-col sm:flex-row items-center gap-2.5"
               >
-                <button
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
-                    onOpenResume();
-                  }}
-                  className="w-full sm:w-auto flex-1 py-2.5 px-4 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center gap-2 shadow-sm transition-colors"
-                >
-                  <FileText className="w-4 h-4" />
-                  <span>Preview & Print Resume</span>
-                </button>
-
                 <a
                   href={PERSONAL_INFO.githubUrl}
                   target="_blank"
