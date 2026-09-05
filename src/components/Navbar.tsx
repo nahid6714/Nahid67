@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
-  Menu, 
-  X, 
   Sun, 
   Moon, 
   Smartphone, 
@@ -16,7 +15,8 @@ import {
   FolderGit2,
   Briefcase,
   Award,
-  Mail
+  Mail,
+  Sparkles
 } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
 
@@ -45,18 +45,22 @@ const NAV_LINKS: NavItem[] = [
 ];
 
 export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme, onOpenResume }) => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isMobileMenuOpen]);
 
   // Close mobile menu on page navigation
   useEffect(() => {
@@ -66,11 +70,8 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme, onOpenResu
   return (
     <header
       id="main-navigation"
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'py-2.5 bg-slate-950/90 dark:bg-slate-950/90 light:bg-white/90 backdrop-blur-md border-b border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 shadow-sm'
-          : 'py-3.5 bg-slate-950/60 dark:bg-slate-950/60 light:bg-white/60 backdrop-blur-sm'
-      }`}
+      ref={navRef}
+      className="fixed top-0 left-0 right-0 z-50 py-3 bg-slate-950/95 dark:bg-slate-950/95 light:bg-white/95 backdrop-blur-md border-b border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 shadow-sm transition-colors duration-200"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         
@@ -141,8 +142,8 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme, onOpenResu
           })}
         </nav>
 
-        {/* Action Controls: Theme toggle + Resume button + Mobile menu */}
-        <div className="flex items-center gap-2.5">
+        {/* Action Controls: Theme toggle + Resume button + Dropdown Menu Toggle */}
+        <div className="flex items-center gap-2 sm:gap-2.5">
           {/* Quick Resume CTA */}
           <button
             id="nav-resume-btn"
@@ -169,79 +170,169 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme, onOpenResu
             )}
           </button>
 
-          {/* Mobile Menu Hamburger Button */}
+          {/* Top Dropdown Menu Toggle Button with morphing animation (icon-only, no English text) */}
           <button
             id="mobile-menu-toggle-btn"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 rounded-xl bg-slate-900/80 dark:bg-slate-900/80 light:bg-slate-100 hover:bg-slate-800 text-slate-300 dark:text-slate-300 light:text-slate-700 hover:text-white border border-slate-800/80 dark:border-slate-800 light:border-slate-300 transition-colors"
+            className={`p-2 rounded-xl transition-all duration-200 border ${
+              isMobileMenuOpen
+                ? 'bg-blue-600 text-white border-blue-500 shadow-md shadow-blue-500/25'
+                : 'bg-slate-900/80 dark:bg-slate-900/80 light:bg-slate-100 hover:bg-slate-800 text-slate-300 dark:text-slate-300 light:text-slate-700 hover:text-white border-slate-800/80 dark:border-slate-800 light:border-slate-300'
+            }`}
             aria-label="Toggle Navigation Menu"
             aria-expanded={isMobileMenuOpen}
+            title={isMobileMenuOpen ? 'মেনু বন্ধ করুন' : 'মেনু খুলুন'}
           >
-            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            <div className="w-5 h-5 flex flex-col justify-center items-center gap-1 relative">
+              <motion.span
+                animate={isMobileMenuOpen ? { rotate: 45, y: 5 } : { rotate: 0, y: 0 }}
+                transition={{ duration: 0.22 }}
+                className="w-4 h-0.5 bg-current rounded-full origin-center"
+              />
+              <motion.span
+                animate={isMobileMenuOpen ? { opacity: 0, x: -4 } : { opacity: 1, x: 0 }}
+                transition={{ duration: 0.18 }}
+                className="w-4 h-0.5 bg-current rounded-full"
+              />
+              <motion.span
+                animate={isMobileMenuOpen ? { rotate: -45, y: -5 } : { rotate: 0, y: 0 }}
+                transition={{ duration: 0.22 }}
+                className="w-4 h-0.5 bg-current rounded-full origin-center"
+              />
+            </div>
           </button>
         </div>
       </div>
 
-      {/* Mobile Navigation Drawer */}
-      {isMobileMenuOpen && (
-        <div className="lg:hidden animate-in slide-in-from-top-3 duration-200 bg-slate-950/95 dark:bg-slate-950/95 light:bg-white/95 backdrop-blur-xl border-b border-slate-800/80 dark:border-slate-800 light:border-slate-200 px-4 pt-3 pb-6 space-y-1">
-          <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3 py-1">
-            Navigation Pages
-          </div>
+      {/* Top Menu Dropdown Drawer with Rich Slide-Down Animation */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            key="top-menu-dropdown"
+            initial={{ opacity: 0, height: 0, y: -24 }}
+            animate={{ 
+              opacity: 1, 
+              height: 'auto', 
+              y: 0,
+              transition: {
+                height: { duration: 0.38, ease: [0.16, 1, 0.3, 1] },
+                opacity: { duration: 0.25 },
+                y: { duration: 0.38, ease: [0.16, 1, 0.3, 1] }
+              }
+            }}
+            exit={{ 
+              opacity: 0, 
+              height: 0, 
+              y: -20,
+              transition: {
+                height: { duration: 0.28, ease: 'easeInOut' },
+                opacity: { duration: 0.18 },
+                y: { duration: 0.25 }
+              }
+            }}
+            className="overflow-hidden bg-slate-950/95 dark:bg-slate-950/95 light:bg-white/95 backdrop-blur-2xl border-b border-slate-800/80 dark:border-slate-800 light:border-slate-200 shadow-2xl"
+          >
+            {/* Subtle luminous accent bar along top */}
+            <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
 
-          {NAV_LINKS.map((link) => {
-            const isActive = location.pathname === link.path;
-            return (
-              <NavLink
-                key={link.name}
-                to={link.path}
-                className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-                  isActive
-                    ? 'text-white bg-blue-600 font-bold shadow-sm'
-                    : 'text-slate-300 dark:text-slate-300 light:text-slate-700 hover:bg-slate-900/60'
-                }`}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3.5 pb-6 space-y-1.5">
+              <motion.div
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.22, delay: 0.04 }}
+                className="flex items-center justify-between px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-400 light:text-slate-500"
               >
-                <div className="flex items-center gap-3">
-                  {link.icon}
-                  <span>{link.name}</span>
+                <div className="flex items-center gap-1.5">
+                  <Sparkles className="w-3 h-3 text-blue-400" />
+                  <span>মেনু</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  {link.badge && (
-                    <span className="text-[10px] px-2 py-0.5 rounded-full font-bold bg-emerald-500/20 text-emerald-400">
-                      {link.badge}
-                    </span>
-                  )}
-                  <ChevronRight className="w-4 h-4 text-slate-500" />
-                </div>
-              </NavLink>
-            );
-          })}
+                <span className="text-[10px] text-blue-400 font-medium">পেজ নির্বাচন করুন</span>
+              </motion.div>
 
-          <div className="pt-4 mt-2 border-t border-slate-800/80 flex flex-col gap-2">
-            <button
-              onClick={() => {
-                setIsMobileMenuOpen(false);
-                onOpenResume();
-              }}
-              className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold bg-blue-600 text-white flex items-center justify-center gap-2"
-            >
-              <FileText className="w-4 h-4" />
-              <span>Preview & Print Resume</span>
-            </button>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+                {NAV_LINKS.map((link, index) => {
+                  const isActive = location.pathname === link.path;
+                  return (
+                    <motion.div
+                      key={link.name}
+                      initial={{ opacity: 0, y: -14, x: -4 }}
+                      animate={{ opacity: 1, y: 0, x: 0 }}
+                      transition={{
+                        duration: 0.28,
+                        delay: 0.03 + index * 0.028,
+                        ease: [0.16, 1, 0.3, 1],
+                      }}
+                    >
+                      <NavLink
+                        to={link.path}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 border ${
+                          isActive
+                            ? 'text-white bg-blue-600 font-bold border-blue-500 shadow-md shadow-blue-500/20 translate-x-1'
+                            : 'text-slate-300 dark:text-slate-300 light:text-slate-700 bg-slate-900/40 dark:bg-slate-900/40 light:bg-slate-100/70 border-slate-800/60 dark:border-slate-800/60 light:border-slate-200 hover:bg-slate-800/80 hover:text-white dark:hover:text-white light:hover:text-slate-950'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className={isActive ? 'text-white' : 'text-blue-400'}>
+                            {link.icon}
+                          </span>
+                          <span>{link.name}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {link.badge && (
+                            <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${
+                              isActive ? 'bg-white/25 text-white' : 'bg-emerald-500/20 text-emerald-400'
+                            }`}>
+                              {link.badge}
+                            </span>
+                          )}
+                          <ChevronRight className={`w-4 h-4 transition-transform duration-200 ${
+                            isActive ? 'text-white translate-x-0.5' : 'text-slate-500'
+                          }`} />
+                        </div>
+                      </NavLink>
+                    </motion.div>
+                  );
+                })}
+              </div>
 
-            <a
-              href={PERSONAL_INFO.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 flex items-center justify-center gap-2"
-            >
-              <Github className="w-4 h-4 text-purple-400" />
-              <span>Visit GitHub Profile</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </a>
-          </div>
-        </div>
-      )}
+              {/* Quick Actions Footer */}
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.3,
+                  delay: 0.05 + NAV_LINKS.length * 0.025,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                className="pt-4 mt-3 border-t border-slate-800/80 dark:border-slate-800 light:border-slate-200 flex flex-col sm:flex-row items-center gap-2.5"
+              >
+                <button
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    onOpenResume();
+                  }}
+                  className="w-full sm:w-auto flex-1 py-2.5 px-4 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center gap-2 shadow-sm transition-colors"
+                >
+                  <FileText className="w-4 h-4" />
+                  <span>Preview & Print Resume</span>
+                </button>
+
+                <a
+                  href={PERSONAL_INFO.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto flex-1 py-2.5 px-4 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 dark:bg-slate-900 dark:hover:bg-slate-800 light:bg-slate-100 light:hover:bg-slate-200 text-slate-200 dark:text-slate-200 light:text-slate-800 border border-slate-800 dark:border-slate-800 light:border-slate-200 flex items-center justify-center gap-2 transition-colors"
+                >
+                  <Github className="w-4 h-4 text-purple-400" />
+                  <span>GitHub Profile</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
+                </a>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };

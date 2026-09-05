@@ -14,8 +14,8 @@ export const CurvedScreenOverlay: React.FC = () => {
           className="pointer-events-none fixed top-0 left-0 right-0 z-30 h-20 sm:h-28 transition-opacity duration-500 overflow-hidden"
           aria-hidden="true"
         >
-          {/* Horizon Gradient Vignette */}
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/90 via-slate-950/40 to-transparent dark:from-slate-950/90 dark:via-slate-950/40 light:from-slate-100/90 light:via-slate-100/40" />
+          {/* Horizon Gradient Vignette (softened so blurred content behind remains clearly legible and recognized) */}
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/40 via-slate-950/15 to-transparent dark:from-slate-950/40 dark:via-slate-950/15 light:from-slate-100/40 light:via-slate-100/15" />
           
           {/* Curved Lens Arc Reflection */}
           <svg
@@ -49,8 +49,8 @@ export const CurvedScreenOverlay: React.FC = () => {
           className="pointer-events-none fixed bottom-0 left-0 right-0 z-30 h-20 sm:h-28 transition-opacity duration-500 overflow-hidden"
           aria-hidden="true"
         >
-          {/* Horizon Gradient Vignette */}
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent dark:from-slate-950/90 dark:via-slate-950/40 light:from-slate-100/90 light:via-slate-100/40" />
+          {/* Horizon Gradient Vignette (softened so blurred content behind remains clearly legible and recognized) */}
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-slate-950/15 to-transparent dark:from-slate-950/40 dark:via-slate-950/15 light:from-slate-100/40 light:via-slate-100/15" />
           
           {/* Curved Lens Arc Reflection */}
           <svg
@@ -134,7 +134,7 @@ export const CurvedScreenOverlay: React.FC = () => {
                         {curveMode === 'smartwatch' && <Check className="w-3.5 h-3.5 text-blue-400" />}
                       </div>
                       <p className="text-[10px] text-slate-400 leading-tight mt-0.5">
-                        Clear vertical smartwatch roll (+32° tilt, -75px depth). Texts curve & vanish into top/bottom rim.
+                        Clear vertical smartwatch roll (+32° tilt, -75px depth). Texts tilt and optically blur (6-7px) at top/bottom edges without disappearing.
                       </p>
                     </div>
                   </button>

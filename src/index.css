@@ -13,10 +13,8 @@ html {
   font-family: var(--font-sans);
 }
 
-/* 3D Vertical Cylindrical Perspective */
+/* Base Body & Layout */
 body {
-  perspective: 850px;
-  perspective-origin: 50% 50%;
   overflow-x: hidden;
 }
 

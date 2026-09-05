@@ -82,7 +82,7 @@ export default function App() {
       <CurvedDisplayProvider>
         <ScrollToTop />
 
-        <div className="min-h-screen flex flex-col font-sans transition-colors duration-300 relative preserve-3d">
+        <div className="min-h-screen flex flex-col font-sans transition-colors duration-300 relative">
           {/* Top and Bottom Curved Screen Bezels and Horizon Lens Reflections */}
           <CurvedScreenOverlay />
 

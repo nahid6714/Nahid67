@@ -55,11 +55,11 @@ export const CurvedRollItem: React.FC<CurvedRollItemProps> = ({
     [bottomZ, 0, 0, topZ]
   );
 
-  // Opacity: vanishes at top and bottom rims, fully visible in reading area
+  // Opacity: content does NOT vanish completely (retains 45-55% visibility so user clearly sees the blurred roll effect)
   const opacity = useTransform(
     scrollYProgress,
-    [0, 0.22, 0.72, 0.96],
-    isFlat ? [1, 1, 1, 1] : [0, 1, 1, 0]
+    [0, 0.20, 0.80, 1],
+    isFlat ? [1, 1, 1, 1] : [0.55, 1, 1, 0.45]
   );
 
   // Scale: optical foreshortening along the curved cylindrical axis
@@ -76,13 +76,13 @@ export const CurvedRollItem: React.FC<CurvedRollItemProps> = ({
     isFlat ? [0, 0, 0, 0] : [35 * intensityMultiplier, 0, 0, -35 * intensityMultiplier]
   );
 
-  // Filter blur: soft focal blur right as elements dissolve into the rim
+  // Filter blur: prominent focal blur (0px in center reading zone, strongly blurred 6px - 7px at top and bottom edges)
   const filter = useTransform(
     scrollYProgress,
-    [0, 0.20, 0.75, 0.96],
+    [0, 0.22, 0.78, 1],
     isFlat
       ? ['blur(0px)', 'blur(0px)', 'blur(0px)', 'blur(0px)']
-      : ['blur(3px)', 'blur(0px)', 'blur(0px)', 'blur(4px)']
+      : ['blur(6px)', 'blur(0px)', 'blur(0px)', 'blur(7px)']
   );
 
   return (
