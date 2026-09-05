@@ -256,12 +256,12 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
                   <img
                     src="/profile.jpg"
                     alt="Nahid Hossain Profile Avatar"
-                    className="w-16 h-16 rounded-2xl object-cover border-2 border-blue-500/50 shadow-md"
+                    className="w-24 h-24 rounded-2xl object-cover border-2 border-blue-500/50 shadow-md"
                     onError={(e) => {
                       (e.currentTarget as HTMLElement).style.display = 'none';
                     }}
                   />
-                  <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-slate-900" title="Active developer" />
+                  <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-slate-900" title="Active developer" />
                 </div>
 
                 <div>

@@ -81,10 +81,6 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme, onOpenResu
           className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg p-1"
           aria-label="Nahid Hossain - Home"
         >
-          <div className="relative w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-sky-500 flex items-center justify-center text-white font-bold text-sm shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform duration-200">
-            NH
-            <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-slate-950 rounded-full" title="Available for projects"></span>
-          </div>
           <div className="flex flex-col">
             <span className="font-semibold text-slate-100 dark:text-slate-100 light:text-slate-900 tracking-tight text-base group-hover:text-blue-400 transition-colors">
               {PERSONAL_INFO.name}

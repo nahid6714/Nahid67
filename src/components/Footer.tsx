@@ -37,9 +37,6 @@ export const Footer: React.FC = () => {
           {/* Brand & Identity */}
           <div className="md:col-span-5 space-y-3">
             <Link to="/" className="flex items-center gap-3 group">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold text-xs shadow-md group-hover:scale-105 transition-transform">
-                NH
-              </div>
               <span className="font-extrabold text-slate-100 dark:text-slate-100 light:text-slate-900 text-lg tracking-tight group-hover:text-blue-400 transition-colors">
                 {PERSONAL_INFO.name}
               </span>
