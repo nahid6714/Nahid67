@@ -95,8 +95,8 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme, onOpenResu
           </div>
         </Link>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden xl:flex items-center gap-1 bg-slate-900/70 dark:bg-slate-900/70 light:bg-slate-100/90 px-3 py-1.5 rounded-full border border-slate-800/70 dark:border-slate-800 light:border-slate-200 backdrop-blur-md">
+        {/* Desktop & Large Screen Navigation Links */}
+        <nav className="hidden lg:flex items-center gap-1 bg-slate-900/70 dark:bg-slate-900/70 light:bg-slate-100/90 px-3 py-1.5 rounded-full border border-slate-800/70 dark:border-slate-800 light:border-slate-200 backdrop-blur-md">
           {NAV_LINKS.map((link) => {
             const isActive = location.pathname === link.path;
             return (
@@ -122,27 +122,7 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme, onOpenResu
           })}
         </nav>
 
-        {/* Medium Screen Nav (Compact Icons + Text) */}
-        <nav className="hidden lg:flex xl:hidden items-center gap-1">
-          {NAV_LINKS.slice(0, 6).map((link) => {
-            const isActive = location.pathname === link.path;
-            return (
-              <NavLink
-                key={link.name}
-                to={link.path}
-                className={`px-2.5 py-1 text-xs font-semibold rounded-lg transition-colors ${
-                  isActive
-                    ? 'text-blue-400 font-bold bg-blue-500/10'
-                    : 'text-slate-300 hover:text-white'
-                }`}
-              >
-                {link.name}
-              </NavLink>
-            );
-          })}
-        </nav>
-
-        {/* Action Controls: Theme toggle + Resume button + Dropdown Menu Toggle */}
+        {/* Action Controls: Theme toggle + Resume button + Mobile Dropdown Menu Toggle */}
         <div className="flex items-center gap-2 sm:gap-2.5">
           {/* Quick Resume CTA */}
           <button
@@ -170,11 +150,11 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme, onOpenResu
             )}
           </button>
 
-          {/* Top Dropdown Menu Toggle Button with morphing animation (icon-only, no English text) */}
+          {/* Mobile-Only Dropdown Menu Toggle Button (Hidden on Desktop/Large Screens) */}
           <button
             id="mobile-menu-toggle-btn"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className={`p-2 rounded-xl transition-all duration-200 border ${
+            className={`lg:hidden p-2 rounded-xl transition-all duration-200 border ${
               isMobileMenuOpen
                 ? 'bg-blue-600 text-white border-blue-500 shadow-md shadow-blue-500/25'
                 : 'bg-slate-900/80 dark:bg-slate-900/80 light:bg-slate-100 hover:bg-slate-800 text-slate-300 dark:text-slate-300 light:text-slate-700 hover:text-white border-slate-800/80 dark:border-slate-800 light:border-slate-300'
@@ -230,7 +210,7 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme, onOpenResu
                 y: { duration: 0.25 }
               }
             }}
-            className="overflow-hidden bg-slate-950/95 dark:bg-slate-950/95 light:bg-white/95 backdrop-blur-2xl border-b border-slate-800/80 dark:border-slate-800 light:border-slate-200 shadow-2xl"
+            className="lg:hidden overflow-hidden bg-slate-950/95 dark:bg-slate-950/95 light:bg-white/95 backdrop-blur-2xl border-b border-slate-800/80 dark:border-slate-800 light:border-slate-200 shadow-2xl"
           >
             {/* Subtle luminous accent bar along top */}
             <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
