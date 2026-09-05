@@ -15,7 +15,7 @@ html {
 
 /* 3D Vertical Cylindrical Perspective */
 body {
-  perspective: 1200px;
+  perspective: 850px;
   perspective-origin: 50% 50%;
   overflow-x: hidden;
 }

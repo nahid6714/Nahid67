@@ -27,48 +27,59 @@ export const CurvedRollItem: React.FC<CurvedRollItemProps> = ({
     offset: ['start end', 'end start'],
   });
 
-  // Calculate tilt and compression parameters based on selected mode
-  const isSmartwatch = curveMode === 'smartwatch';
-  const isCylinder = curveMode === 'cylinder';
+  // Calculate tilt, Z-depth, and compression parameters based on selected mode
   const isFlat = curveMode === 'flat';
+  const isCylinder = curveMode === 'cylinder';
+  const isUltra = curveMode === 'ultra';
 
-  const bottomTilt = isFlat ? 0 : (isCylinder ? -26 : -15) * intensityMultiplier;
-  const topTilt = isFlat ? 0 : (isCylinder ? 32 : 18) * intensityMultiplier;
-  const bottomScale = isFlat ? 1 : (isCylinder ? 0.90 : 0.94);
-  const topScale = isFlat ? 1 : (isCylinder ? 0.89 : 0.93);
+  // Significantly increased values so the curvature is unmistakably recognizable
+  const bottomTilt = isFlat ? 0 : (isUltra ? -48 : isCylinder ? -38 : -28) * intensityMultiplier;
+  const topTilt = isFlat ? 0 : (isUltra ? 52 : isCylinder ? 42 : 32) * intensityMultiplier;
+  const bottomZ = isFlat ? 0 : (isUltra ? -130 : isCylinder ? -95 : -65) * intensityMultiplier;
+  const topZ = isFlat ? 0 : (isUltra ? -150 : isCylinder ? -110 : -75) * intensityMultiplier;
+  const bottomScale = isFlat ? 1 : (isUltra ? 0.84 : isCylinder ? 0.88 : 0.92);
+  const topScale = isFlat ? 1 : (isUltra ? 0.80 : isCylinder ? 0.85 : 0.90);
 
   // RotateX: tilted away at bottom (-tilt), flat in center (0), tilted back at top (+tilt)
+  // [0, 0.28, 0.64, 0.95] ensures the tilt and vanish is clearly visible in the upper and lower screen thirds
   const rotateX = useTransform(
     scrollYProgress,
-    [0, 0.22, 0.78, 1],
+    [0, 0.28, 0.64, 0.95],
     [bottomTilt, 0, 0, topTilt]
+  );
+
+  // Z-axis recession: creates realistic physical curvature depth into the screen
+  const z = useTransform(
+    scrollYProgress,
+    [0, 0.28, 0.64, 0.95],
+    [bottomZ, 0, 0, topZ]
   );
 
   // Opacity: vanishes at top and bottom rims, fully visible in reading area
   const opacity = useTransform(
     scrollYProgress,
-    [0, 0.16, 0.84, 1],
+    [0, 0.22, 0.72, 0.96],
     isFlat ? [1, 1, 1, 1] : [0, 1, 1, 0]
   );
 
   // Scale: optical foreshortening along the curved cylindrical axis
   const scale = useTransform(
     scrollYProgress,
-    [0, 0.22, 0.78, 1],
+    [0, 0.28, 0.64, 0.95],
     [bottomScale, 1, 1, topScale]
   );
 
   // Y-axis translation: smooth roll trajectory
   const y = useTransform(
     scrollYProgress,
-    [0, 0.22, 0.78, 1],
-    isFlat ? [0, 0, 0, 0] : [30 * intensityMultiplier, 0, 0, -32 * intensityMultiplier]
+    [0, 0.28, 0.64, 0.95],
+    isFlat ? [0, 0, 0, 0] : [35 * intensityMultiplier, 0, 0, -35 * intensityMultiplier]
   );
 
   // Filter blur: soft focal blur right as elements dissolve into the rim
   const filter = useTransform(
     scrollYProgress,
-    [0, 0.15, 0.85, 1],
+    [0, 0.20, 0.75, 0.96],
     isFlat
       ? ['blur(0px)', 'blur(0px)', 'blur(0px)', 'blur(0px)']
       : ['blur(3px)', 'blur(0px)', 'blur(0px)', 'blur(4px)']
@@ -78,13 +89,15 @@ export const CurvedRollItem: React.FC<CurvedRollItemProps> = ({
     <motion.div
       ref={ref}
       style={{
+        transformPerspective: 800,
         rotateX,
+        z,
         opacity,
         scale,
         y,
         filter,
         transformStyle: 'preserve-3d',
-        transformOrigin: 'center center',
+        transformOrigin: '50% 50%',
       }}
       className={`will-change-transform ${className}`}
     >

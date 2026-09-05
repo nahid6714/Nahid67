@@ -12,7 +12,7 @@ import {
   Sparkles 
 } from 'lucide-react';
 import { PROJECTS } from '../data/portfolioData';
-import { SectionHeaderReveal } from './ScrollAnimation';
+import { SectionHeaderReveal, CurvedRollItem } from './ScrollAnimation';
 
 interface ProjectsProps {
   onSelectProjectForApk?: (projectId: string) => void;
@@ -36,27 +36,27 @@ export const Projects: React.FC<ProjectsProps> = ({ onOpenAppSection }) => {
           description="Highlighted Android software utilities, open-source repositories, and responsive web applications built with practical functionality in mind."
         />
 
-        {/* Projects Grid with scroll fly-in & vanish */}
+        {/* Projects Grid with scroll fly-in & curved roll */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {PROJECTS.map((project, index) => {
             const isTools = project.id === 'tools';
             return (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 50, scale: 0.96 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: false, amount: 0.15 }}
-                transition={{
-                  duration: 0.55,
-                  delay: (index % 3) * 0.1,
-                  ease: [0.25, 1, 0.5, 1],
-                }}
-                className={`relative rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 group ${
-                  isTools
-                    ? 'bg-gradient-to-b from-slate-900/90 via-slate-900/70 to-slate-950/90 dark:from-slate-900/90 dark:to-slate-950/90 light:bg-white border-2 border-blue-500/40 shadow-lg shadow-blue-500/5'
-                    : 'bg-slate-900/60 dark:bg-slate-900/60 light:bg-white border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 shadow-sm'
-                }`}
-              >
+              <CurvedRollItem key={project.id}>
+                <motion.div
+                  initial={{ opacity: 0, y: 50, scale: 0.96 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: false, amount: 0.15 }}
+                  transition={{
+                    duration: 0.55,
+                    delay: (index % 3) * 0.1,
+                    ease: [0.25, 1, 0.5, 1],
+                  }}
+                  className={`relative rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 group h-full ${
+                    isTools
+                      ? 'bg-gradient-to-b from-slate-900/90 via-slate-900/70 to-slate-950/90 dark:from-slate-900/90 dark:to-slate-950/90 light:bg-white border-2 border-blue-500/40 shadow-lg shadow-blue-500/5'
+                      : 'bg-slate-900/60 dark:bg-slate-900/60 light:bg-white border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 shadow-sm'
+                  }`}
+                >
                 {/* Featured Badge if applicable */}
                 {project.featured && (
                   <div className="absolute top-4 right-4 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30">
@@ -166,8 +166,9 @@ export const Projects: React.FC<ProjectsProps> = ({ onOpenAppSection }) => {
                   )}
                 </div>
               </motion.div>
-            );
-          })}
+            </CurvedRollItem>
+          );
+        })}
         </div>
 
       </div>

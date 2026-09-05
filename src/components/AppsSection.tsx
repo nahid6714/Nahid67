@@ -23,7 +23,7 @@ import {
 import { APPS_CONFIG } from '../data/appsConfig';
 import { AppRepoConfig, AppReleaseInfo } from '../types/portfolio';
 import { fetchLatestRelease, triggerDirectApkDownload } from '../services/githubReleaseService';
-import { SectionHeaderReveal, ScrollReveal } from './ScrollAnimation';
+import { SectionHeaderReveal, ScrollReveal, CurvedRollItem } from './ScrollAnimation';
 
 interface AppsSectionProps {
   onShowToast: (message: string, type?: 'info' | 'success' | 'warning') => void;
@@ -153,7 +153,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
           </div>
         </ScrollReveal>
 
-        {/* Apps Cards Grid */}
+        {/* Apps Cards Grid with 3D Curvature */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {APPS_CONFIG.map((app, index) => {
             const release = appReleases[app.id] || app.defaultRelease;
@@ -163,22 +163,22 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
             const isTools = app.id === 'tools-app';
 
             return (
-              <motion.div
-                key={app.id}
-                initial={{ opacity: 0, y: 55, scale: 0.96 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: false, amount: 0.12 }}
-                transition={{
-                  duration: 0.55,
-                  delay: index * 0.12,
-                  ease: [0.25, 1, 0.5, 1],
-                }}
-                className={`relative rounded-2xl flex flex-col justify-between transition-all duration-300 ${
-                  isTools
-                    ? 'bg-slate-900/90 dark:bg-slate-900/90 light:bg-white border-2 border-emerald-500/50 shadow-xl shadow-emerald-500/10'
-                    : 'bg-slate-900/60 dark:bg-slate-900/60 light:bg-white border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 shadow-sm'
-                }`}
-              >
+              <CurvedRollItem key={app.id}>
+                <motion.div
+                  initial={{ opacity: 0, y: 55, scale: 0.96 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: false, amount: 0.12 }}
+                  transition={{
+                    duration: 0.55,
+                    delay: index * 0.12,
+                    ease: [0.25, 1, 0.5, 1],
+                  }}
+                  className={`relative rounded-2xl flex flex-col justify-between transition-all duration-300 h-full ${
+                    isTools
+                      ? 'bg-slate-900/90 dark:bg-slate-900/90 light:bg-white border-2 border-emerald-500/50 shadow-xl shadow-emerald-500/10'
+                      : 'bg-slate-900/60 dark:bg-slate-900/60 light:bg-white border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 shadow-sm'
+                  }`}
+                >
                 {/* Header ribbon for active release */}
                 {isTools && (
                   <div className="bg-gradient-to-r from-emerald-600 to-teal-600 px-4 py-1.5 rounded-t-2xl flex items-center justify-between text-white text-[11px] font-bold tracking-wide">
@@ -354,8 +354,9 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                 </div>
 
               </motion.div>
-            );
-          })}
+            </CurvedRollItem>
+          );
+        })}
         </div>
 
         {/* Architecture Spotlight: Multiple GitHub Repositories -> Auto-release */}

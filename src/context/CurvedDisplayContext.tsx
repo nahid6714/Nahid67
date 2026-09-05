@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-export type CurveMode = 'smartwatch' | 'cylinder' | 'flat';
+export type CurveMode = 'smartwatch' | 'cylinder' | 'ultra' | 'flat';
 
 interface CurvedDisplayContextType {
   curveMode: CurveMode;
@@ -12,13 +12,13 @@ interface CurvedDisplayContextType {
 const CurvedDisplayContext = createContext<CurvedDisplayContextType | undefined>(undefined);
 
 export const CurvedDisplayProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Default to smartwatch curve as requested ("ঘড়ি হয় বাট বেশি না")
+  // Default to enhanced smartwatch curve as requested ("একটু বাড়িয়ে দাও যেন সহজে বোঝা যায়")
   const [curveMode, setCurveModeState] = useState<CurveMode>('smartwatch');
 
   useEffect(() => {
     try {
       const saved = localStorage.getItem('nh_curve_mode') as CurveMode | null;
-      if (saved && (saved === 'smartwatch' || saved === 'cylinder' || saved === 'flat')) {
+      if (saved && ['smartwatch', 'cylinder', 'ultra', 'flat'].includes(saved)) {
         setCurveModeState(saved);
       }
     } catch {
@@ -37,7 +37,8 @@ export const CurvedDisplayProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const toggleCurveMode = () => {
     if (curveMode === 'smartwatch') setCurveMode('cylinder');
-    else if (curveMode === 'cylinder') setCurveMode('flat');
+    else if (curveMode === 'cylinder') setCurveMode('ultra');
+    else if (curveMode === 'ultra') setCurveMode('flat');
     else setCurveMode('smartwatch');
   };
 
