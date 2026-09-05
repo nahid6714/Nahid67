@@ -5,8 +5,9 @@ import { Footer } from './components/Footer';
 import { ScrollToTop } from './components/ScrollToTop';
 import { ResumeModal } from './components/ResumeModal';
 import { Toast, ToastMessage } from './components/Toast';
-import { CurvedDisplayProvider } from './context/CurvedDisplayContext';
-import { CurvedScreenOverlay } from './components/CurvedScreenOverlay';
+import { RoadPerspectiveProvider } from './context/RoadPerspectiveContext';
+import { RoadPerspectiveStage } from './components/RoadPerspectiveStage';
+import { RoadTiltHud } from './components/RoadTiltHud';
 
 // Dedicated Separate Pages
 import { HomePage } from './pages/HomePage';
@@ -79,14 +80,11 @@ export default function App() {
 
   return (
     <HashRouter>
-      <CurvedDisplayProvider>
+      <RoadPerspectiveProvider>
         <ScrollToTop />
 
-        <div className="min-h-screen flex flex-col font-sans transition-colors duration-300 relative">
-          {/* Top and Bottom Curved Screen Bezels and Horizon Lens Reflections */}
-          <CurvedScreenOverlay />
-
-          {/* Consistent Top Navigation Across All Pages */}
+        <RoadPerspectiveStage>
+          {/* Consistent Top Navigation Across All Pages - Tilts in 3D along with header */}
           <Navbar
             theme={theme}
             onToggleTheme={toggleTheme}
@@ -118,17 +116,20 @@ export default function App() {
 
           {/* Consistent Footer Across All Pages */}
           <Footer />
+        </RoadPerspectiveStage>
 
-          {/* Global Printable Resume Modal */}
-          <ResumeModal
-            isOpen={isResumeOpen}
-            onClose={() => setIsResumeOpen(false)}
-          />
+        {/* Global Floating 3D Road Tilt Controller & Sensor Status */}
+        <RoadTiltHud />
 
-          {/* Global Interactive Notification Toasts */}
-          <Toast toasts={toasts} onDismiss={dismissToast} />
-        </div>
-      </CurvedDisplayProvider>
+        {/* Global Printable Resume Modal */}
+        <ResumeModal
+          isOpen={isResumeOpen}
+          onClose={() => setIsResumeOpen(false)}
+        />
+
+        {/* Global Interactive Notification Toasts */}
+        <Toast toasts={toasts} onDismiss={dismissToast} />
+      </RoadPerspectiveProvider>
     </HashRouter>
   );
 }
