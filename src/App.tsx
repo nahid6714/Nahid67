@@ -97,6 +97,7 @@ export default function App() {
                 path="/"
                 element={
                   <HomePage
+                    theme={theme}
                     onOpenResume={() => setIsResumeOpen(true)}
                     onShowToast={showToast}
                   />

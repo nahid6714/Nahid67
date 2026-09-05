@@ -21,10 +21,11 @@ import { PERSONAL_INFO } from '../data/portfolioData';
 import { CurvedRollItem } from './CurvedRollItem';
 
 interface HeroProps {
+  theme: 'dark' | 'light';
   onOpenResume: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
+export const Hero: React.FC<HeroProps> = ({ theme, onOpenResume }) => {
   return (
     <section
       id="home"
@@ -254,7 +255,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
               <div className="flex items-center gap-4 mb-4">
                 <div className="relative">
                   <img
-                    src="/profile.jpg"
+                    src={theme === 'light' ? '/profile-light.jpg' : '/profile-dark.jpg'}
                     alt="Nahid Hossain Profile Avatar"
                     className="w-24 h-24 rounded-2xl object-cover border-2 border-blue-500/50 shadow-md"
                     onError={(e) => {

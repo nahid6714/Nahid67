@@ -23,11 +23,12 @@ import { triggerDirectApkDownload } from '../services/githubReleaseService';
 import { ScrollReveal, ScrollStagger } from '../components/ScrollAnimation';
 
 interface HomePageProps {
+  theme: 'dark' | 'light';
   onOpenResume: () => void;
   onShowToast: (message: string, type?: 'info' | 'success' | 'warning') => void;
 }
 
-export const HomePage: React.FC<HomePageProps> = ({ onOpenResume, onShowToast }) => {
+export const HomePage: React.FC<HomePageProps> = ({ theme, onOpenResume, onShowToast }) => {
   const toolsApp = APPS_CONFIG[0];
   const featuredProject = PROJECTS.find(p => p.featured) || PROJECTS[0];
   const topSkills = SKILLS.slice(0, 8);
@@ -40,7 +41,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenResume, onShowToast })
   return (
     <div className="space-y-16 pb-12">
       {/* 1. Hero Section */}
-      <Hero onOpenResume={onOpenResume} />
+      <Hero theme={theme} onOpenResume={onOpenResume} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
         
