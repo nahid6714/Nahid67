@@ -16,9 +16,11 @@ import {
   Briefcase,
   Award,
   Mail,
-  Sparkles
+  Sparkles,
+  RotateCw
 } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
+import { useRoadPerspective } from '../context/RoadPerspectiveContext';
 
 interface NavbarProps {
   theme: 'dark' | 'light';
@@ -48,6 +50,7 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme, onOpenResu
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navRef = useRef<HTMLElement>(null);
+  const { isEnabled: isRotationEnabled, toggleEnabled: toggleRotation } = useRoadPerspective();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -129,6 +132,22 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme, onOpenResu
           >
             <FileText className="w-3.5 h-3.5 text-blue-400" />
             <span>Resume</span>
+          </button>
+
+          {/* Rotation Effect Toggle Button (Desktop / Large Screens) */}
+          <button
+            id="rotation-toggle-btn"
+            onClick={toggleRotation}
+            className={`hidden lg:inline-flex p-2 rounded-xl transition-all duration-200 border ${
+              isRotationEnabled
+                ? 'bg-blue-600 text-white border-blue-500 shadow-sm shadow-blue-500/25'
+                : 'bg-slate-900/80 dark:bg-slate-900/80 light:bg-slate-100 hover:bg-slate-800 text-slate-300 dark:text-slate-300 light:text-slate-700 hover:text-white border-slate-800/80 dark:border-slate-800 light:border-slate-300'
+            }`}
+            title={isRotationEnabled ? 'রোটেশন ইফেক্ট বন্ধ করুন' : 'রোটেশন ইফেক্ট চালু করুন'}
+            aria-label="Toggle rotation effect"
+            aria-pressed={isRotationEnabled}
+          >
+            <RotateCw className="w-4 h-4" />
           </button>
 
           {/* Theme Toggle Button */}
@@ -271,6 +290,32 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme, onOpenResu
                   );
                 })}
               </div>
+
+              {/* Rotation Effect Toggle (Mobile Dropdown Menu) */}
+              <motion.button
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.26, delay: 0.04 + NAV_LINKS.length * 0.028 }}
+                onClick={toggleRotation}
+                aria-pressed={isRotationEnabled}
+                className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 border ${
+                  isRotationEnabled
+                    ? 'text-white bg-blue-600 font-bold border-blue-500 shadow-md shadow-blue-500/20'
+                    : 'text-slate-300 dark:text-slate-300 light:text-slate-700 bg-slate-900/40 dark:bg-slate-900/40 light:bg-slate-100/70 border-slate-800/60 dark:border-slate-800/60 light:border-slate-200 hover:bg-slate-800/80 hover:text-white dark:hover:text-white light:hover:text-slate-950'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <span className={isRotationEnabled ? 'text-white' : 'text-blue-400'}>
+                    <RotateCw className="w-4 h-4" />
+                  </span>
+                  <span>রোটেশন ইফেক্ট</span>
+                </div>
+                <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${
+                  isRotationEnabled ? 'bg-white/25 text-white' : 'bg-slate-700/50 text-slate-400'
+                }`}>
+                  {isRotationEnabled ? 'ON' : 'OFF'}
+                </span>
+              </motion.button>
 
               {/* Quick Actions Footer */}
               <motion.div

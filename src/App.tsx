@@ -7,7 +7,6 @@ import { ResumeModal } from './components/ResumeModal';
 import { Toast, ToastMessage } from './components/Toast';
 import { RoadPerspectiveProvider } from './context/RoadPerspectiveContext';
 import { RoadPerspectiveStage } from './components/RoadPerspectiveStage';
-import { RoadTiltHud } from './components/RoadTiltHud';
 
 // Dedicated Separate Pages
 import { HomePage } from './pages/HomePage';
@@ -117,9 +116,6 @@ export default function App() {
           {/* Consistent Footer Across All Pages */}
           <Footer />
         </RoadPerspectiveStage>
-
-        {/* Global Floating 3D Road Tilt Controller & Sensor Status */}
-        <RoadTiltHud />
 
         {/* Global Printable Resume Modal */}
         <ResumeModal

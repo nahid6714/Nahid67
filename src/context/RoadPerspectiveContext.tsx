@@ -23,7 +23,7 @@ interface RoadPerspectiveContextType {
 const RoadPerspectiveContext = createContext<RoadPerspectiveContextType | undefined>(undefined);
 
 export const RoadPerspectiveProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isEnabled, setIsEnabled] = useState(true);
+  const [isEnabled, setIsEnabled] = useState(false);
   const [pitch, setPitch] = useState(0);
   const [roll, setRoll] = useState(0);
   const [hasGyro, setHasGyro] = useState(false);
