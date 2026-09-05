@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
-import { Hero } from './components/Hero';
-import { About } from './components/About';
-import { Skills } from './components/Skills';
-import { Projects } from './components/Projects';
-import { AppsSection } from './components/AppsSection';
-import { Experience } from './components/Experience';
-import { Education } from './components/Education';
-import { Certificates } from './components/Certificates';
-import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
+import { ScrollToTop } from './components/ScrollToTop';
 import { ResumeModal } from './components/ResumeModal';
 import { Toast, ToastMessage } from './components/Toast';
+
+// Dedicated Separate Pages
+import { HomePage } from './pages/HomePage';
+import { AboutPage } from './pages/AboutPage';
+import { SkillsPage } from './pages/SkillsPage';
+import { ProjectsPage } from './pages/ProjectsPage';
+import { AppsPage } from './pages/AppsPage';
+import { ExperiencePage } from './pages/ExperiencePage';
+import { CertificatesPage } from './pages/CertificatesPage';
+import { ContactPage } from './pages/ContactPage';
 
 export default function App() {
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
@@ -49,7 +52,7 @@ export default function App() {
     try {
       localStorage.setItem('nh_portfolio_theme', theme);
     } catch {
-      // Ignore storage errors in sandbox
+      // Ignore storage errors
     }
   }, [theme]);
 
@@ -72,63 +75,53 @@ export default function App() {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
-  const scrollToApps = () => {
-    const el = document.getElementById('apps');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
-    <div className="min-h-screen flex flex-col font-sans transition-colors duration-300">
-      {/* Sticky Navigation Bar */}
-      <Navbar
-        theme={theme}
-        onToggleTheme={toggleTheme}
-        onOpenResume={() => setIsResumeOpen(true)}
-      />
+    <HashRouter>
+      <ScrollToTop />
 
-      {/* Main Content Sections */}
-      <main className="flex-grow">
-        {/* 1. Hero Section */}
-        <Hero onOpenResume={() => setIsResumeOpen(true)} />
+      <div className="min-h-screen flex flex-col font-sans transition-colors duration-300">
+        {/* Consistent Top Navigation Across All Pages */}
+        <Navbar
+          theme={theme}
+          onToggleTheme={toggleTheme}
+          onOpenResume={() => setIsResumeOpen(true)}
+        />
 
-        {/* 2. About Me Section */}
-        <About />
+        {/* Dedicated Route Views */}
+        <main className="flex-grow">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <HomePage
+                  onOpenResume={() => setIsResumeOpen(true)}
+                  onShowToast={showToast}
+                />
+              }
+            />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/skills" element={<SkillsPage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/apps" element={<AppsPage onShowToast={showToast} />} />
+            <Route path="/experience" element={<ExperiencePage />} />
+            <Route path="/certificates" element={<CertificatesPage />} />
+            <Route path="/contact" element={<ContactPage onShowToast={showToast} />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
 
-        {/* 3. Skills Section */}
-        <Skills />
+        {/* Consistent Footer Across All Pages */}
+        <Footer />
 
-        {/* 4. Projects Section */}
-        <Projects onOpenAppSection={scrollToApps} />
+        {/* Global Printable Resume Modal */}
+        <ResumeModal
+          isOpen={isResumeOpen}
+          onClose={() => setIsResumeOpen(false)}
+        />
 
-        {/* 5. Apps / APK Section (CRITICAL FEATURE) */}
-        <AppsSection onShowToast={showToast} />
-
-        {/* 6. Experience Section */}
-        <Experience />
-
-        {/* 7. Education Section */}
-        <Education />
-
-        {/* 8. Certificates Section */}
-        <Certificates />
-
-        {/* 9. Contact Section */}
-        <Contact onShowToast={showToast} />
-      </main>
-
-      {/* 10. Footer */}
-      <Footer />
-
-      {/* Resume Viewer / Printer Modal */}
-      <ResumeModal
-        isOpen={isResumeOpen}
-        onClose={() => setIsResumeOpen(false)}
-      />
-
-      {/* Interactive Toast Notifications */}
-      <Toast toasts={toasts} onDismiss={dismissToast} />
-    </div>
+        {/* Global Interactive Notification Toasts */}
+        <Toast toasts={toasts} onDismiss={dismissToast} />
+      </div>
+    </HashRouter>
   );
 }

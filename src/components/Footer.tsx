@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { 
   ArrowUp, 
   Github, 
@@ -17,15 +18,14 @@ export const Footer: React.FC = () => {
   };
 
   const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Apps', href: '#apps' },
-    { name: 'Experience', href: '#experience' },
-    { name: 'Education', href: '#education' },
-    { name: 'Certificates', href: '#certificates' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
+    { name: 'Skills', path: '/skills' },
+    { name: 'Projects', path: '/projects' },
+    { name: 'Apps', path: '/apps' },
+    { name: 'Experience', path: '/experience' },
+    { name: 'Certificates', path: '/certificates' },
+    { name: 'Contact', path: '/contact' },
   ];
 
   return (
@@ -36,14 +36,14 @@ export const Footer: React.FC = () => {
           
           {/* Brand & Identity */}
           <div className="md:col-span-5 space-y-3">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold text-xs shadow-md">
+            <Link to="/" className="flex items-center gap-3 group">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold text-xs shadow-md group-hover:scale-105 transition-transform">
                 NH
               </div>
-              <span className="font-extrabold text-slate-100 dark:text-slate-100 light:text-slate-900 text-lg tracking-tight">
+              <span className="font-extrabold text-slate-100 dark:text-slate-100 light:text-slate-900 text-lg tracking-tight group-hover:text-blue-400 transition-colors">
                 {PERSONAL_INFO.name}
               </span>
-            </div>
+            </Link>
 
             {/* Requested tagline */}
             <p className="text-sm font-semibold text-blue-400">
@@ -58,17 +58,17 @@ export const Footer: React.FC = () => {
           {/* Navigation Links */}
           <div className="md:col-span-4 space-y-2">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-200 dark:text-slate-200 light:text-slate-900 block mb-3">
-              Quick Navigation
+              Pages
             </span>
-            <div className="grid grid-cols-3 gap-2 text-xs">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
               {navLinks.map((item) => (
-                <a
+                <Link
                   key={item.name}
-                  href={item.href}
-                  className="hover:text-blue-400 transition-colors py-0.5"
+                  to={item.path}
+                  className="hover:text-blue-400 transition-colors py-1"
                 >
                   {item.name}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -136,9 +136,7 @@ export const Footer: React.FC = () => {
           <p>© 2026 Nahid Hossain. All rights reserved.</p>
           
           <div className="flex items-center gap-3">
-            <span className="inline-flex items-center gap-1">
-              <span>Crafted for Android & Web Distribution</span>
-            </span>
+            <span>Portfolio of Nahid Hossain</span>
           </div>
         </div>
 
