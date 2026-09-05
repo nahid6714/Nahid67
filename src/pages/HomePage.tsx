@@ -38,7 +38,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenResume, onShowToast })
   };
 
   return (
-    <div className="space-y-16 pb-12 overflow-hidden">
+    <div className="space-y-16 pb-12">
       {/* 1. Hero Section */}
       <Hero onOpenResume={onOpenResume} />
 
