@@ -1,20 +1,18 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 
-type RotateDirection = 'up' | 'down' | 'left' | 'right';
-
 interface RoadPerspectiveContextType {
   isEnabled: boolean;
   toggleEnabled: () => void;
   rotateX: number;
   rotateY: number;
   zoom: number;
-  rotate: (direction: RotateDirection) => void;
+  setRotateX: (val: number) => void;
+  setRotateY: (val: number) => void;
   zoomIn: () => void;
   zoomOut: () => void;
   reset: () => void;
 }
 
-const ROTATE_STEP = 18;
 const ZOOM_STEP = 0.15;
 const ZOOM_MIN = 0.5;
 const ZOOM_MAX = 2;
@@ -23,13 +21,13 @@ const RoadPerspectiveContext = createContext<RoadPerspectiveContextType | undefi
 
 export const RoadPerspectiveProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isEnabled, setIsEnabled] = useState(false);
-  const [rotateX, setRotateX] = useState(0);
-  const [rotateY, setRotateY] = useState(0);
+  const [rotateX, setRotateXState] = useState(0);
+  const [rotateY, setRotateYState] = useState(0);
   const [zoom, setZoom] = useState(1);
 
   const reset = useCallback(() => {
-    setRotateX(0);
-    setRotateY(0);
+    setRotateXState(0);
+    setRotateYState(0);
     setZoom(1);
   }, []);
 
@@ -38,19 +36,20 @@ export const RoadPerspectiveProvider: React.FC<{ children: React.ReactNode }> = 
       const next = !prev;
       if (!next) {
         // Automatically revert to the normal flat view when turned off
-        setRotateX(0);
-        setRotateY(0);
+        setRotateXState(0);
+        setRotateYState(0);
         setZoom(1);
       }
       return next;
     });
   }, []);
 
-  const rotate = useCallback((direction: RotateDirection) => {
-    if (direction === 'left') setRotateY((prev) => prev - ROTATE_STEP);
-    if (direction === 'right') setRotateY((prev) => prev + ROTATE_STEP);
-    if (direction === 'up') setRotateX((prev) => prev - ROTATE_STEP);
-    if (direction === 'down') setRotateX((prev) => prev + ROTATE_STEP);
+  const setRotateX = useCallback((val: number) => {
+    setRotateXState(Math.max(-180, Math.min(180, val)));
+  }, []);
+
+  const setRotateY = useCallback((val: number) => {
+    setRotateYState(Math.max(-180, Math.min(180, val)));
   }, []);
 
   const zoomIn = useCallback(() => {
@@ -69,7 +68,8 @@ export const RoadPerspectiveProvider: React.FC<{ children: React.ReactNode }> = 
         rotateX,
         rotateY,
         zoom,
-        rotate,
+        setRotateX,
+        setRotateY,
         zoomIn,
         zoomOut,
         reset,
