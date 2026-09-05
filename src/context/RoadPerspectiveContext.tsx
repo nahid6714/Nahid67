@@ -12,11 +12,12 @@ interface RoadPerspectiveContextType {
   setSensitivity: (val: number) => void;
   calibrate: () => void;
   setStraight: () => void;
+  setDepthMode: () => void;
   setRoadView: () => void;
   setPitchManual: (val: number) => void;
   setRollManual: (val: number) => void;
   requestGyroPermission: () => Promise<boolean>;
-  activePreset: 'auto' | 'road' | 'straight' | 'manual';
+  activePreset: 'auto' | 'road' | 'depth' | 'straight' | 'manual';
 }
 
 const RoadPerspectiveContext = createContext<RoadPerspectiveContextType | undefined>(undefined);
@@ -28,7 +29,7 @@ export const RoadPerspectiveProvider: React.FC<{ children: React.ReactNode }> = 
   const [hasGyro, setHasGyro] = useState(false);
   const [isGyroActive, setIsGyroActive] = useState(false);
   const [sensitivity, setSensitivity] = useState(1.0);
-  const [activePreset, setActivePreset] = useState<'auto' | 'road' | 'straight' | 'manual'>('auto');
+  const [activePreset, setActivePreset] = useState<'auto' | 'road' | 'depth' | 'straight' | 'manual'>('auto');
 
   // Internal refs for smooth 60fps RAF lerp loop
   const currentPitchRef = useRef(0);
@@ -49,7 +50,7 @@ export const RoadPerspectiveProvider: React.FC<{ children: React.ReactNode }> = 
     setActivePreset('straight');
   }, []);
 
-  // Force straight / flat mode (সোজা)
+  // Force straight / flat mode (0° Level Canvas)
   const setStraight = useCallback(() => {
     isManualOverrideRef.current = true;
     targetPitchRef.current = 0;
@@ -60,16 +61,18 @@ export const RoadPerspectiveProvider: React.FC<{ children: React.ReactNode }> = 
     }, 4000);
   }, []);
 
-  // Force Road View perspective (সামনে তাকালে রাস্তা যেমন দূরে চিকন হয়ে যায়, +22° pitch)
-  const setRoadView = useCallback(() => {
+  // Force 3D Spatial Depth Perspective (+22° pitch)
+  const setDepthMode = useCallback(() => {
     isManualOverrideRef.current = true;
     targetPitchRef.current = 22;
     targetRollRef.current = 0;
-    setActivePreset('road');
+    setActivePreset('depth');
     setTimeout(() => {
       isManualOverrideRef.current = false;
     }, 6000);
   }, []);
+
+  const setRoadView = setDepthMode;
 
   const setPitchManual = useCallback((val: number) => {
     isManualOverrideRef.current = true;

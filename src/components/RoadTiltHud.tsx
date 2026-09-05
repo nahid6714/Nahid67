@@ -20,12 +20,12 @@ export const RoadTiltHud: React.FC = () => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  // Status label
+  // Professional Status label
   const angleLabel = Math.abs(pitch) < 2 
-    ? 'সোজা (0°)' 
+    ? '0° (Level)' 
     : pitch > 0 
-      ? `রাস্তা ভিউ (+${Math.round(pitch)}°)` 
-      : `পেছনে হেলে (${Math.round(pitch)}°)`;
+      ? `+${Math.round(pitch)}° (Depth)` 
+      : `${Math.round(pitch)}° (Tilt)`;
 
   return (
     <div className="fixed bottom-5 left-5 z-50 font-sans pointer-events-auto">
@@ -33,8 +33,8 @@ export const RoadTiltHud: React.FC = () => {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-slate-900/90 dark:bg-slate-900/90 light:bg-white/90 backdrop-blur-md border border-slate-700/70 dark:border-slate-700/70 light:border-slate-300 shadow-xl text-xs font-semibold text-slate-200 dark:text-slate-200 light:text-slate-800 hover:border-blue-500/60 hover:shadow-blue-500/10 transition-all group"
-        title="3D Road Perspective Settings"
-        aria-label="Toggle Road Perspective Settings"
+        title="3D Spatial Perspective Settings"
+        aria-label="Toggle 3D Perspective Settings"
       >
         <div 
           className="w-4 h-4 rounded-full flex items-center justify-center bg-blue-500/20 text-blue-400 transition-transform duration-200"
@@ -42,9 +42,9 @@ export const RoadTiltHud: React.FC = () => {
         >
           <Compass className="w-3 h-3 animate-spin-slow" />
         </div>
-        <span className="text-[11px] text-slate-400 hidden sm:inline">3D ভিউ:</span>
+        <span className="text-[11px] text-slate-400 hidden sm:inline">3D Perspective:</span>
         <span className="text-[11px] font-bold text-blue-400">
-          {isEnabled ? angleLabel : 'বন্ধ (Off)'}
+          {isEnabled ? angleLabel : 'Off'}
         </span>
         <Sliders className="w-3 h-3 text-slate-400 group-hover:text-blue-400 transition-colors" />
       </button>
@@ -65,10 +65,10 @@ export const RoadTiltHud: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-slate-100 dark:text-slate-100 light:text-slate-900 leading-none">
-                    মোবাইল ৩D হেলে থাকা ও রাস্তা ভিউ
+                    3D Spatial Perspective
                   </h4>
                   <p className="text-[10px] text-slate-400 mt-0.5">
-                    মোবাইল বাঁকা করলে সামনে রাস্তা যেমন চিকন হয়
+                    Dynamic Gyroscope & Motion Tilt
                   </p>
                 </div>
               </div>
@@ -84,24 +84,24 @@ export const RoadTiltHud: React.FC = () => {
             <div className="grid grid-cols-2 gap-2 p-2.5 rounded-xl bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-100 border border-slate-800/80 dark:border-slate-800/80 light:border-slate-300 text-center">
               <div>
                 <span className="block text-[10px] text-slate-400 uppercase tracking-wider font-semibold">
-                  সামনে/পিছনে (Pitch)
+                  Pitch (X-Axis)
                 </span>
                 <span className="text-sm font-bold text-blue-400">
                   {pitch > 0 ? `+${pitch.toFixed(1)}°` : `${pitch.toFixed(1)}°`}
                 </span>
                 <span className="block text-[9px] text-slate-500">
-                  {pitch > 2 ? 'উপরে চিকন (Road)' : pitch < -2 ? 'নিচে চিকন' : 'সোজা'}
+                  {pitch > 2 ? 'Depth Mode' : pitch < -2 ? 'Reverse Tilt' : 'Level (0°)'}
                 </span>
               </div>
               <div>
                 <span className="block text-[10px] text-slate-400 uppercase tracking-wider font-semibold">
-                  ডানে/বামে (Roll)
+                  Roll (Y-Axis)
                 </span>
                 <span className="text-sm font-bold text-indigo-400">
                   {roll > 0 ? `+${roll.toFixed(1)}°` : `${roll.toFixed(1)}°`}
                 </span>
                 <span className="block text-[9px] text-slate-500">
-                  {Math.abs(roll) < 2 ? 'লেভেল' : roll > 0 ? 'ডানে হেলে' : 'বামে হেলে'}
+                  {Math.abs(roll) < 2 ? 'Horizontal Level' : roll > 0 ? 'Right Tilt' : 'Left Tilt'}
                 </span>
               </div>
             </div>
@@ -111,13 +111,13 @@ export const RoadTiltHud: React.FC = () => {
               <span>সেন্সর স্ট্যাটাস:</span>
               <span className={`font-semibold flex items-center gap-1 ${isGyroActive ? 'text-emerald-400' : 'text-amber-400'}`}>
                 <span className={`w-1.5 h-1.5 rounded-full ${isGyroActive ? 'bg-emerald-400 animate-ping' : 'bg-amber-400'}`} />
-                {isGyroActive ? 'মোবাইল জাইরো সক্রিয়' : 'পয়েন্টার / অটো মোড'}
+                {isGyroActive ? 'জাইরোস্কোপ সক্রিয় (Active)' : 'পয়েন্টার / অটো মোড'}
               </span>
             </div>
 
             {/* Quick Action Presets */}
             <div className="space-y-1.5">
-              {/* Preset 1: Road Perspective */}
+              {/* Preset 1: Spatial Depth Perspective */}
               <button
                 onClick={setRoadView}
                 className={`w-full flex items-center justify-between p-2 rounded-xl text-left transition-all ${
@@ -130,17 +130,17 @@ export const RoadTiltHud: React.FC = () => {
                   <Sparkles className="w-3.5 h-3.5 text-blue-400 shrink-0" />
                   <div>
                     <span className="text-xs font-semibold block leading-tight">
-                      রাস্তা ভিউ (Road Vanishing +22°)
+                      Spatial Depth Mode (+22°)
                     </span>
                     <span className="text-[10px] text-slate-400 block leading-tight">
-                      সামনে তাকালে সোজা রাস্তা যেমন দূরে চিকন হয়ে যায়
+                      স্বাভাবিক ও প্রফেশনাল থ্রি-ডি পার্সপেক্টিভ ডেপথ ইফেক্ট
                     </span>
                   </div>
                 </div>
                 {(activePreset === 'road' || pitch >= 15) && <Check className="w-3.5 h-3.5 text-blue-400 shrink-0" />}
               </button>
 
-              {/* Preset 2: Straight / Flat */}
+              {/* Preset 2: Standard Flat View */}
               <button
                 onClick={setStraight}
                 className={`w-full flex items-center justify-between p-2 rounded-xl text-left transition-all ${
@@ -153,10 +153,10 @@ export const RoadTiltHud: React.FC = () => {
                   <Smartphone className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                   <div>
                     <span className="text-xs font-semibold block leading-tight">
-                      সোজা করে ধরা (0° Flat Level)
+                      Standard Flat View (0° Level)
                     </span>
                     <span className="text-[10px] text-slate-400 block leading-tight">
-                      মোবাইল সোজা থাকলে স্ক্রিন সম্পূর্ণ সমতল থাকবে
+                      স্বাভাবিক সমতল টু-ডি ডিসপ্লে (Flat Canvas)
                     </span>
                   </div>
                 </div>
@@ -172,10 +172,10 @@ export const RoadTiltHud: React.FC = () => {
                   <RefreshCw className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
                   <div>
                     <span className="text-xs font-semibold block leading-tight">
-                      বর্তমান অ্যাঙ্গেল ক্যালিব্রেট করুন
+                      Calibrate Neutral Angle (বেসলাইন সেট)
                     </span>
                     <span className="text-[10px] text-slate-400 block leading-tight">
-                      আপনি যেভাবে ধরে আছেন তাকে সোজা (০°) হিসেবে সেট করবে
+                      আপনার বর্তমান হোল্ডিং পজিশনকে লেভেল (0°) হিসেবে সেট করবে
                     </span>
                   </div>
                 </div>
@@ -185,7 +185,7 @@ export const RoadTiltHud: React.FC = () => {
             {/* Manual Pitch Angle Slider */}
             <div className="pt-2 border-t border-slate-800 dark:border-slate-800 light:border-slate-200 space-y-1">
               <div className="flex justify-between text-[10px] text-slate-400">
-                <span>ম্যানুয়াল টিল্ট কন্ট্রোল:</span>
+                <span>ম্যানুয়াল টিল্ট অ্যাডজাস্টমেন্ট (Manual Tilt):</span>
                 <span className="font-semibold text-slate-200">{pitch}°</span>
               </div>
               <input
@@ -198,9 +198,9 @@ export const RoadTiltHud: React.FC = () => {
                 className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
               />
               <div className="flex justify-between text-[9px] text-slate-500">
-                <span>নিচে চিকন (-26°)</span>
-                <span>সোজা (0°)</span>
-                <span>উপরে চিকন (+26°)</span>
+                <span>Inverted (-26°)</span>
+                <span>Level (0°)</span>
+                <span>Spatial Depth (+26°)</span>
               </div>
             </div>
 
@@ -212,7 +212,7 @@ export const RoadTiltHud: React.FC = () => {
                   className="text-[10px] text-blue-400 hover:underline flex items-center gap-1"
                 >
                   <Eye className="w-3 h-3" />
-                  <span>আইফোন সেন্সর এক্সেস</span>
+                  <span>আইফোন জাইরো অ্যাক্সেস</span>
                 </button>
               )}
               <button
@@ -224,7 +224,7 @@ export const RoadTiltHud: React.FC = () => {
                 }`}
               >
                 <Power className="w-3 h-3" />
-                <span>{isEnabled ? 'ইফেক্ট সক্রিয়' : 'ইফেক্ট বন্ধ'}</span>
+                <span>{isEnabled ? '3D মোশন সক্রিয়' : '3D মোশন বন্ধ'}</span>
               </button>
             </div>
           </div>
