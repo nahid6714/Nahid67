@@ -254,7 +254,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
               <div className="flex items-center gap-4 mb-4">
                 <div className="relative">
                   <img
-                    src="/avatar.jpg"
+                    src="/profile.jpg"
                     alt="Nahid Hossain Profile Avatar"
                     className="w-16 h-16 rounded-2xl object-cover border-2 border-blue-500/50 shadow-md"
                     onError={(e) => {
