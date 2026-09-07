@@ -218,7 +218,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                     delay: index * 0.12,
                     ease: [0.25, 1, 0.5, 1],
                   }}
-                  className={`relative rounded-2xl flex flex-col justify-between transition-all duration-300 h-full ${
+                  className={`app-card relative rounded-2xl flex flex-col justify-between transition-all duration-300 h-full ${
                     isFeaturedApp
                       ? 'bg-slate-900/90 dark:bg-slate-900/90 light:bg-white border-2 border-emerald-500/50 shadow-xl shadow-emerald-500/10'
                       : 'bg-slate-900/60 dark:bg-slate-900/60 light:bg-white border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 shadow-sm'
