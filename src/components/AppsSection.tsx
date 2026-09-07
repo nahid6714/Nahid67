@@ -22,7 +22,7 @@ import {
 } from 'lucide-react';
 import { APPS_CONFIG } from '../data/appsConfig';
 import { AppRepoConfig, AppReleaseInfo } from '../types/portfolio';
-import { fetchLatestRelease, triggerDirectApkDownload } from '../services/githubReleaseService';
+import { discoverMyReleasedApps, fetchLatestRelease, triggerDirectApkDownload, DiscoveredGitHubApp } from '../services/githubReleaseService';
 import { SectionHeaderReveal, ScrollReveal, CurvedRollItem } from './ScrollAnimation';
 
 interface AppsSectionProps {
@@ -51,14 +51,11 @@ const getAppIconCandidates = (app: AppRepoConfig): string[] => {
 };
 
 export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
+  // Only repositories owned by the portfolio owner and containing a published APK release are shown.
+  const [discoveredApps, setDiscoveredApps] = useState<DiscoveredGitHubApp[]>([]);
+  const [isDiscoveringApps, setIsDiscoveringApps] = useState(true);
   // Map of repo ID to loaded release info
-  const [appReleases, setAppReleases] = useState<Record<string, AppReleaseInfo>>(() => {
-    const initial: Record<string, AppReleaseInfo> = {};
-    APPS_CONFIG.forEach((app) => {
-      initial[app.id] = app.defaultRelease;
-    });
-    return initial;
-  });
+  const [appReleases, setAppReleases] = useState<Record<string, AppReleaseInfo>>({});
 
   const [loadingState, setLoadingState] = useState<Record<string, boolean>>({});
   const [liveSyncedState, setLiveSyncedState] = useState<Record<string, boolean>>({});
@@ -69,13 +66,28 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
   const [isRefreshingAll, setIsRefreshingAll] = useState(false);
   const [iconFallbackIndex, setIconFallbackIndex] = useState<Record<string, number>>({});
 
-  // Auto-fetch latest releases for all published apps (e.g. Tools and Edu Library)
-  useEffect(() => {
-    APPS_CONFIG
-      .filter((app) => app.status === 'available')
-      .forEach((app) => {
-        fetchReleaseForApp(app, false);
+  // Automatically discover every owned repository that has a published APK release.
+  // No manual app entry is required for future repositories.
+  const discoverApps = async (showToastOnComplete = false) => {
+    setIsDiscoveringApps(true);
+    try {
+      const apps = await discoverMyReleasedApps(APPS_CONFIG);
+      setDiscoveredApps(apps);
+      setAppReleases((prev) => {
+        const next = { ...prev };
+        apps.forEach((app) => { next[app.id] = app.defaultRelease; });
+        return next;
       });
+      if (showToastOnComplete) {
+        onShowToast(`${apps.length} released APK app${apps.length === 1 ? '' : 's'} found from your GitHub repositories.`, 'success');
+      }
+    } finally {
+      setIsDiscoveringApps(false);
+    }
+  };
+
+  useEffect(() => {
+    discoverApps(false);
   }, []);
 
   const fetchReleaseForApp = async (app: AppRepoConfig, showToastOnComplete = true) => {
@@ -110,11 +122,11 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
 
   const handleRefreshAll = async () => {
     setIsRefreshingAll(true);
-    for (const app of APPS_CONFIG) {
-      await fetchReleaseForApp(app, false);
+    try {
+      await discoverApps(true);
+    } finally {
+      setIsRefreshingAll(false);
     }
-    setIsRefreshingAll(false);
-    onShowToast('GitHub repositories synchronization complete!', 'success');
   };
 
   const handleDownloadApk = (app: AppRepoConfig) => {
@@ -181,8 +193,13 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
         </ScrollReveal>
 
         {/* Apps Cards Grid with 3D Curvature */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
-          {APPS_CONFIG.map((app, index) => {
+        {isDiscoveringApps ? (
+          <div className="py-16 text-center text-sm text-slate-400">Checking your GitHub repositories for released APKs...</div>
+        ) : discoveredApps.length === 0 ? (
+          <div className="py-16 text-center text-sm text-slate-400 border border-dashed border-slate-800 rounded-2xl">No released APK repositories found yet.</div>
+        ) : null}
+        <div className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 ${discoveredApps.length === 0 ? 'hidden' : ''}`}>
+          {discoveredApps.map((app, index) => {
             const release = appReleases[app.id] || app.defaultRelease;
             const isLoading = loadingState[app.id] || false;
             const isLive = liveSyncedState[app.id] || false;
@@ -428,7 +445,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
             </div>
 
             <p className="text-xs sm:text-sm text-slate-300 dark:text-slate-300 light:text-slate-600 leading-relaxed mb-6">
-              This portfolio is architecturally configured to decouple app repositories (including <code className="text-emerald-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">tools</code> and <code className="text-emerald-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">Edu-library-</code>) from the web presentation layer (<code className="text-blue-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">portfolio-web</code>). Whenever Nahid publishes a new GitHub Release with an APK asset, the portfolio detects the update, recalculates size and versioning, and allows visitors to initiate direct APK downloads without manual page updates.
+              This portfolio automatically discovers repositories owned by <code className="text-emerald-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">nahid6714</code> and shows only repositories that publish an APK release, keeping the web presentation layer automatically synchronized (<code className="text-blue-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">portfolio-web</code>). Whenever Nahid creates a new repository and publishes a GitHub Release containing an APK asset, the portfolio discovers it, finds the repository logo/icon, reads the version/date/size/changelog, and enables direct APK download without adding another app entry to the website.
             </p>
 
             {/* Workflow Steps */}
@@ -450,7 +467,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
               <div className="p-3.5 rounded-xl bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-50 border border-slate-800/60 dark:border-slate-800/60 light:border-slate-200">
                 <span className="font-bold text-teal-400 block mb-1">3. Auto Detection</span>
                 <span className="text-slate-400 dark:text-slate-400 light:text-slate-600">
-                  Portfolio queries GitHub public API, updating version tags, file sizes, and release notes automatically.
+                  Portfolio discovers Nahid's owned repositories, filters for APK releases, and finds logos/icons automatically.
                 </span>
               </div>
 
