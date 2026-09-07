@@ -15,11 +15,9 @@ import {
   Briefcase,
   Award,
   Mail,
-  Sparkles,
-  Compass
+  Sparkles
 } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
-import { useRotate360 } from '../context/Rotate360Context';
 
 interface NavbarProps {
   theme: 'dark' | 'light';
@@ -48,7 +46,6 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navRef = useRef<HTMLElement>(null);
-  const { is360Active, toggle360 } = useRotate360();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -129,23 +126,8 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme }) => {
           })}
         </nav>
 
-        {/* Action Controls: 360 Toggle + Theme toggle + Mobile Dropdown Menu Toggle */}
+        {/* Action Controls: Theme toggle + Mobile Dropdown Menu Toggle */}
         <div className="flex items-center gap-2 sm:gap-2.5">
-          {/* 360° Toggle Button */}
-          <button
-            id="toggle-360-btn"
-            onClick={toggle360}
-            className={`p-2 rounded-xl border transition-all duration-200 ${
-              is360Active
-                ? 'bg-blue-600 text-white border-blue-500 shadow-md shadow-blue-500/25'
-                : 'bg-slate-900/80 dark:bg-slate-900/80 light:bg-slate-100 hover:bg-slate-800 text-slate-300 dark:text-slate-300 light:text-slate-700 hover:text-white border-slate-800/80 dark:border-slate-800 light:border-slate-300'
-            }`}
-            title={is360Active ? '৩৬০° ভিউ বন্ধ করুন' : '৩৬০° ভিউ (ফোন ৩-৪ বার ঝাঁকালেও চালু হবে)'}
-            aria-label="Toggle 360 view"
-          >
-            <Compass className={`w-4 h-4 ${is360Active ? 'animate-spin text-white' : 'text-blue-400'}`} />
-          </button>
-
           {/* Theme Toggle Button */}
           <button
             id="theme-toggle-btn"
@@ -286,32 +268,6 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme }) => {
                   );
                 })}
               </div>
-
-              {/* 360 View Toggle (Mobile Drawer) */}
-              <motion.button
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.25, delay: 0.04 + NAV_LINKS.length * 0.02 }}
-                onClick={() => {
-                  toggle360();
-                  setIsMobileMenuOpen(false);
-                }}
-                className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 border ${
-                  is360Active
-                    ? 'text-white bg-blue-600 font-bold border-blue-500 shadow-md shadow-blue-500/20'
-                    : 'text-slate-300 dark:text-slate-300 light:text-slate-700 bg-slate-900/40 dark:bg-slate-900/40 light:bg-slate-100/70 border-slate-800/60 dark:border-slate-800/60 light:border-slate-200 hover:bg-slate-800/80 hover:text-white dark:hover:text-white light:hover:text-slate-950'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <Compass className={`w-4 h-4 ${is360Active ? 'text-white' : 'text-blue-400'}`} />
-                  <span>৩৬০° ভিউ (বা ৩-৪ বার ফোন ঝাঁকান)</span>
-                </div>
-                <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${
-                  is360Active ? 'bg-white/25 text-white' : 'bg-slate-700/50 text-slate-400'
-                }`}>
-                  {is360Active ? 'ON' : 'OFF'}
-                </span>
-              </motion.button>
 
               {/* Quick Actions Footer */}
               <motion.div

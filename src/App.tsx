@@ -6,8 +6,6 @@ import { ScrollToTop } from './components/ScrollToTop';
 import { ScrollProgress } from './components/ScrollProgress';
 import { Toast, ToastMessage } from './components/Toast';
 import { GitHubPortfolioProvider } from './context/GitHubPortfolioContext';
-import { Rotate360Provider } from './context/Rotate360Context';
-import { Rotate360Stage } from './components/Rotate360Stage';
 import { PageErrorBoundary } from './components/PageErrorBoundary';
 
 // Dedicated Separate Pages
@@ -81,48 +79,44 @@ export default function App() {
   return (
     <HashRouter>
       <GitHubPortfolioProvider>
-        <Rotate360Provider>
-          <ScrollToTop />
-          <ScrollProgress />
+        <ScrollToTop />
+        <ScrollProgress />
 
-          <Rotate360Stage>
-            <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 dark:bg-slate-950 dark:text-slate-100 light:bg-slate-50 light:text-slate-900 transition-colors duration-200">
-              {/* Consistent Top Navigation Across All Pages */}
-              <Navbar
-                theme={theme}
-                onToggleTheme={toggleTheme}
+        <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 dark:bg-slate-950 dark:text-slate-100 light:bg-slate-50 light:text-slate-900 transition-colors duration-200">
+          {/* Consistent Top Navigation Across All Pages */}
+          <Navbar
+            theme={theme}
+            onToggleTheme={toggleTheme}
+          />
+
+          {/* Dedicated Route Views */}
+          <main className="flex-grow">
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <PageErrorBoundary pageName="Home">
+                    <HomePage theme={theme} onShowToast={showToast} />
+                  </PageErrorBoundary>
+                }
               />
+              <Route path="/about" element={<PageErrorBoundary pageName="About"><AboutPage /></PageErrorBoundary>} />
+              <Route path="/skills" element={<PageErrorBoundary pageName="Skills"><SkillsPage /></PageErrorBoundary>} />
+              <Route path="/projects" element={<PageErrorBoundary pageName="Projects"><ProjectsPage /></PageErrorBoundary>} />
+              <Route path="/apps" element={<PageErrorBoundary pageName="Apps"><AppsPage onShowToast={showToast} /></PageErrorBoundary>} />
+              <Route path="/experience" element={<PageErrorBoundary pageName="Experience"><ExperiencePage /></PageErrorBoundary>} />
+              <Route path="/certificates" element={<PageErrorBoundary pageName="Certificates"><CertificatesPage /></PageErrorBoundary>} />
+              <Route path="/contact" element={<PageErrorBoundary pageName="Contact"><ContactPage onShowToast={showToast} /></PageErrorBoundary>} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </main>
 
-              {/* Dedicated Route Views */}
-              <main className="flex-grow">
-                <Routes>
-                  <Route
-                    path="/"
-                    element={
-                      <PageErrorBoundary pageName="Home">
-                        <HomePage theme={theme} onShowToast={showToast} />
-                      </PageErrorBoundary>
-                    }
-                  />
-                  <Route path="/about" element={<PageErrorBoundary pageName="About"><AboutPage /></PageErrorBoundary>} />
-                  <Route path="/skills" element={<PageErrorBoundary pageName="Skills"><SkillsPage /></PageErrorBoundary>} />
-                  <Route path="/projects" element={<PageErrorBoundary pageName="Projects"><ProjectsPage /></PageErrorBoundary>} />
-                  <Route path="/apps" element={<PageErrorBoundary pageName="Apps"><AppsPage onShowToast={showToast} /></PageErrorBoundary>} />
-                  <Route path="/experience" element={<PageErrorBoundary pageName="Experience"><ExperiencePage /></PageErrorBoundary>} />
-                  <Route path="/certificates" element={<PageErrorBoundary pageName="Certificates"><CertificatesPage /></PageErrorBoundary>} />
-                  <Route path="/contact" element={<PageErrorBoundary pageName="Contact"><ContactPage onShowToast={showToast} /></PageErrorBoundary>} />
-                  <Route path="*" element={<Navigate to="/" replace />} />
-                </Routes>
-              </main>
+          {/* Consistent Footer Across All Pages */}
+          <Footer />
+        </div>
 
-              {/* Consistent Footer Across All Pages */}
-              <Footer />
-            </div>
-          </Rotate360Stage>
-
-          {/* Global Interactive Notification Toasts */}
-          <Toast toasts={toasts} onDismiss={dismissToast} />
-        </Rotate360Provider>
+        {/* Global Interactive Notification Toasts */}
+        <Toast toasts={toasts} onDismiss={dismissToast} />
       </GitHubPortfolioProvider>
     </HashRouter>
   );
