@@ -34,6 +34,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
   );
   const [isRefreshingAll, setIsRefreshingAll] = useState(false);
   const [iconFallbackIndex, setIconFallbackIndex] = useState<Record<string, number>>({});
+  const [expandedNotes, setExpandedNotes] = useState<Record<string, boolean>>({});
 
   const handleRefreshAll = () => {
     setIsRefreshingAll(true);

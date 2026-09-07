@@ -8,6 +8,7 @@ import { Toast, ToastMessage } from './components/Toast';
 import { RoadPerspectiveProvider } from './context/RoadPerspectiveContext';
 import { RoadPerspectiveStage } from './components/RoadPerspectiveStage';
 import { Rotation3DControls } from './components/Rotation3DControls';
+import { PageErrorBoundary } from './components/PageErrorBoundary';
 
 // Dedicated Separate Pages
 import { HomePage } from './pages/HomePage';
@@ -96,19 +97,18 @@ export default function App() {
               <Route
                 path="/"
                 element={
-                  <HomePage
-                    theme={theme}
-                    onShowToast={showToast}
-                  />
+                  <PageErrorBoundary pageName="Home">
+                    <HomePage theme={theme} onShowToast={showToast} />
+                  </PageErrorBoundary>
                 }
               />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/skills" element={<SkillsPage />} />
-              <Route path="/projects" element={<ProjectsPage />} />
-              <Route path="/apps" element={<AppsPage onShowToast={showToast} />} />
-              <Route path="/experience" element={<ExperiencePage />} />
-              <Route path="/certificates" element={<CertificatesPage />} />
-              <Route path="/contact" element={<ContactPage onShowToast={showToast} />} />
+              <Route path="/about" element={<PageErrorBoundary pageName="About"><AboutPage /></PageErrorBoundary>} />
+              <Route path="/skills" element={<PageErrorBoundary pageName="Skills"><SkillsPage /></PageErrorBoundary>} />
+              <Route path="/projects" element={<PageErrorBoundary pageName="Projects"><ProjectsPage /></PageErrorBoundary>} />
+              <Route path="/apps" element={<PageErrorBoundary pageName="Apps"><AppsPage onShowToast={showToast} /></PageErrorBoundary>} />
+              <Route path="/experience" element={<PageErrorBoundary pageName="Experience"><ExperiencePage /></PageErrorBoundary>} />
+              <Route path="/certificates" element={<PageErrorBoundary pageName="Certificates"><CertificatesPage /></PageErrorBoundary>} />
+              <Route path="/contact" element={<PageErrorBoundary pageName="Contact"><ContactPage onShowToast={showToast} /></PageErrorBoundary>} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </main>
