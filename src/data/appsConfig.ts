@@ -6,7 +6,9 @@ import { AppRepoConfig } from '../types/portfolio';
  * To add a new Android Application:
  * 1. Push your APK to GitHub Releases in the target repository.
  * 2. Add an entry below with repoOwner and repoName.
- * 3. The portfolio's release service will automatically detect and fetch the latest
+ * 3. Optional: set iconUrl if the repository uses a non-standard logo path.
+ *    Otherwise the Apps section automatically tries public/logo.png and logo.jpg.
+ * 4. The portfolio's release service will automatically detect and fetch the latest
  *    APK asset, version number, release date, and changelog via GitHub's public API.
  */
 export const APPS_CONFIG: AppRepoConfig[] = [

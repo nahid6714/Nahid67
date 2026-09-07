@@ -29,6 +29,21 @@ interface AppsSectionProps {
   onShowToast: (message: string, type?: 'info' | 'success' | 'warning') => void;
 }
 
+// Automatically resolve an app's real logo from its GitHub repository.
+// If iconUrl is explicitly configured, it is tried first; otherwise the
+// conventional public/logo.png and public/logo.jpg files are tried.
+const getAppIconCandidates = (app: AppRepoConfig): string[] => {
+  const candidates = [
+    app.iconUrl,
+    `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/main/public/logo.png`,
+    `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/main/public/logo.jpg`,
+    `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/master/public/logo.png`,
+    `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/master/public/logo.jpg`,
+  ];
+
+  return candidates.filter((url): url is string => Boolean(url));
+};
+
 export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
   // Map of repo ID to loaded release info
   const [appReleases, setAppReleases] = useState<Record<string, AppReleaseInfo>>(() => {
@@ -46,6 +61,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
     'edu-library-app': true, // Open Edu Library changelog by default
   });
   const [isRefreshingAll, setIsRefreshingAll] = useState(false);
+  const [iconFallbackIndex, setIconFallbackIndex] = useState<Record<string, number>>({});
 
   // Auto-fetch latest releases for all published apps (e.g. Tools and Edu Library)
   useEffect(() => {
@@ -206,16 +222,29 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                       {/* App Icon */}
                       <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-600 to-blue-600 p-0.5 shadow-md shadow-emerald-500/20 flex items-center justify-center overflow-hidden">
                         <div className="w-full h-full rounded-[14px] bg-slate-950 flex items-center justify-center overflow-hidden">
-                          {app.iconUrl ? (
-                            <img
-                              src={app.iconUrl}
-                              alt={`${app.appName} logo`}
-                              className="w-full h-full object-cover rounded-[14px]"
-                              loading="lazy"
-                            />
-                          ) : (
-                            <Smartphone className="w-7 h-7 text-emerald-400" />
-                          )}
+                          {(() => {
+                            const iconCandidates = getAppIconCandidates(app);
+                            const currentIndex = iconFallbackIndex[app.id] ?? 0;
+                            const iconUrl = iconCandidates[currentIndex];
+
+                            return iconUrl ? (
+                              <img
+                                src={iconUrl}
+                                alt={`${app.appName} logo`}
+                                className="w-full h-full object-cover rounded-[14px]"
+                                loading="lazy"
+                                onError={() => {
+                                  setIconFallbackIndex((prev) => {
+                                    const nextIndex = (prev[app.id] ?? 0) + 1;
+                                    if (nextIndex >= iconCandidates.length) return prev;
+                                    return { ...prev, [app.id]: nextIndex };
+                                  });
+                                }}
+                              />
+                            ) : (
+                              <Smartphone className="w-7 h-7 text-emerald-400" />
+                            );
+                          })()}
                         </div>
                       </div>
 
