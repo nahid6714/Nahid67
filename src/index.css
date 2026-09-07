@@ -82,3 +82,103 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+
+/* Apps section: force a clean, high-contrast light theme for cards.
+   Some mixed bg-* + light:* utility combinations can retain the dark base
+   surface depending on generated utility ordering, so these semantic rules
+   provide a deterministic light-mode surface while preserving dark mode. */
+.light #apps .app-card {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  box-shadow: 0 20px 55px rgba(15, 23, 42, 0.10), 0 0 0 1px rgba(15, 23, 42, 0.03);
+  color: rgb(15 23 42);
+}
+
+.light #apps .app-card:not(:has(.bg-gradient-to-r)) {
+  border-color: rgba(15, 23, 42, 0.10) !important;
+}
+
+.light #apps .app-card h3 {
+  color: rgb(15 23 42) !important;
+}
+
+.light #apps .app-card p {
+  color: rgb(71 85 105);
+}
+
+.light #apps .app-card > .p-6 .bg-slate-950\/80,
+.light #apps .app-card > .p-6 .bg-slate-950\/60,
+.light #apps .app-card > .p-6 .bg-slate-950\/40 {
+  background: rgb(248 250 252) !important;
+  border-color: rgb(226 232 240) !important;
+}
+
+.light #apps .app-card .text-slate-100,
+.light #apps .app-card .text-slate-200,
+.light #apps .app-card .text-slate-300 {
+  color: rgb(51 65 85) !important;
+}
+
+.light #apps .app-card .text-slate-400 {
+  color: rgb(100 116 139) !important;
+}
+
+.light #apps .app-card .text-slate-500 {
+  color: rgb(100 116 139) !important;
+}
+
+.light #apps .app-card .border-slate-800,
+.light #apps .app-card .border-slate-800\/80,
+.light #apps .app-card .border-slate-800\/60,
+.light #apps .app-card .border-slate-800\/50 {
+  border-color: rgb(226 232 240) !important;
+}
+
+.light #apps .app-card a.bg-slate-950,
+.light #apps .app-card button.bg-slate-950 {
+  background: rgb(241 245 249) !important;
+  color: rgb(30 41 59) !important;
+  border-color: rgb(203 213 225) !important;
+}
+
+.light #apps .app-card a.bg-slate-950:hover,
+.light #apps .app-card button.bg-slate-950:hover {
+  background: rgb(226 232 240) !important;
+  color: rgb(15 23 42) !important;
+}
+
+.light #apps .app-card .bg-slate-800 {
+  background: rgb(226 232 240) !important;
+  color: rgb(100 116 139) !important;
+  border-color: rgb(203 213 225) !important;
+}
+
+.light #apps .app-card code {
+  background: rgb(241 245 249) !important;
+  color: rgb(5 150 105) !important;
+}
+
+
+/* Strong light-mode overrides for interactive app surfaces. These rules make
+   sure dark hover utilities cannot leak into the light theme on mobile Chrome. */
+.light #apps .app-card button.bg-slate-950:hover,
+.light #apps .app-card a.bg-slate-950:hover,
+.light #apps .app-card button.bg-slate-950\/40:hover {
+  background: rgb(226 232 240) !important;
+  color: rgb(15 23 42) !important;
+}
+
+.light #apps .app-card .bg-slate-950 {
+  background: rgb(241 245 249) !important;
+}
+
+.light #apps .app-card .bg-slate-950\/80,
+.light #apps .app-card .bg-slate-950\/60,
+.light #apps .app-card .bg-slate-950\/40 {
+  background: rgb(248 250 252) !important;
+}
+
+.light #apps .app-card .hover\\:bg-slate-800:hover {
+  background: rgb(226 232 240) !important;
+}

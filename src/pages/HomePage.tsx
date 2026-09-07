@@ -18,18 +18,17 @@ import {
 } from 'lucide-react';
 import { Hero } from '../components/Hero';
 import { PERSONAL_INFO, PROJECTS, SKILLS } from '../data/portfolioData';
-import { APPS_CONFIG } from '../data/appsConfig';
-import { triggerDirectApkDownload } from '../services/githubReleaseService';
+import { APPS_DATA } from '../data/appsData';
+import { triggerDirectApkDownload } from '../utils/apkDownload';
 import { ScrollReveal, ScrollStagger } from '../components/ScrollAnimation';
 
 interface HomePageProps {
   theme: 'dark' | 'light';
-  onOpenResume: () => void;
   onShowToast: (message: string, type?: 'info' | 'success' | 'warning') => void;
 }
 
-export const HomePage: React.FC<HomePageProps> = ({ theme, onOpenResume, onShowToast }) => {
-  const toolsApp = APPS_CONFIG[0];
+export const HomePage: React.FC<HomePageProps> = ({ theme, onShowToast }) => {
+  const toolsApp = APPS_DATA[0];
   const featuredProject = PROJECTS.find(p => p.featured) || PROJECTS[0];
   const topSkills = SKILLS.slice(0, 8);
 
@@ -41,13 +40,13 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onOpenResume, onShowT
   return (
     <div className="space-y-16 pb-12">
       {/* 1. Hero Section */}
-      <Hero theme={theme} onOpenResume={onOpenResume} />
+      <Hero theme={theme} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
         
         {/* 2. Featured App Spotlight Banner - Flies in from below */}
         <ScrollReveal yOffset={50}>
-          <section className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 dark:from-slate-900 dark:via-slate-900 dark:to-slate-950 light:from-white light:via-white light:to-white light:bg-white border-2 border-emerald-500/40 p-6 sm:p-10 shadow-xl shadow-emerald-500/5 transition-all">
+          <section className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 dark:from-slate-900 dark:to-slate-950 light:bg-white light:from-white light:via-white light:to-white border-2 border-emerald-500/40 p-6 sm:p-10 shadow-xl shadow-emerald-500/5 transition-all">
             <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
             
             <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
@@ -66,13 +65,13 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onOpenResume, onShowT
                 </p>
 
                 <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-slate-300 dark:text-slate-300 light:text-slate-700">
-                  <span className="bg-slate-950/80 px-2.5 py-1 rounded-lg border border-slate-800">
+                  <span className="bg-slate-950/80 light:bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-800 light:border-slate-200">
                     Version: <strong className="text-emerald-400">{toolsApp.defaultRelease.version}</strong>
                   </span>
-                  <span className="bg-slate-950/80 px-2.5 py-1 rounded-lg border border-slate-800">
-                    APK Size: <strong className="text-slate-100">{toolsApp.defaultRelease.apkSize}</strong>
+                  <span className="bg-slate-950/80 light:bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-800 light:border-slate-200">
+                    APK Size: <strong className="text-slate-100 light:text-slate-800">{toolsApp.defaultRelease.apkSize}</strong>
                   </span>
-                  <span className="bg-slate-950/80 px-2.5 py-1 rounded-lg border border-slate-800 flex items-center gap-1">
+                  <span className="bg-slate-950/80 light:bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-800 light:border-slate-200 flex items-center gap-1">
                     <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                     <span>Direct GitHub Release</span>
                   </span>
@@ -262,12 +261,6 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onOpenResume, onShowT
                 <Mail className="w-4 h-4" />
                 <span>Contact Nahid Directly</span>
               </Link>
-              <button
-                onClick={onOpenResume}
-                className="px-5 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition-colors"
-              >
-                View Resume
-              </button>
             </div>
           </div>
         </ScrollReveal>

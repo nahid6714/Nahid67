@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { 
   Smartphone, 
@@ -9,106 +9,44 @@ import {
   HardDrive, 
   Tag, 
   Sparkles, 
-  CheckCircle2, 
-  AlertCircle, 
   ChevronDown, 
   ChevronUp, 
-  ExternalLink,
   ShieldCheck,
   GitPullRequest,
-  Layers,
-  ArrowRight,
   Info
 } from 'lucide-react';
-import { APPS_CONFIG } from '../data/appsConfig';
+import { APPS_DATA } from '../data/appsData';
 import { AppRepoConfig, AppReleaseInfo } from '../types/portfolio';
-import { fetchLatestRelease, triggerDirectApkDownload } from '../services/githubReleaseService';
+import { triggerDirectApkDownload } from '../utils/apkDownload';
 import { SectionHeaderReveal, ScrollReveal, CurvedRollItem } from './ScrollAnimation';
 
 interface AppsSectionProps {
   onShowToast: (message: string, type?: 'info' | 'success' | 'warning') => void;
 }
 
-// Automatically resolve an app's real logo from its GitHub repository.
-// If iconUrl is explicitly configured, it is tried first; otherwise the
-// conventional public/logo.png and public/logo.jpg files are tried.
-const getAppIconCandidates = (app: AppRepoConfig): string[] => {
-  const candidates = [
-    app.iconUrl,
-    `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/main/public/logo.png`,
-    `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/main/public/logo.jpg`,
-    `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/master/public/logo.png`,
-    `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/master/public/logo.jpg`,
-  ];
-
-  return candidates.filter((url): url is string => Boolean(url));
-};
-
 export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
-  // Map of repo ID to loaded release info
-  const [appReleases, setAppReleases] = useState<Record<string, AppReleaseInfo>>(() => {
-    const initial: Record<string, AppReleaseInfo> = {};
-    APPS_CONFIG.forEach((app) => {
-      initial[app.id] = app.defaultRelease;
-    });
-    return initial;
-  });
-
-  const [loadingState, setLoadingState] = useState<Record<string, boolean>>({});
-  const [liveSyncedState, setLiveSyncedState] = useState<Record<string, boolean>>({});
-  const [expandedNotes, setExpandedNotes] = useState<Record<string, boolean>>({
-    'tools-app': true, // Open Tools changelog by default
-    'edu-library-app': true, // Open Edu Library changelog by default
-  });
+  // Local registry is the single source of truth.
+  // Keeping this local means the Apps section never becomes empty because a
+  // third-party API is rate-limited, offline, blocked, or temporarily down.
+  const [apps, setApps] = useState<AppRepoConfig[]>(() => APPS_DATA);
+  const [appReleases, setAppReleases] = useState<Record<string, AppReleaseInfo>>(() =>
+    Object.fromEntries(APPS_DATA.map((app) => [app.id, app.defaultRelease]))
+  );
   const [isRefreshingAll, setIsRefreshingAll] = useState(false);
   const [iconFallbackIndex, setIconFallbackIndex] = useState<Record<string, number>>({});
 
-  // Auto-fetch latest releases for all published apps (e.g. Tools and Edu Library)
-  useEffect(() => {
-    APPS_CONFIG
-      .filter((app) => app.status === 'available')
-      .forEach((app) => {
-        fetchReleaseForApp(app, false);
-      });
-  }, []);
-
-  const fetchReleaseForApp = async (app: AppRepoConfig, showToastOnComplete = true) => {
-    setLoadingState((prev) => ({ ...prev, [app.id]: true }));
-
-    try {
-      const { release, isLive, error } = await fetchLatestRelease(
-        app.repoOwner,
-        app.repoName,
-        app.defaultRelease
-      );
-
-      setAppReleases((prev) => ({ ...prev, [app.id]: release }));
-      setLiveSyncedState((prev) => ({ ...prev, [app.id]: isLive }));
-
-      if (showToastOnComplete) {
-        if (isLive) {
-          onShowToast(`Latest release ${release.version} fetched directly from GitHub!`, 'success');
-        } else {
-          onShowToast(`Using cached release configuration: ${error || 'Offline'}`, 'info');
-        }
-      }
-    } catch (err) {
-      console.error('Error fetching release:', err);
-      if (showToastOnComplete) {
-        onShowToast('Could not reach GitHub API, using local release cache', 'warning');
-      }
-    } finally {
-      setLoadingState((prev) => ({ ...prev, [app.id]: false }));
-    }
-  };
-
-  const handleRefreshAll = async () => {
+  const handleRefreshAll = () => {
     setIsRefreshingAll(true);
-    for (const app of APPS_CONFIG) {
-      await fetchReleaseForApp(app, false);
-    }
-    setIsRefreshingAll(false);
-    onShowToast('GitHub repositories synchronization complete!', 'success');
+    // Re-read the imported registry into component state. This is deliberately
+    // local: changing appsData.ts and redeploying updates the cards without
+    // depending on a live GitHub API request.
+    setApps([...APPS_DATA]);
+    setAppReleases(Object.fromEntries(APPS_DATA.map((app) => [app.id, app.defaultRelease])));
+    setIconFallbackIndex({});
+    window.setTimeout(() => {
+      setIsRefreshingAll(false);
+      onShowToast(`${APPS_DATA.filter((app) => app.status === 'available').length} available APK apps loaded from the local app registry.`, 'success');
+    }, 250);
   };
 
   const handleDownloadApk = (app: AppRepoConfig) => {
@@ -116,7 +54,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
 
     if (app.status !== 'available') {
       onShowToast(
-        `${app.appName} is currently in development. Pre-release builds will be published to GitHub soon!`,
+        `${app.appName} is currently in development. Pre-release builds will be published soon!`,
         'info'
       );
       return;
@@ -153,33 +91,31 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
             </div>
           }
           title="My Apps & APK Releases"
-          description="Native Android applications developed by Nahid Hossain with direct APK downloads, automated GitHub release detection, and live changelog tracking."
+          description="Native Android applications developed by Nahid Hossain with direct APK downloads powered by a local app registry."
         />
 
-        {/* Real-time GitHub sync bar */}
+        {/* Local app registry controls */}
         <ScrollReveal yOffset={25} className="mt-6 mb-16 flex flex-wrap items-center justify-center gap-3">
           <button
-            id="refresh-github-releases-btn"
+            id="refresh-app-registry-btn"
             onClick={handleRefreshAll}
             disabled={isRefreshingAll}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900/90 dark:bg-slate-900/90 light:bg-white hover:bg-slate-800 text-slate-200 dark:text-slate-200 light:text-slate-800 text-xs font-semibold border border-slate-800 dark:border-slate-800 light:border-slate-300 shadow-sm transition-all hover:border-slate-700 disabled:opacity-60"
           >
             <RefreshCw className={`w-3.5 h-3.5 text-blue-400 ${isRefreshingAll ? 'animate-spin' : ''}`} />
-            <span>{isRefreshingAll ? 'Checking GitHub API...' : 'Check Live GitHub Releases'}</span>
+            <span>{isRefreshingAll ? 'Loading App Registry...' : 'Reload App Registry'}</span>
           </button>
 
           <div className="inline-flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-400 light:text-slate-600 bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-100 px-3 py-2 rounded-xl border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200">
             <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span>Direct APK Download (No GitHub Account Required)</span>
+            <span>Direct APK Download • Local App Registry</span>
           </div>
         </ScrollReveal>
 
         {/* Apps Cards Grid with 3D Curvature */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
-          {APPS_CONFIG.map((app, index) => {
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+          {apps.map((app, index) => {
             const release = appReleases[app.id] || app.defaultRelease;
-            const isLoading = loadingState[app.id] || false;
-            const isLive = liveSyncedState[app.id] || false;
             const isNotesExpanded = expandedNotes[app.id] || false;
             const isTools = app.id === 'tools-app';
             const isFeaturedApp = isTools || app.id === 'edu-library-app';
@@ -195,7 +131,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                     delay: index * 0.12,
                     ease: [0.25, 1, 0.5, 1],
                   }}
-                  className={`relative rounded-2xl flex flex-col justify-between transition-all duration-300 h-full ${
+                  className={`app-card relative rounded-2xl flex flex-col justify-between transition-all duration-300 h-full ${
                     isFeaturedApp
                       ? 'bg-slate-900/90 dark:bg-slate-900/90 light:bg-white border-2 border-emerald-500/50 shadow-xl shadow-emerald-500/10'
                       : 'bg-slate-900/60 dark:bg-slate-900/60 light:bg-white border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 shadow-sm'
@@ -209,7 +145,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                       ACTIVE REPOSITORY RELEASE
                     </span>
                     <span className="bg-black/25 px-2 py-0.5 rounded text-[10px]">
-                      {isLive ? 'LIVE GITHUB SYNC' : 'LATEST BUILD'}
+                      LOCAL APP DATA
                     </span>
                   </div>
                 )}
@@ -223,22 +159,14 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                       <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-600 to-blue-600 p-0.5 shadow-md shadow-emerald-500/20 flex items-center justify-center overflow-hidden">
                         <div className="w-full h-full rounded-[14px] bg-slate-950 flex items-center justify-center overflow-hidden">
                           {(() => {
-                            const iconCandidates = getAppIconCandidates(app);
-                            const currentIndex = iconFallbackIndex[app.id] ?? 0;
-                            const iconUrl = iconCandidates[currentIndex];
-
-                            return iconUrl ? (
+                            return app.iconUrl && (iconFallbackIndex[app.id] ?? 0) === 0 ? (
                               <img
-                                src={iconUrl}
+                                src={app.iconUrl}
                                 alt={`${app.appName} logo`}
                                 className="w-full h-full object-cover rounded-[14px]"
                                 loading="lazy"
                                 onError={() => {
-                                  setIconFallbackIndex((prev) => {
-                                    const nextIndex = (prev[app.id] ?? 0) + 1;
-                                    if (nextIndex >= iconCandidates.length) return prev;
-                                    return { ...prev, [app.id]: nextIndex };
-                                  });
+                                  setIconFallbackIndex((prev) => ({ ...prev, [app.id]: 1 }));
                                 }}
                               />
                             ) : (
@@ -384,16 +312,6 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                       <Github className="w-3.5 h-3.5" />
                       <span>GitHub</span>
                     </a>
-
-                    <button
-                      onClick={() => fetchReleaseForApp(app, true)}
-                      disabled={isLoading}
-                      className="py-2 px-3 rounded-xl bg-slate-950 dark:bg-slate-950 light:bg-slate-100 hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs font-semibold border border-slate-800 dark:border-slate-800 light:border-slate-300 flex items-center justify-center gap-1 transition-colors"
-                      title="Refresh this repository from GitHub"
-                    >
-                      <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin text-blue-400' : ''}`} />
-                      <span className="hidden sm:inline">Sync</span>
-                    </button>
                   </div>
                 </div>
 
@@ -410,19 +328,19 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
               <div>
                 <div className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-400 uppercase tracking-wider mb-1">
                   <GitPullRequest className="w-3.5 h-3.5" />
-                  <span>Automated Distribution Architecture</span>
+                  <span>Local Distribution Architecture</span>
                 </div>
                 <h3 className="text-xl font-bold text-slate-100 dark:text-slate-100 light:text-slate-900">
-                  Multi-Repository GitHub & APK Release Pipeline
+                  Local App Registry & APK Distribution
                 </h3>
               </div>
               <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 shrink-0">
-                Future-Proof Design
+                No API Dependency
               </span>
             </div>
 
             <p className="text-xs sm:text-sm text-slate-300 dark:text-slate-300 light:text-slate-600 leading-relaxed mb-6">
-              This portfolio is architecturally configured to decouple app repositories (<code className="text-emerald-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">tools</code>, <code className="text-emerald-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">calculator-app</code>, <code className="text-emerald-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">expense-manager</code>) from the web presentation layer (<code className="text-blue-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">portfolio-web</code>). Whenever Nahid publishes a new GitHub Release with an APK asset, the portfolio detects the update, recalculates size and versioning, and allows visitors to initiate direct APK downloads without manual page updates.
+              This portfolio uses a single local app registry file (<code className="text-blue-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">src/data/appsData.ts</code>) as the source of truth. Each app entry stores its repository, logo, APK download link, version, size, release date, and changelog, so the Apps section remains available without depending on live GitHub API access. To add another released APK, add one entry to that file and redeploy the portfolio.
             </p>
 
             {/* Workflow Steps */}
@@ -430,28 +348,28 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
               <div className="p-3.5 rounded-xl bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-50 border border-slate-800/60 dark:border-slate-800/60 light:border-slate-200">
                 <span className="font-bold text-blue-400 block mb-1">1. Build & Push</span>
                 <span className="text-slate-400 dark:text-slate-400 light:text-slate-600">
-                  Developer writes Kotlin code and compiles release APK via Android Studio or GitHub Actions.
+                  Developer builds the Android app and publishes the APK wherever the download link points.
                 </span>
               </div>
 
               <div className="p-3.5 rounded-xl bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-50 border border-slate-800/60 dark:border-slate-800/60 light:border-slate-200">
                 <span className="font-bold text-indigo-400 block mb-1">2. GitHub Release</span>
                 <span className="text-slate-400 dark:text-slate-400 light:text-slate-600">
-                  New git tag and release is published with attached <code className="text-slate-300 font-mono">app-release.apk</code> asset.
+                  The app registry file stores the current APK download link, version, date, size and changelog.
                 </span>
               </div>
 
               <div className="p-3.5 rounded-xl bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-50 border border-slate-800/60 dark:border-slate-800/60 light:border-slate-200">
                 <span className="font-bold text-teal-400 block mb-1">3. Auto Detection</span>
                 <span className="text-slate-400 dark:text-slate-400 light:text-slate-600">
-                  Portfolio queries GitHub public API, updating version tags, file sizes, and release notes automatically.
+                  The website reads the local registry file and loads each configured app card and logo without an API call.
                 </span>
               </div>
 
               <div className="p-3.5 rounded-xl bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-50 border border-slate-800/60 dark:border-slate-800/60 light:border-slate-200">
                 <span className="font-bold text-emerald-400 block mb-1">4. Direct Download</span>
                 <span className="text-slate-400 dark:text-slate-400 light:text-slate-600">
-                  Visitors click Download APK to instantly receive the package directly on mobile or desktop.
+                  Visitors click Download APK to receive the configured package directly on mobile or desktop.
                 </span>
               </div>
             </div>

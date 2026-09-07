@@ -1,17 +1,20 @@
 import { AppRepoConfig } from '../types/portfolio';
 
 /**
- * Centralized Multi-Repository Android Apps Configuration
- * 
- * To add a new Android Application:
- * 1. Push your APK to GitHub Releases in the target repository.
- * 2. Add an entry below with repoOwner and repoName.
- * 3. Optional: set iconUrl if the repository uses a non-standard logo path.
- *    Otherwise the Apps section automatically tries public/logo.png and logo.jpg.
- * 4. The portfolio's release service will automatically detect and fetch the latest
- *    APK asset, version number, release date, and changelog via GitHub's public API.
+ * LOCAL APP REGISTRY
+ *
+ * The portfolio reads APK links, versions, sizes, changelogs and logo URLs
+ * from this file. No GitHub API request is required to render the Apps section.
+ *
+ * To publish another APK app, add one object here with:
+ * - repoOwner / repoName
+ * - appName / category / description
+ * - iconUrl (optional but recommended)
+ * - defaultRelease.downloadUrl pointing to the APK
+ *
+ * The website will keep working even if GitHub API/network access is unavailable.
  */
-export const APPS_CONFIG: AppRepoConfig[] = [
+export const APPS_DATA: AppRepoConfig[] = [
   {
     id: 'tools-app',
     appName: 'Tools',
@@ -21,6 +24,9 @@ export const APPS_CONFIG: AppRepoConfig[] = [
     description:
       'A collection of useful Android tools and utilities developed as a practical software project. Includes Food Bill Manager, Smart Document & NID Scanner, and PDF Export.',
     icon: 'wrench',
+    // Tools uses its Android launcher artwork under app/src/main/res/drawable.
+    // Keep the real app logo visible in the portfolio instead of the fallback icon.
+    iconUrl: 'https://raw.githubusercontent.com/nahid6714/tools/main/app/src/main/res/drawable/app_logo_foreground.jpg',
     githubUrl: 'https://github.com/nahid6714/tools',
     status: 'available',
     defaultRelease: {
@@ -47,7 +53,7 @@ export const APPS_CONFIG: AppRepoConfig[] = [
     description:
       'A modern Android education library for accessing study resources, notes, books, and learning materials in one place.',
     icon: 'book-open',
-    iconUrl: 'https://raw.githubusercontent.com/nahid6714/Edu-library-/main/public/logo.png',
+    iconUrl: '/app-logos/edu-library.png',
     githubUrl: 'https://github.com/nahid6714/Edu-library-',
     status: 'available',
     defaultRelease: {
@@ -112,3 +118,5 @@ export const APPS_CONFIG: AppRepoConfig[] = [
     },
   },
 ];
+
+export default APPS_DATA;
