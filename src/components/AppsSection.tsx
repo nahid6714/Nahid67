@@ -43,12 +43,17 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
   const [liveSyncedState, setLiveSyncedState] = useState<Record<string, boolean>>({});
   const [expandedNotes, setExpandedNotes] = useState<Record<string, boolean>>({
     'tools-app': true, // Open Tools changelog by default
+    'edu-library-app': true, // Open Edu Library changelog by default
   });
   const [isRefreshingAll, setIsRefreshingAll] = useState(false);
 
-  // Auto-fetch latest release on mount for active repositories (e.g. tools)
+  // Auto-fetch latest releases for all published apps (e.g. Tools and Edu Library)
   useEffect(() => {
-    fetchReleaseForApp(APPS_CONFIG[0], false);
+    APPS_CONFIG
+      .filter((app) => app.status === 'available')
+      .forEach((app) => {
+        fetchReleaseForApp(app, false);
+      });
   }, []);
 
   const fetchReleaseForApp = async (app: AppRepoConfig, showToastOnComplete = true) => {
@@ -154,13 +159,14 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
         </ScrollReveal>
 
         {/* Apps Cards Grid with 3D Curvature */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
           {APPS_CONFIG.map((app, index) => {
             const release = appReleases[app.id] || app.defaultRelease;
             const isLoading = loadingState[app.id] || false;
             const isLive = liveSyncedState[app.id] || false;
             const isNotesExpanded = expandedNotes[app.id] || false;
             const isTools = app.id === 'tools-app';
+            const isFeaturedApp = isTools || app.id === 'edu-library-app';
 
             return (
               <CurvedRollItem key={app.id}>
@@ -174,13 +180,13 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                     ease: [0.25, 1, 0.5, 1],
                   }}
                   className={`relative rounded-2xl flex flex-col justify-between transition-all duration-300 h-full ${
-                    isTools
+                    isFeaturedApp
                       ? 'bg-slate-900/90 dark:bg-slate-900/90 light:bg-white border-2 border-emerald-500/50 shadow-xl shadow-emerald-500/10'
                       : 'bg-slate-900/60 dark:bg-slate-900/60 light:bg-white border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 shadow-sm'
                   }`}
                 >
                 {/* Header ribbon for active release */}
-                {isTools && (
+                {isFeaturedApp && (
                   <div className="bg-gradient-to-r from-emerald-600 to-teal-600 px-4 py-1.5 rounded-t-2xl flex items-center justify-between text-white text-[11px] font-bold tracking-wide">
                     <span className="flex items-center gap-1.5">
                       <Sparkles className="w-3.5 h-3.5" />
@@ -198,9 +204,18 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                   <div className="flex items-start justify-between gap-4 mb-5">
                     <div className="flex items-center gap-3.5">
                       {/* App Icon */}
-                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-600 to-blue-600 p-0.5 shadow-md shadow-emerald-500/20 flex items-center justify-center">
-                        <div className="w-full h-full rounded-[14px] bg-slate-950 flex items-center justify-center">
-                          <Smartphone className="w-7 h-7 text-emerald-400" />
+                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-600 to-blue-600 p-0.5 shadow-md shadow-emerald-500/20 flex items-center justify-center overflow-hidden">
+                        <div className="w-full h-full rounded-[14px] bg-slate-950 flex items-center justify-center overflow-hidden">
+                          {app.iconUrl ? (
+                            <img
+                              src={app.iconUrl}
+                              alt={`${app.appName} logo`}
+                              className="w-full h-full object-cover rounded-[14px]"
+                              loading="lazy"
+                            />
+                          ) : (
+                            <Smartphone className="w-7 h-7 text-emerald-400" />
+                          )}
                         </div>
                       </div>
 

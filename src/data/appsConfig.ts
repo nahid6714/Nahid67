@@ -37,6 +37,31 @@ export const APPS_CONFIG: AppRepoConfig[] = [
     },
   },
   {
+    id: 'edu-library-app',
+    appName: 'Edu Library',
+    repoOwner: 'nahid6714',
+    repoName: 'Edu-library-',
+    category: 'Education & Digital Library',
+    description:
+      'A modern Android education library for accessing study resources, notes, books, and learning materials in one place.',
+    icon: 'book-open',
+    iconUrl: 'https://raw.githubusercontent.com/nahid6714/Edu-library-/main/public/logo.png',
+    githubUrl: 'https://github.com/nahid6714/Edu-library-',
+    status: 'available',
+    defaultRelease: {
+      version: 'v1.0.30',
+      releaseDate: 'Sep 7, 2026',
+      apkSize: '7.90 MB',
+      apkFileName: 'EduLibrary-latest.apk',
+      downloadUrl: 'https://github.com/nahid6714/Edu-library-/releases/download/v1.0.30/EduLibrary-latest.apk',
+      whatsNew: [
+        'Latest signed Edu Library Android release',
+        'Updated app features and stability improvements',
+        'Direct APK distribution through GitHub Releases',
+      ],
+    },
+  },
+  {
     id: 'calculator-app',
     appName: 'Smart Calculator & Unit Converter',
     repoOwner: 'nahid6714',

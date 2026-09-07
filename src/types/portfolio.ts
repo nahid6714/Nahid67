@@ -33,6 +33,7 @@ export interface AppRepoConfig {
   category: string;
   description: string;
   icon: string;
+  iconUrl?: string;
   githubUrl: string;
   status: 'available' | 'in-development' | 'planned';
   defaultRelease: AppReleaseInfo;
