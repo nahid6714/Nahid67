@@ -16,7 +16,6 @@ export const PERSONAL_INFO = {
   linkedinUrl: 'https://linkedin.com/in/#',
   avatarUrl: '/profile.jpg',
   bannerUrl: '/banner.png',
-  resumeFileName: 'Nahid_Hossain_Resume.pdf',
   status: 'Open to opportunities & projects',
 };
 

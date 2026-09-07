@@ -24,11 +24,10 @@ import { ScrollReveal, ScrollStagger } from '../components/ScrollAnimation';
 
 interface HomePageProps {
   theme: 'dark' | 'light';
-  onOpenResume: () => void;
   onShowToast: (message: string, type?: 'info' | 'success' | 'warning') => void;
 }
 
-export const HomePage: React.FC<HomePageProps> = ({ theme, onOpenResume, onShowToast }) => {
+export const HomePage: React.FC<HomePageProps> = ({ theme, onShowToast }) => {
   const toolsApp = APPS_CONFIG[0];
   const featuredProject = PROJECTS.find(p => p.featured) || PROJECTS[0];
   const topSkills = SKILLS.slice(0, 8);
@@ -41,7 +40,7 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onOpenResume, onShowT
   return (
     <div className="space-y-16 pb-12">
       {/* 1. Hero Section */}
-      <Hero theme={theme} onOpenResume={onOpenResume} />
+      <Hero theme={theme} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
         
@@ -262,12 +261,6 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onOpenResume, onShowT
                 <Mail className="w-4 h-4" />
                 <span>Contact Nahid Directly</span>
               </Link>
-              <button
-                onClick={onOpenResume}
-                className="px-5 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition-colors"
-              >
-                View Resume
-              </button>
             </div>
           </div>
         </ScrollReveal>
