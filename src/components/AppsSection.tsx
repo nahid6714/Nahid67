@@ -33,19 +33,18 @@ interface AppsSectionProps {
 // If iconUrl is explicitly configured, it is tried first; otherwise the
 // conventional public/logo.png and public/logo.jpg files are tried.
 const getAppIconCandidates = (app: AppRepoConfig): string[] => {
-  const branches = ['main', 'master'];
   const candidates = [
     app.iconUrl,
-    ...branches.flatMap((branch) => [
-      `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/${branch}/public/logo.png`,
-      `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/${branch}/public/logo.jpg`,
-      `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/${branch}/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp`,
-      `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/${branch}/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png`,
-      `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/${branch}/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp`,
-      `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/${branch}/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png`,
-      `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/${branch}/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp`,
-      `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/${branch}/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png`,
-    ]),
+    `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/main/public/logo.png`,
+    `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/main/public/logo.jpg`,
+    // Common Android launcher artwork locations.
+    `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/main/app/src/main/res/drawable/app_logo_foreground.jpg`,
+    `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/main/app/src/main/res/drawable/app_logo_foreground.png`,
+    `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/main/app/src/main/res/drawable/ic_launcher_foreground.png`,
+    `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/master/public/logo.png`,
+    `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/master/public/logo.jpg`,
+    `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/master/app/src/main/res/drawable/app_logo_foreground.jpg`,
+    `https://raw.githubusercontent.com/${app.repoOwner}/${app.repoName}/master/app/src/main/res/drawable/app_logo_foreground.png`,
   ];
 
   return candidates.filter((url): url is string => Boolean(url));
@@ -69,45 +68,17 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
   });
   const [isRefreshingAll, setIsRefreshingAll] = useState(false);
   const [iconFallbackIndex, setIconFallbackIndex] = useState<Record<string, number>>({});
-  // Only repositories confirmed by GitHub with a live release + APK are rendered.
-  const [publishedAppIds, setPublishedAppIds] = useState<string[]>([]);
-  const [isCheckingRepositories, setIsCheckingRepositories] = useState(true);
 
-  // Verify every configured repository on GitHub. An app is shown only when
-  // its latest published release contains a real .apk asset.
+  // Auto-fetch latest releases for all published apps (e.g. Tools and Edu Library)
   useEffect(() => {
-    let cancelled = false;
-
-    const syncPublishedApps = async () => {
-      setIsCheckingRepositories(true);
-      const publishedIds: string[] = [];
-
-      await Promise.all(
-        APPS_CONFIG.map(async (app) => {
-          const result = await fetchReleaseForApp(app, false);
-          if (!cancelled && result.isLive && /\.apk(?:$|[?#])/i.test(result.release.downloadUrl)) {
-            publishedIds.push(app.id);
-          }
-        })
-      );
-
-      if (!cancelled) {
-        setPublishedAppIds(publishedIds);
-        setIsCheckingRepositories(false);
-      }
-    };
-
-    syncPublishedApps();
-
-    return () => {
-      cancelled = true;
-    };
+    APPS_CONFIG
+      .filter((app) => app.status === 'available')
+      .forEach((app) => {
+        fetchReleaseForApp(app, false);
+      });
   }, []);
 
-  const fetchReleaseForApp = async (
-    app: AppRepoConfig,
-    showToastOnComplete = true
-  ): Promise<{ release: AppReleaseInfo; isLive: boolean }> => {
+  const fetchReleaseForApp = async (app: AppRepoConfig, showToastOnComplete = true) => {
     setLoadingState((prev) => ({ ...prev, [app.id]: true }));
 
     try {
@@ -120,14 +91,6 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
       setAppReleases((prev) => ({ ...prev, [app.id]: release }));
       setLiveSyncedState((prev) => ({ ...prev, [app.id]: isLive }));
 
-      const hasPublishedApk = isLive && /\.apk(?:$|[?#])/i.test(release.downloadUrl);
-      setPublishedAppIds((prev) => {
-        const next = new Set(prev);
-        if (hasPublishedApk) next.add(app.id);
-        else next.delete(app.id);
-        return Array.from(next);
-      });
-
       if (showToastOnComplete) {
         if (isLive) {
           onShowToast(`Latest release ${release.version} fetched directly from GitHub!`, 'success');
@@ -135,14 +98,11 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
           onShowToast(`Using cached release configuration: ${error || 'Offline'}`, 'info');
         }
       }
-      return { release, isLive };
     } catch (err) {
       console.error('Error fetching release:', err);
       if (showToastOnComplete) {
         onShowToast('Could not reach GitHub API, using local release cache', 'warning');
       }
-      setPublishedAppIds((prev) => prev.filter((id) => id !== app.id));
-      return { release: app.defaultRelease, isLive: false };
     } finally {
       setLoadingState((prev) => ({ ...prev, [app.id]: false }));
     }
@@ -178,8 +138,6 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
       [appId]: !prev[appId],
     }));
   };
-
-  const visibleApps = APPS_CONFIG.filter((app) => publishedAppIds.includes(app.id));
 
   return (
     <section
@@ -224,7 +182,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
 
         {/* Apps Cards Grid with 3D Curvature */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
-          {visibleApps.map((app, index) => {
+          {APPS_CONFIG.map((app, index) => {
             const release = appReleases[app.id] || app.defaultRelease;
             const isLoading = loadingState[app.id] || false;
             const isLive = liveSyncedState[app.id] || false;
@@ -279,7 +237,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                               <img
                                 src={iconUrl}
                                 alt={`${app.appName} logo`}
-                                className="w-full h-full object-contain rounded-[14px] p-1"
+                                className="w-full h-full object-cover rounded-[14px]"
                                 loading="lazy"
                                 onError={() => {
                                   setIconFallbackIndex((prev) => {
@@ -451,18 +409,6 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
         })}
         </div>
 
-        {isCheckingRepositories && (
-          <div className="mt-4 text-center text-xs text-slate-500">
-            Checking GitHub repositories for published APK releases...
-          </div>
-        )}
-
-        {!isCheckingRepositories && visibleApps.length === 0 && (
-          <div className="mt-4 text-center text-sm text-slate-400">
-            No published APK releases were found on the configured GitHub repositories.
-          </div>
-        )}
-
         {/* Architecture Spotlight: Multiple GitHub Repositories -> Auto-release */}
         <ScrollReveal yOffset={40} className="mt-16">
           <div className="p-6 sm:p-8 rounded-2xl bg-slate-900/50 dark:bg-slate-900/50 light:bg-white border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200">
@@ -482,7 +428,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
             </div>
 
             <p className="text-xs sm:text-sm text-slate-300 dark:text-slate-300 light:text-slate-600 leading-relaxed mb-6">
-              The portfolio automatically checks every configured app repository on GitHub. Only repositories that actually exist and have a published release containing an APK are shown to visitors. When a new GitHub Release is published, the portfolio detects the latest version, size, changelog, and APK download link without requiring a manual page update.
+              This portfolio is architecturally configured to decouple app repositories (including <code className="text-emerald-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">tools</code> and <code className="text-emerald-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">Edu-library-</code>) from the web presentation layer (<code className="text-blue-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">portfolio-web</code>). Whenever Nahid publishes a new GitHub Release with an APK asset, the portfolio detects the update, recalculates size and versioning, and allows visitors to initiate direct APK downloads without manual page updates.
             </p>
 
             {/* Workflow Steps */}

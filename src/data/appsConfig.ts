@@ -7,8 +7,7 @@ import { AppRepoConfig } from '../types/portfolio';
  * 1. Push your APK to GitHub Releases in the target repository.
  * 2. Add an entry below with repoOwner and repoName.
  * 3. Optional: set iconUrl if the repository uses a non-standard logo path.
- *    Otherwise the Apps section automatically tries common web logos and Android
- *    launcher icon paths such as app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp.
+ *    Otherwise the Apps section automatically tries public/logo.png and logo.jpg.
  * 4. The portfolio's release service will automatically detect and fetch the latest
  *    APK asset, version number, release date, and changelog via GitHub's public API.
  */
@@ -22,7 +21,9 @@ export const APPS_CONFIG: AppRepoConfig[] = [
     description:
       'A collection of useful Android tools and utilities developed as a practical software project. Includes Food Bill Manager, Smart Document & NID Scanner, and PDF Export.',
     icon: 'wrench',
-    iconUrl: 'https://raw.githubusercontent.com/nahid6714/tools/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp',
+    // Tools uses its Android launcher artwork under app/src/main/res/drawable.
+    // Keep the real app logo visible in the portfolio instead of the fallback icon.
+    iconUrl: 'https://raw.githubusercontent.com/nahid6714/tools/main/app/src/main/res/drawable/app_logo_foreground.jpg',
     githubUrl: 'https://github.com/nahid6714/tools',
     status: 'available',
     defaultRelease: {
