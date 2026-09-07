@@ -43,11 +43,11 @@ export const About: React.FC = () => {
           description="A dedicated technology enthusiast balancing academic pursuits and professional work to build impactful Android applications and software tools."
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           
-          {/* Biography Narrative - flies in from left/bottom */}
-          <ScrollReveal yOffset={45} className="lg:col-span-6 space-y-6">
-            <div className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800/80 shadow-sm space-y-4">
+          {/* Biography Narrative - clean typography without unnecessary card box */}
+          <ScrollReveal yOffset={40} className="lg:col-span-6 space-y-6">
+            <div className="space-y-4">
               <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2.5">
                 <Terminal className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 <span>Developer, Student & Worker</span>
@@ -65,33 +65,33 @@ export const About: React.FC = () => {
                 Rather than theoretical mockups, my focus is on functional, real-world utility: building tools that assist with document scanning, expense tracking, daily calculations, and streamlined web experiences.
               </p>
 
-              {/* Verified Profile Matrix */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-4 border-t border-slate-200 dark:border-slate-800/80">
-                <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800/60">
+              {/* Verified Profile Key Facts - Clean Flat Inline Bar */}
+              <div className="pt-5 mt-6 border-t border-slate-200 dark:border-slate-800/80 grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <div>
                   <span className="text-[11px] uppercase tracking-wider text-slate-500 font-semibold block mb-1">
                     Location
                   </span>
-                  <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-800 dark:text-slate-200">
+                  <div className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200">
                     <MapPin className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
                     <span>{PERSONAL_INFO.country}</span>
                   </div>
                 </div>
 
-                <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800/60">
+                <div>
                   <span className="text-[11px] uppercase tracking-wider text-slate-500 font-semibold block mb-1">
                     Current Role
                   </span>
-                  <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-800 dark:text-slate-200">
+                  <div className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200">
                     <Briefcase className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
                     <span>{PERSONAL_INFO.role}</span>
                   </div>
                 </div>
 
-                <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800/60 col-span-2 sm:col-span-1">
+                <div className="col-span-2 sm:col-span-1">
                   <span className="text-[11px] uppercase tracking-wider text-slate-500 font-semibold block mb-1">
                     Core Focus
                   </span>
-                  <div className="flex items-center gap-1.5 text-xs font-semibold text-blue-600 dark:text-blue-400">
+                  <div className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400">
                     <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
                     <span>Android & Tools</span>
                   </div>
@@ -100,10 +100,10 @@ export const About: React.FC = () => {
             </div>
           </ScrollReveal>
 
-          {/* Currently Exploring / Interests Cards - staggered fly-in */}
+          {/* Currently Exploring / Interests - Clean List without heavy card boxes */}
           <div className="lg:col-span-6 space-y-4">
             <ScrollReveal yOffset={30}>
-              <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800/80">
                 <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                   <span>Currently Exploring & Core Interests</span>
@@ -112,23 +112,23 @@ export const About: React.FC = () => {
               </div>
             </ScrollReveal>
 
-            <ScrollStagger className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <ScrollStagger className="divide-y divide-slate-200 dark:divide-slate-800/60">
               {INTERESTS.map((item) => (
                 <div
                   key={item.title}
-                  className="p-4 rounded-xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/70 hover:border-blue-400/60 dark:hover:border-slate-700 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 group"
+                  className="py-3.5 group flex items-start gap-3.5 transition-colors"
                 >
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-blue-600 dark:text-blue-400 group-hover:scale-105 transition-transform">
-                      {iconMap[item.icon] || <Code className="w-5 h-5 text-blue-600 dark:text-blue-400" />}
-                    </div>
+                  <div className="p-2 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5">
+                    {iconMap[item.icon] || <Code className="w-5 h-5 text-blue-600 dark:text-blue-400" />}
+                  </div>
+                  <div className="flex-1">
                     <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                       {item.title}
                     </h4>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mt-0.5">
+                      {item.description}
+                    </p>
                   </div>
-                  <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed pl-1">
-                    {item.description}
-                  </p>
                 </div>
               ))}
             </ScrollStagger>

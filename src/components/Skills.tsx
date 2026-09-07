@@ -117,11 +117,11 @@ export const Skills: React.FC = () => {
                     delay: (index % 4) * 0.07,
                     ease: [0.25, 1, 0.5, 1],
                   }}
-                  className="p-4 rounded-xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 hover:border-blue-400/60 dark:hover:border-slate-700 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 group flex flex-col justify-between h-full"
+                  className="p-3.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-900/60 transition-all duration-200 group flex flex-col justify-between h-full"
                 >
                   <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-blue-600 dark:text-blue-400 group-hover:scale-105 transition-transform">
+                    <div className="flex items-center justify-between mb-2.5">
+                      <div className="p-2 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:scale-105 transition-transform">
                         {iconLookup[skill.icon] || <Wrench className="w-5 h-5 text-blue-600 dark:text-blue-400" />}
                       </div>
                       <span
@@ -140,7 +140,7 @@ export const Skills: React.FC = () => {
                     </p>
                   </div>
 
-                  <div className="mt-3 pt-2.5 border-t border-slate-800/60 dark:border-slate-800/60 light:border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                  <div className="mt-3 pt-2 border-t border-slate-200 dark:border-slate-800/60 flex items-center justify-between text-[11px] text-slate-500">
                     <span>{skill.category}</span>
                   </div>
                 </motion.div>

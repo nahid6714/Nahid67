@@ -214,79 +214,73 @@ export const Hero: React.FC<HeroProps> = ({ theme }) => {
           </motion.div>
         </CurvedRollItem>
 
-        {/* Right Hero Visual / Interactive Card Showcase */}
+        {/* Right Hero Visual - Clean Open Profile Showcase */}
         <CurvedRollItem className="lg:col-span-5 flex flex-col items-center justify-center">
           <motion.div
-            initial={{ opacity: 0, y: 60, scale: 0.95 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.2 }}
-            transition={{ duration: 0.75, delay: 0.2, ease: [0.25, 1, 0.5, 1] }}
-            className="w-full flex flex-col items-center justify-center"
+            transition={{ duration: 0.7, delay: 0.2, ease: [0.25, 1, 0.5, 1] }}
+            className="w-full max-w-md flex flex-col items-start space-y-5"
           >
-            
-            {/* Developer Terminal / Card Concept */}
-            <div className="w-full max-w-md rounded-2xl bg-slate-900/90 dark:bg-slate-900/90 light:bg-white border border-slate-800 dark:border-slate-800 light:border-slate-200 shadow-2xl p-5 relative group overflow-hidden">
-              
-              {/* Card Header */}
-              <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-800 dark:border-slate-800 light:border-slate-200">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-rose-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-amber-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
-                  <span className="text-[11px] font-mono text-slate-400 ml-2">nahid@portfolio:~$</span>
+            {/* Avatar & Identification */}
+            <div className="flex items-center gap-5">
+              <div className="relative">
+                <img
+                  src={theme === 'light' ? '/profile-light.jpg' : '/profile-dark.jpg'}
+                  alt="Nahid Hossain Profile Avatar"
+                  className="w-24 h-24 rounded-2xl object-cover shadow-sm"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLElement).style.display = 'none';
+                  }}
+                />
+                <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-slate-950" title="Active developer" />
+              </div>
+
+              <div>
+                <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-semibold mb-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                  Active & Building
                 </div>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                  ONLINE
-                </span>
+                <h3 className="font-bold text-slate-900 dark:text-slate-100 text-xl">
+                  Nahid Hossain
+                </h3>
+                <p className="text-xs text-blue-600 dark:text-blue-400 font-mono">
+                  github.com/nahid6714
+                </p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                  Bangladesh • Mobile & Web Dev
+                </p>
               </div>
+            </div>
 
-              {/* Avatar & Key Profile Highlight */}
-              <div className="flex items-center gap-4 mb-4">
-                <div className="relative">
-                  <img
-                    src={theme === 'light' ? '/profile-light.jpg' : '/profile-dark.jpg'}
-                    alt="Nahid Hossain Profile Avatar"
-                    className="w-24 h-24 rounded-2xl object-cover border-2 border-blue-500/50 shadow-md"
-                    onError={(e) => {
-                      (e.currentTarget as HTMLElement).style.display = 'none';
-                    }}
-                  />
-                  <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-slate-900" title="Active developer" />
-                </div>
-
-                <div>
-                  <h3 className="font-bold text-slate-100 dark:text-slate-100 light:text-slate-900 text-base">
-                    Nahid Hossain
-                  </h3>
-                  <p className="text-xs text-blue-400 font-mono">
-                    github.com/nahid6714
-                  </p>
-                  <p className="text-xs text-slate-400 dark:text-slate-400 light:text-slate-600 mt-0.5">
-                    Bangladesh • Mobile & Web Dev
-                  </p>
-                </div>
+            {/* Core Stack Spec - Open & Clean */}
+            <div className="w-full py-3 border-y border-slate-200 dark:border-slate-800/80 space-y-2 text-xs">
+              <div className="flex items-center justify-between">
+                <span className="text-slate-500 dark:text-slate-400 font-medium">Core Platform:</span>
+                <span className="font-semibold text-slate-800 dark:text-slate-200">Android (Kotlin)</span>
               </div>
-
-              {/* Terminal Code Snippet */}
-              <div className="p-3 rounded-xl bg-slate-950/80 dark:bg-slate-950/80 light:bg-slate-100 font-mono text-xs text-slate-300 dark:text-slate-300 light:text-slate-800 space-y-1 border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200">
-                <div className="text-slate-500 dark:text-slate-500 light:text-slate-600">// Primary Focus & Active Stack</div>
-                <div><span className="text-purple-400">const</span> <span className="text-blue-400">developer</span> = &#123;</div>
-                <div className="pl-4"><span className="text-emerald-400">platform</span>: <span className="text-amber-300">'Android (Kotlin)'</span>,</div>
-                <div className="pl-4"><span className="text-emerald-400">architecture</span>: <span className="text-amber-300">'Compose + Room DB'</span>,</div>
-                <div className="pl-4"><span className="text-emerald-400">pipeline</span>: <span className="text-amber-300">'GitHub Actions APK'</span>,</div>
-                <div className="pl-4"><span className="text-emerald-400">activeApp</span>: <span className="text-amber-300">'Tools (v1.0.184)'</span>,</div>
-                <div>&#125;;</div>
+              <div className="flex items-center justify-between">
+                <span className="text-slate-500 dark:text-slate-400 font-medium">Architecture:</span>
+                <span className="font-semibold text-slate-800 dark:text-slate-200">Jetpack Compose + Room DB</span>
               </div>
-
-              {/* Quick direct route links */}
-              <div className="mt-4 pt-3 border-t border-slate-800/60 dark:border-slate-800/60 light:border-slate-200 flex items-center justify-between text-xs">
-                <Link to="/skills" className="text-blue-400 hover:underline">Skills & Tech</Link>
-                <span className="text-slate-600">•</span>
-                <Link to="/apps" className="text-emerald-400 hover:underline">Download APK</Link>
-                <span className="text-slate-600">•</span>
-                <Link to="/contact" className="text-slate-300 hover:underline">Send Message</Link>
+              <div className="flex items-center justify-between">
+                <span className="text-slate-500 dark:text-slate-400 font-medium">CI/CD Pipeline:</span>
+                <span className="font-semibold text-slate-800 dark:text-slate-200">GitHub Actions Auto APK</span>
               </div>
+              <div className="flex items-center justify-between">
+                <span className="text-slate-500 dark:text-slate-400 font-medium">Featured Release:</span>
+                <span className="font-mono text-xs text-blue-600 dark:text-blue-400 font-semibold">Tools App (v1.0.184)</span>
+              </div>
+            </div>
 
+            {/* Direct Quick Links */}
+            <div className="w-full flex items-center justify-between text-xs pt-1">
+              <Link to="/skills" className="text-blue-600 dark:text-blue-400 font-medium hover:underline">Skills & Tech →</Link>
+              <span className="text-slate-300 dark:text-slate-700">•</span>
+              <Link to="/apps" className="text-emerald-600 dark:text-emerald-400 font-medium hover:underline">Download APK →</Link>
+              <span className="text-slate-300 dark:text-slate-700">•</span>
+              <Link to="/contact" className="text-slate-600 dark:text-slate-300 font-medium hover:underline">Get in Touch →</Link>
             </div>
 
           </motion.div>

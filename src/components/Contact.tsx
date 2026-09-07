@@ -125,29 +125,29 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           
-          {/* Left Column: Direct Info & Social Channels */}
+          {/* Left Column: Direct Info & Social Channels - Clean Open Layout */}
           <ScrollReveal yOffset={45} className="lg:col-span-5 space-y-6">
             
-            <div className="p-6 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 shadow-sm space-y-5">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+            <div className="space-y-6">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">
                 Contact Channels
               </h3>
 
-              {/* Email Card with Copy Button */}
-              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800/80">
+              {/* Email Row with Copy Button */}
+              <div className="py-2 border-b border-slate-200 dark:border-slate-800/80">
                 <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1">
                   Primary Email
                 </span>
                 <div className="flex items-center justify-between gap-2">
                   <a
                     href={`mailto:${PERSONAL_INFO.email}`}
-                    className="text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline break-all"
+                    className="text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline break-all"
                   >
                     {PERSONAL_INFO.email}
                   </a>
                   <button
                     onClick={handleCopyEmail}
-                    className="p-1.5 rounded-lg bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors shrink-0"
+                    className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-850 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors shrink-0"
                     title="Copy email to clipboard"
                     aria-label="Copy email"
                   >
@@ -156,12 +156,12 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
                 </div>
               </div>
 
-              {/* Location Card */}
-              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800/80">
+              {/* Location Row */}
+              <div className="py-2 border-b border-slate-200 dark:border-slate-800/80">
                 <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1">
                   Location & Timezone
                 </span>
-                <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-slate-800 dark:text-slate-200">
+                <div className="flex items-center gap-2 text-sm font-medium text-slate-800 dark:text-slate-200">
                   <MapPin className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
                   <span>Bangladesh (BST, UTC+6)</span>
                 </div>
@@ -177,7 +177,7 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
                     href={PERSONAL_INFO.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/70 hover:bg-slate-100 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-800/80 text-xs font-semibold text-slate-700 dark:text-slate-300 transition-colors"
+                    className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-850 text-xs font-semibold text-slate-700 dark:text-slate-300 transition-colors"
                   >
                     <Github className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                     <span>GitHub</span>
@@ -187,7 +187,7 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
                     href={PERSONAL_INFO.linkedinUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/70 hover:bg-slate-100 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-800/80 text-xs font-semibold text-slate-700 dark:text-slate-300 transition-colors"
+                    className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-850 text-xs font-semibold text-slate-700 dark:text-slate-300 transition-colors"
                   >
                     <Linkedin className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                     <span>LinkedIn</span>
@@ -197,7 +197,7 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
                     href={PERSONAL_INFO.facebookUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/70 hover:bg-slate-100 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-800/80 text-xs font-semibold text-slate-700 dark:text-slate-300 transition-colors"
+                    className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-850 text-xs font-semibold text-slate-700 dark:text-slate-300 transition-colors"
                   >
                     <Facebook className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                     <span>Facebook</span>
@@ -205,7 +205,7 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
 
                   <a
                     href={`mailto:${PERSONAL_INFO.email}`}
-                    className="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/70 hover:bg-slate-100 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-800/80 text-xs font-semibold text-slate-700 dark:text-slate-300 transition-colors"
+                    className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-850 text-xs font-semibold text-slate-700 dark:text-slate-300 transition-colors"
                   >
                     <Mail className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                     <span>Email Direct</span>
@@ -216,9 +216,9 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
 
           </ScrollReveal>
 
-          {/* Right Column: Contact Form */}
+          {/* Right Column: Contact Form - Clean Open Layout */}
           <ScrollReveal yOffset={45} delay={0.12} className="lg:col-span-7">
-            <div className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 shadow-sm">
+            <div>
               
               {isSubmitted ? (
                 <div className="py-12 text-center space-y-4 animate-in fade-in zoom-in-95 duration-300">
@@ -252,14 +252,14 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} noValidate className="space-y-4">
-                  <h3 className="text-lg font-bold text-slate-100 dark:text-slate-100 light:text-slate-900 mb-2">
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4">
                     Send a Message
                   </h3>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Name Field */}
                     <div>
-                      <label htmlFor="contact-name" className="block text-xs font-semibold text-slate-300 dark:text-slate-300 light:text-slate-700 mb-1.5">
+                      <label htmlFor="contact-name" className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1.5">
                         Your Name <span className="text-rose-400">*</span>
                       </label>
                       <input
@@ -269,10 +269,10 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
                         value={formData.name}
                         onChange={handleChange}
                         placeholder="John Doe"
-                        className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-950/80 dark:bg-slate-950/80 light:bg-slate-50 border text-slate-100 dark:text-slate-100 light:text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
+                        className={`w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-900 border text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
                           errors.name
                             ? 'border-rose-500/80'
-                            : 'border-slate-800 dark:border-slate-800 light:border-slate-300'
+                            : 'border-slate-300 dark:border-slate-800'
                         }`}
                       />
                       {errors.name && (
@@ -285,7 +285,7 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
 
                     {/* Email Field */}
                     <div>
-                      <label htmlFor="contact-email" className="block text-xs font-semibold text-slate-300 dark:text-slate-300 light:text-slate-700 mb-1.5">
+                      <label htmlFor="contact-email" className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1.5">
                         Your Email <span className="text-rose-400">*</span>
                       </label>
                       <input
@@ -295,10 +295,10 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="john@example.com"
-                        className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-950/80 dark:bg-slate-950/80 light:bg-slate-50 border text-slate-100 dark:text-slate-100 light:text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
+                        className={`w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-900 border text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
                           errors.email
                             ? 'border-rose-500/80'
-                            : 'border-slate-800 dark:border-slate-800 light:border-slate-300'
+                            : 'border-slate-300 dark:border-slate-800'
                         }`}
                       />
                       {errors.email && (
@@ -312,7 +312,7 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
 
                   {/* Subject Field */}
                   <div>
-                    <label htmlFor="contact-subject" className="block text-xs font-semibold text-slate-300 dark:text-slate-300 light:text-slate-700 mb-1.5">
+                    <label htmlFor="contact-subject" className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1.5">
                       Subject <span className="text-rose-400">*</span>
                     </label>
                     <input
@@ -322,10 +322,10 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
                       value={formData.subject}
                       onChange={handleChange}
                       placeholder="Project Collaboration / Inquiries"
-                      className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-950/80 dark:bg-slate-950/80 light:bg-slate-50 border text-slate-100 dark:text-slate-100 light:text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
+                      className={`w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-900 border text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
                         errors.subject
                           ? 'border-rose-500/80'
-                          : 'border-slate-800 dark:border-slate-800 light:border-slate-300'
+                          : 'border-slate-300 dark:border-slate-800'
                       }`}
                     />
                     {errors.subject && (
@@ -338,7 +338,7 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
 
                   {/* Message Field */}
                   <div>
-                    <label htmlFor="contact-message" className="block text-xs font-semibold text-slate-300 dark:text-slate-300 light:text-slate-700 mb-1.5">
+                    <label htmlFor="contact-message" className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1.5">
                       Message <span className="text-rose-400">*</span>
                     </label>
                     <textarea
@@ -348,10 +348,10 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
                       value={formData.message}
                       onChange={handleChange}
                       placeholder="Write your note, idea, or questions here..."
-                      className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-950/80 dark:bg-slate-950/80 light:bg-slate-50 border text-slate-100 dark:text-slate-100 light:text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors resize-y ${
+                      className={`w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-900 border text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors resize-y ${
                         errors.message
                           ? 'border-rose-500/80'
-                          : 'border-slate-800 dark:border-slate-800 light:border-slate-300'
+                          : 'border-slate-300 dark:border-slate-800'
                       }`}
                     />
                     {errors.message && (

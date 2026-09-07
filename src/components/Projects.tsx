@@ -147,18 +147,18 @@ export const Projects: React.FC<ProjectsProps> = ({ onOpenAppSection }) => {
                     delay: (index % 3) * 0.1,
                     ease: [0.25, 1, 0.5, 1],
                   }}
-                  className="project-card relative rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 group h-full bg-white dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800/80 hover:border-blue-400/60 dark:hover:border-slate-700 shadow-sm hover:shadow-md"
+                  className="project-card relative p-5 rounded-2xl flex flex-col justify-between transition-all duration-300 group h-full hover:bg-slate-100/80 dark:hover:bg-slate-900/50"
                 >
                   {/* Host or Category Badge */}
                   <div className="absolute top-4 right-4 flex items-center gap-1.5">
                     {project.hostProvider && (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
                         <Radio className="w-2.5 h-2.5 animate-pulse" />
                         <span>Hosted on {project.hostProvider}</span>
                       </span>
                     )}
                     {isApp && project.latestApk && (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800/40">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-blue-500/10 text-blue-600 dark:text-blue-400">
                         <ShieldCheck className="w-3 h-3" />
                         <span>APK {project.latestApk.version}</span>
                       </span>
@@ -168,7 +168,7 @@ export const Projects: React.FC<ProjectsProps> = ({ onOpenAppSection }) => {
                   <div>
                     {/* Category & Icon */}
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="p-3 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-blue-600 dark:text-blue-400 group-hover:scale-105 transition-transform">
+                      <div className="p-2.5 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:scale-105 transition-transform">
                         {isApp ? (
                           <Smartphone className="w-6 h-6" />
                         ) : isWebsite ? (
@@ -194,18 +194,18 @@ export const Projects: React.FC<ProjectsProps> = ({ onOpenAppSection }) => {
 
                     {/* Live hosting URL / APK status callout */}
                     {project.liveUrl && (
-                      <div className="mb-4 p-2.5 rounded-xl bg-blue-50/70 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/40 text-[11px] text-blue-700 dark:text-blue-300 flex items-center justify-between">
+                      <div className="mb-4 py-1.5 flex items-center justify-between text-xs text-blue-600 dark:text-blue-400">
                         <span className="truncate font-mono">
                           {project.liveUrl.replace(/^https?:\/\//i, '')}
                         </span>
-                        <span className="shrink-0 font-semibold uppercase text-[9px] px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-200">
+                        <span className="shrink-0 font-semibold uppercase text-[9px] px-1.5 py-0.5 rounded bg-blue-500/10">
                           {project.hostProvider || 'Live'}
                         </span>
                       </div>
                     )}
 
                     {isApp && project.latestApk && (
-                      <div className="mb-4 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-400 flex items-center justify-between">
+                      <div className="mb-4 py-1.5 flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
                         <span className="font-mono">{project.latestApk.apkFileName}</span>
                         <span className="font-semibold text-slate-800 dark:text-slate-200">
                           {project.latestApk.apkSize}
@@ -218,7 +218,7 @@ export const Projects: React.FC<ProjectsProps> = ({ onOpenAppSection }) => {
                       {project.technologies.map((tech) => (
                         <span
                           key={tech}
-                          className="px-2.5 py-1 rounded-lg text-[11px] font-medium bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700/80"
+                          className="px-2.5 py-0.5 rounded-lg text-[11px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
                         >
                           {tech}
                         </span>
@@ -259,7 +259,7 @@ export const Projects: React.FC<ProjectsProps> = ({ onOpenAppSection }) => {
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 min-w-[95px] inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 transition-colors"
+                        className="flex-1 min-w-[95px] inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200 transition-colors"
                       >
                         <Github className="w-3.5 h-3.5" />
                         <span>Source</span>

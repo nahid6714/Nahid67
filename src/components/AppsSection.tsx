@@ -197,11 +197,11 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                     delay: index * 0.12,
                     ease: [0.25, 1, 0.5, 1],
                   }}
-                  className="app-card relative rounded-2xl flex flex-col justify-between transition-all duration-300 h-full bg-white dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800/80 hover:border-blue-400/60 dark:hover:border-slate-700 shadow-sm hover:shadow-md"
+                  className="app-card relative p-5 rounded-2xl flex flex-col justify-between transition-all duration-300 h-full hover:bg-slate-100/80 dark:hover:bg-slate-900/50"
                 >
                 {/* Header badge for featured release */}
                 {isFeaturedApp && (
-                  <div className="bg-slate-50 dark:bg-slate-950/60 border-b border-slate-200 dark:border-slate-800/80 px-4 py-2 rounded-t-2xl flex items-center justify-between text-slate-600 dark:text-slate-300 text-[11px]">
+                  <div className="pb-3 mb-2 flex items-center justify-between text-slate-600 dark:text-slate-300 text-[11px]">
                     <span className="flex items-center gap-1.5 text-blue-600 dark:text-blue-400 font-semibold">
                       <Sparkles className="w-3.5 h-3.5" />
                       Featured APK Release
@@ -212,14 +212,14 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                   </div>
                 )}
 
-                <div className="p-6">
+                <div>
                   
                   {/* App Icon & Basic Identification */}
-                  <div className="flex items-start justify-between gap-4 mb-5">
+                  <div className="flex items-start justify-between gap-4 mb-4">
                     <div className="flex items-center gap-3.5">
                       {/* App Icon */}
-                      <div className="w-14 h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/80 p-0.5 border border-slate-200 dark:border-slate-700 flex items-center justify-center overflow-hidden shrink-0">
-                        <div className="w-full h-full rounded-[14px] bg-white dark:bg-slate-950 flex items-center justify-center overflow-hidden">
+                      <div className="w-13 h-13 rounded-2xl bg-blue-500/10 p-0.5 flex items-center justify-center overflow-hidden shrink-0">
+                        <div className="w-full h-full rounded-[14px] flex items-center justify-center overflow-hidden">
                           {(() => {
                             return app.iconUrl && (iconFallbackIndex[app.id] ?? 0) === 0 ? (
                               <img
@@ -232,7 +232,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                                 }}
                               />
                             ) : (
-                              <Smartphone className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+                              <Smartphone className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                             );
                           })()}
                         </div>
@@ -257,10 +257,8 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                     <span
                       className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border uppercase tracking-wider shrink-0 ${
                         app.status === 'available'
-                          ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/40'
-                          : app.status === 'in-development'
-                          ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800/40'
-                          : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700'
+                          ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
+                          : 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20'
                       }`}
                     >
                       {app.status === 'available' ? 'Available' : 'In Dev'}
@@ -268,12 +266,12 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                   </div>
 
                   {/* App Description */}
-                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-5 min-h-[48px]">
+                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-4 min-h-[44px]">
                     {app.description}
                   </p>
 
-                  {/* Technical Metadata Box */}
-                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800/80 mb-5 space-y-2.5 font-mono text-xs">
+                  {/* Technical Metadata - Clean Open Spec */}
+                  <div className="py-3 border-y border-slate-200 dark:border-slate-800/80 mb-4 space-y-2 font-mono text-xs">
                     
                     {/* Latest Version */}
                     <div className="flex items-center justify-between text-slate-700 dark:text-slate-300">
@@ -281,7 +279,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                         <Tag className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
                         Latest Version:
                       </span>
-                      <span className="font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50 border border-blue-200/60 dark:border-blue-800/40 px-2 py-0.5 rounded">
+                      <span className="font-bold text-blue-600 dark:text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded">
                         {release.version}
                       </span>
                     </div>
@@ -316,10 +314,10 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                   </div>
 
                   {/* What's New / Changelog Accordion */}
-                  <div className="mb-5">
+                  <div className="mb-4">
                     <button
                       onClick={() => toggleNotes(app.id)}
-                      className="w-full flex items-center justify-between py-2 px-3 rounded-lg bg-slate-50 dark:bg-slate-950/40 hover:bg-slate-100 dark:hover:bg-slate-950/70 text-xs font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800/50 transition-colors"
+                      className="w-full flex items-center justify-between py-1.5 px-2 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors"
                     >
                       <span className="flex items-center gap-1.5">
                         <Info className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
@@ -333,7 +331,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                     </button>
 
                     {isNotesExpanded && (
-                      <div className="mt-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800/60 text-xs space-y-1.5">
+                      <div className="mt-2 py-2 px-3 text-xs space-y-1.5 border-l-2 border-blue-500/50">
                         {release.whatsNew.map((item, idx) => (
                           <div key={idx} className="flex items-start gap-2 text-slate-600 dark:text-slate-300 leading-snug">
                             <span className="text-blue-500 dark:text-blue-400 font-bold mt-0.5">•</span>
@@ -347,7 +345,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                 </div>
 
                 {/* Primary Action Buttons: [Download APK] and [GitHub] */}
-                <div className="p-6 pt-0 space-y-2.5">
+                <div className="pt-2 space-y-2.5">
                   <button
                     id={`download-apk-${app.id}`}
                     onClick={() => handleDownloadApk(app)}
@@ -355,7 +353,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                     className={`w-full py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-sm ${
                       app.status === 'available'
                         ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-blue-500/20 active:scale-[0.98]'
-                        : 'bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed border border-slate-200 dark:border-slate-700'
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed'
                     }`}
                   >
                     <Download className="w-4 h-4" />
@@ -369,7 +367,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                       href={app.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 py-2 px-3 rounded-xl bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200 text-xs font-semibold border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-1.5 transition-colors"
+                      className="flex-1 py-2 px-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
                     >
                       <Github className="w-3.5 h-3.5" />
                       <span>GitHub</span>
@@ -383,54 +381,54 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
         })}
         </div>
 
-        {/* Architecture Spotlight: Multiple GitHub Repositories -> Auto-release */}
-        <ScrollReveal yOffset={40} className="mt-16">
-          <div className="p-6 sm:p-8 rounded-2xl bg-slate-900/50 dark:bg-slate-900/50 light:bg-white border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200">
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-6">
+        {/* Architecture Spotlight: Clean Open Layout */}
+        <ScrollReveal yOffset={40} className="mt-16 pt-12 border-t border-slate-200 dark:border-slate-800/80">
+          <div>
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
               <div>
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-400 uppercase tracking-wider mb-1">
+                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-500 dark:text-blue-400 uppercase tracking-wider mb-1">
                   <GitPullRequest className="w-3.5 h-3.5" />
                   <span>Local Distribution Architecture</span>
                 </div>
-                <h3 className="text-xl font-bold text-slate-100 dark:text-slate-100 light:text-slate-900">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">
                   Local App Registry & APK Distribution
                 </h3>
               </div>
-              <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 shrink-0">
+              <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-600 dark:text-blue-400 shrink-0">
                 No API Dependency
               </span>
             </div>
 
-            <p className="text-xs sm:text-sm text-slate-300 dark:text-slate-300 light:text-slate-600 leading-relaxed mb-6">
-              This portfolio uses <code className="text-blue-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">src/data/appsData.ts</code> as a generated local registry. A GitHub Actions workflow periodically scans Nahid67's public repositories and writes only repositories that have a non-draft GitHub Release containing an APK. The website itself never calls the GitHub API. After a new repository publishes an APK release, the workflow updates this file and Vercel deploys the changed registry automatically.
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-8 max-w-4xl">
+              This portfolio uses <code className="text-blue-600 dark:text-blue-400 font-mono text-[11px] bg-slate-100 dark:bg-slate-900 px-1.5 py-0.5 rounded">src/data/appsData.ts</code> as a generated local registry. A GitHub Actions workflow periodically scans Nahid67's public repositories and writes only repositories that have a non-draft GitHub Release containing an APK. The website itself never calls the GitHub API. After a new repository publishes an APK release, the workflow updates this file and Vercel deploys the changed registry automatically.
             </p>
 
-            {/* Workflow Steps */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-              <div className="p-3.5 rounded-xl bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-50 border border-slate-800/60 dark:border-slate-800/60 light:border-slate-200">
-                <span className="font-bold text-blue-400 block mb-1">1. Build & Push</span>
-                <span className="text-slate-400 dark:text-slate-400 light:text-slate-600">
-                  Create a repository under <strong className="text-slate-300">nahid6714</strong> and publish an APK in a GitHub Release.
+            {/* Workflow Steps - Clean Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-xs">
+              <div>
+                <span className="font-bold text-blue-600 dark:text-blue-400 block mb-1">1. Build & Push</span>
+                <span className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                  Create a repository under <strong className="text-slate-800 dark:text-slate-200">nahid6714</strong> and publish an APK in a GitHub Release.
                 </span>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-50 border border-slate-800/60 dark:border-slate-800/60 light:border-slate-200">
-                <span className="font-bold text-indigo-400 block mb-1">2. GitHub Release</span>
-                <span className="text-slate-400 dark:text-slate-400 light:text-slate-600">
+              <div>
+                <span className="font-bold text-indigo-600 dark:text-indigo-400 block mb-1">2. GitHub Release</span>
+                <span className="text-slate-600 dark:text-slate-400 leading-relaxed">
                   The scheduled GitHub Action finds the newest release containing an APK and writes it into the local registry file.
                 </span>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-50 border border-slate-800/60 dark:border-slate-800/60 light:border-slate-200">
-                <span className="font-bold text-teal-400 block mb-1">3. Auto Detection</span>
-                <span className="text-slate-400 dark:text-slate-400 light:text-slate-600">
+              <div>
+                <span className="font-bold text-teal-600 dark:text-teal-400 block mb-1">3. Auto Detection</span>
+                <span className="text-slate-600 dark:text-slate-400 leading-relaxed">
                   Vercel serves the generated registry as normal application code; there is no runtime GitHub API dependency.
                 </span>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-50 border border-slate-800/60 dark:border-slate-800/60 light:border-slate-200">
-                <span className="font-bold text-emerald-400 block mb-1">4. Direct Download</span>
-                <span className="text-slate-400 dark:text-slate-400 light:text-slate-600">
+              <div>
+                <span className="font-bold text-emerald-600 dark:text-emerald-400 block mb-1">4. Direct Download</span>
+                <span className="text-slate-600 dark:text-slate-400 leading-relaxed">
                   Visitors click Download APK and receive the exact APK asset from that GitHub Release.
                 </span>
               </div>

@@ -29,23 +29,23 @@ export const Education: React.FC = () => {
           </p>
         </div>
 
-        {/* Education Cards */}
-        <div className="max-w-3xl mx-auto space-y-6">
+        {/* Education Timeline / Open Layout without heavy card box */}
+        <div className="max-w-3xl mx-auto divide-y divide-slate-800/80 dark:divide-slate-800/80 light:divide-slate-200">
           {EDUCATION.map((edu) => (
             <div
               key={edu.id}
-              className="p-6 sm:p-8 rounded-2xl bg-slate-900/60 dark:bg-slate-900/60 light:bg-white border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 shadow-sm hover:border-slate-700 transition-colors"
+              className="py-8 first:pt-0 last:pb-0"
             >
-              <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
-                <div className="flex items-center gap-3.5">
-                  <div className="p-3 rounded-xl bg-blue-600/10 text-blue-400 border border-blue-500/20">
-                    <School className="w-6 h-6" />
+              <div className="flex flex-wrap items-start justify-between gap-4 mb-3">
+                <div className="flex items-start gap-3.5">
+                  <div className="p-2.5 rounded-xl bg-blue-600/10 text-blue-400 mt-1 shrink-0">
+                    <School className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-slate-100 dark:text-slate-100 light:text-slate-900">
+                    <h3 className="text-xl font-bold text-slate-100 dark:text-slate-100 light:text-slate-900">
                       {edu.degree}
                     </h3>
-                    <p className="text-sm font-semibold text-blue-400">
+                    <p className="text-sm font-semibold text-blue-400 mt-0.5">
                       {edu.institution}
                     </p>
                     <p className="text-xs text-slate-500 dark:text-slate-500 light:text-slate-600 mt-0.5">
@@ -54,24 +54,21 @@ export const Education: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-950 dark:bg-slate-950 light:bg-slate-100 border border-slate-800 text-xs font-medium text-slate-300 dark:text-slate-300 light:text-slate-700">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 dark:bg-slate-900 light:bg-slate-100 text-xs font-medium text-slate-300 dark:text-slate-300 light:text-slate-700">
                   <Calendar className="w-3.5 h-3.5 text-indigo-400" />
                   <span>{edu.year}</span>
                 </div>
               </div>
 
               {/* Details */}
-              <div className="mt-4 pt-4 border-t border-slate-800/80 dark:border-slate-800/80 light:border-slate-200">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-400 light:text-slate-600 mb-2">
-                  Academic Focus & Coursework
-                </h4>
+              <div className="mt-3 pl-12">
                 <p className="text-xs sm:text-sm text-slate-300 dark:text-slate-300 light:text-slate-700 leading-relaxed">
                   {edu.details}
                 </p>
               </div>
 
               {edu.isPlaceholder && (
-                <div className="mt-4 pt-3 border-t border-slate-800/50 flex items-center justify-between text-[11px] text-slate-500">
+                <div className="mt-3 pl-12 flex items-center justify-between text-[11px] text-slate-500">
                   <span>Structured placeholder fields ready for your institution name</span>
                   <span className="text-blue-400 font-medium">Editable in portfolioData.ts</span>
                 </div>
