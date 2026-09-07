@@ -28,7 +28,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
   // Local registry is the single source of truth.
   // Keeping this local means the Apps section never becomes empty because a
   // third-party API is rate-limited, offline, blocked, or temporarily down.
-  const [apps, setApps] = useState<AppRepoConfig[]>(() => APPS_DATA);
+  const [apps, setApps] = useState<AppRepoConfig[]>(() => APPS_DATA.filter((app) => app.status === 'available'));
   const [appReleases, setAppReleases] = useState<Record<string, AppReleaseInfo>>(() =>
     Object.fromEntries(APPS_DATA.map((app) => [app.id, app.defaultRelease]))
   );
@@ -41,12 +41,12 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
     // Re-read the imported registry into component state. This is deliberately
     // local: changing appsData.ts and redeploying updates the cards without
     // depending on a live GitHub API request.
-    setApps([...APPS_DATA]);
-    setAppReleases(Object.fromEntries(APPS_DATA.map((app) => [app.id, app.defaultRelease])));
+    setApps(APPS_DATA.filter((app) => app.status === 'available'));
+    setAppReleases(Object.fromEntries(APPS_DATA.filter((app) => app.status === 'available').map((app) => [app.id, app.defaultRelease])));
     setIconFallbackIndex({});
     window.setTimeout(() => {
       setIsRefreshingAll(false);
-      onShowToast(`${APPS_DATA.filter((app) => app.status === 'available').length} available APK apps loaded from the local app registry.`, 'success');
+      onShowToast(`${APPS_DATA.filter((app) => app.status === 'available').length} APK apps loaded from the generated local registry.`, 'success');
     }, 250);
   };
 
@@ -109,7 +109,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
 
           <div className="inline-flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-400 light:text-slate-600 bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-100 px-3 py-2 rounded-xl border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200">
             <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span>Direct APK Download • Local App Registry</span>
+            <span>Direct APK Download • Auto-Synced Registry</span>
           </div>
         </ScrollReveal>
 
@@ -341,7 +341,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
             </div>
 
             <p className="text-xs sm:text-sm text-slate-300 dark:text-slate-300 light:text-slate-600 leading-relaxed mb-6">
-              This portfolio uses a single local app registry file (<code className="text-blue-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">src/data/appsData.ts</code>) as the source of truth. Each app entry stores its repository, logo, APK download link, version, size, release date, and changelog, so the Apps section remains available without depending on live GitHub API access. To add another released APK, add one entry to that file and redeploy the portfolio.
+              This portfolio uses <code className="text-blue-400 font-mono text-[11px] bg-slate-950 px-1.5 py-0.5 rounded">src/data/appsData.ts</code> as a generated local registry. A GitHub Actions workflow periodically scans Nahid67's public repositories and writes only repositories that have a non-draft GitHub Release containing an APK. The website itself never calls the GitHub API. After a new repository publishes an APK release, the workflow updates this file and Vercel deploys the changed registry automatically.
             </p>
 
             {/* Workflow Steps */}
@@ -349,28 +349,28 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
               <div className="p-3.5 rounded-xl bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-50 border border-slate-800/60 dark:border-slate-800/60 light:border-slate-200">
                 <span className="font-bold text-blue-400 block mb-1">1. Build & Push</span>
                 <span className="text-slate-400 dark:text-slate-400 light:text-slate-600">
-                  Developer builds the Android app and publishes the APK wherever the download link points.
+                  Create a repository under <strong className="text-slate-300">nahid6714</strong> and publish an APK in a GitHub Release.
                 </span>
               </div>
 
               <div className="p-3.5 rounded-xl bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-50 border border-slate-800/60 dark:border-slate-800/60 light:border-slate-200">
                 <span className="font-bold text-indigo-400 block mb-1">2. GitHub Release</span>
                 <span className="text-slate-400 dark:text-slate-400 light:text-slate-600">
-                  The app registry file stores the current APK download link, version, date, size and changelog.
+                  The scheduled GitHub Action finds the newest release containing an APK and writes it into the local registry file.
                 </span>
               </div>
 
               <div className="p-3.5 rounded-xl bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-50 border border-slate-800/60 dark:border-slate-800/60 light:border-slate-200">
                 <span className="font-bold text-teal-400 block mb-1">3. Auto Detection</span>
                 <span className="text-slate-400 dark:text-slate-400 light:text-slate-600">
-                  The website reads the local registry file and loads each configured app card and logo without an API call.
+                  Vercel serves the generated registry as normal application code; there is no runtime GitHub API dependency.
                 </span>
               </div>
 
               <div className="p-3.5 rounded-xl bg-slate-950/60 dark:bg-slate-950/60 light:bg-slate-50 border border-slate-800/60 dark:border-slate-800/60 light:border-slate-200">
                 <span className="font-bold text-emerald-400 block mb-1">4. Direct Download</span>
                 <span className="text-slate-400 dark:text-slate-400 light:text-slate-600">
-                  Visitors click Download APK to receive the configured package directly on mobile or desktop.
+                  Visitors click Download APK and receive the exact APK asset from that GitHub Release.
                 </span>
               </div>
             </div>

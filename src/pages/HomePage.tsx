@@ -28,7 +28,7 @@ interface HomePageProps {
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ theme, onShowToast }) => {
-  const toolsApp = APPS_DATA[0];
+  const toolsApp = APPS_DATA.find((app) => app.id === 'tools-app') || APPS_DATA[0];
   const featuredProject = PROJECTS.find(p => p.featured) || PROJECTS[0];
   const topSkills = SKILLS.slice(0, 8);
 
