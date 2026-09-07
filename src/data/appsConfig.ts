@@ -21,9 +21,6 @@ export const APPS_CONFIG: AppRepoConfig[] = [
     description:
       'A collection of useful Android tools and utilities developed as a practical software project. Includes Food Bill Manager, Smart Document & NID Scanner, and PDF Export.',
     icon: 'wrench',
-    // Tools uses its Android launcher artwork under app/src/main/res/drawable.
-    // Keep the real app logo visible in the portfolio instead of the fallback icon.
-    iconUrl: 'https://raw.githubusercontent.com/nahid6714/tools/main/app/src/main/res/drawable/app_logo_foreground.jpg',
     githubUrl: 'https://github.com/nahid6714/tools',
     status: 'available',
     defaultRelease: {

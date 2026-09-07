@@ -7,6 +7,7 @@ import {
   Facebook, 
   Linkedin, 
   Mail, 
+  FileText, 
   Smartphone, 
   Globe, 
   Terminal, 
@@ -21,9 +22,10 @@ import { CurvedRollItem } from './CurvedRollItem';
 
 interface HeroProps {
   theme: 'dark' | 'light';
+  onOpenResume: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ theme }) => {
+export const Hero: React.FC<HeroProps> = ({ theme, onOpenResume }) => {
   return (
     <section
       id="home"
@@ -136,6 +138,15 @@ export const Hero: React.FC<HeroProps> = ({ theme }) => {
                 <Download className="w-4 h-4" />
                 <span>My Apps & APK</span>
               </Link>
+
+              <button
+                id="hero-download-resume-btn"
+                onClick={onOpenResume}
+                className="w-full sm:w-auto px-5 py-3 rounded-xl bg-slate-900 dark:bg-slate-900 light:bg-slate-100 hover:bg-slate-800 dark:hover:bg-slate-800 light:hover:bg-slate-200 text-slate-200 dark:text-slate-200 light:text-slate-900 border border-slate-800 dark:border-slate-800 light:border-slate-300 text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 group hover:-translate-y-0.5"
+              >
+                <FileText className="w-4 h-4 text-blue-400 group-hover:text-blue-300" />
+                <span>Resume</span>
+              </button>
 
               <Link
                 to="/contact"

@@ -4,6 +4,7 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { ScrollToTop } from './components/ScrollToTop';
 import { ScrollProgress } from './components/ScrollProgress';
+import { ResumeModal } from './components/ResumeModal';
 import { Toast, ToastMessage } from './components/Toast';
 import { RoadPerspectiveProvider } from './context/RoadPerspectiveContext';
 import { RoadPerspectiveStage } from './components/RoadPerspectiveStage';
@@ -21,6 +22,7 @@ import { ContactPage } from './pages/ContactPage';
 
 export default function App() {
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
   // Initialize theme from localStorage or system preference (dark-first by default)
@@ -98,6 +100,7 @@ export default function App() {
                 element={
                   <HomePage
                     theme={theme}
+                    onOpenResume={() => setIsResumeOpen(true)}
                     onShowToast={showToast}
                   />
                 }
@@ -119,6 +122,12 @@ export default function App() {
 
         {/* Global 360° Rotate/Zoom Control Panel (visible only when enabled) */}
         <Rotation3DControls />
+
+        {/* Global Printable Resume Modal */}
+        <ResumeModal
+          isOpen={isResumeOpen}
+          onClose={() => setIsResumeOpen(false)}
+        />
 
         {/* Global Interactive Notification Toasts */}
         <Toast toasts={toasts} onDismiss={dismissToast} />
