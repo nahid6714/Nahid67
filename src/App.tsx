@@ -3,6 +3,7 @@ import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { ScrollToTop } from './components/ScrollToTop';
+import { ScrollProgress } from './components/ScrollProgress';
 import { ResumeModal } from './components/ResumeModal';
 import { Toast, ToastMessage } from './components/Toast';
 import { RoadPerspectiveProvider } from './context/RoadPerspectiveContext';
@@ -82,6 +83,7 @@ export default function App() {
     <HashRouter>
       <RoadPerspectiveProvider>
         <ScrollToTop />
+        <ScrollProgress />
 
         <RoadPerspectiveStage>
           {/* Consistent Top Navigation Across All Pages - Tilts in 3D along with header */}
