@@ -51,7 +51,7 @@ export const Projects: React.FC<ProjectsProps> = ({ onOpenAppSection }) => {
                     delay: (index % 3) * 0.1,
                     ease: [0.25, 1, 0.5, 1],
                   }}
-                  className={`relative rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 group h-full ${
+                  className={`project-card relative rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 group h-full ${
                     isTools
                       ? 'bg-gradient-to-b from-slate-900/90 via-slate-900/70 to-slate-950/90 dark:from-slate-900/90 dark:to-slate-950/90 light:bg-white border-2 border-blue-500/40 shadow-lg shadow-blue-500/5'
                       : 'bg-slate-900/60 dark:bg-slate-900/60 light:bg-white border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 shadow-sm'
