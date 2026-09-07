@@ -84,77 +84,81 @@ body {
 }
 
 
-/* Apps section: force a clean, high-contrast light theme for cards.
-   Some mixed bg-* + light:* utility combinations can retain the dark base
-   surface depending on generated utility ordering, so these semantic rules
-   provide a deterministic light-mode surface while preserving dark mode. */
-.light #apps .app-card {
-  background: rgba(255, 255, 255, 0.96) !important;
+/* Apps section — explicit theme surfaces.
+   Keep these semantic selectors independent from Tailwind utility ordering so
+   Light Mode can never inherit the dark card surface. */
+html.light #apps .app-card-surface {
+  background: #ffffff !important;
+  color: #0f172a !important;
   border-color: rgba(16, 185, 129, 0.35) !important;
-  box-shadow: 0 20px 55px rgba(15, 23, 42, 0.10), 0 0 0 1px rgba(15, 23, 42, 0.03);
-  color: rgb(15 23 42);
+  box-shadow: 0 20px 55px rgba(15, 23, 42, 0.10), 0 0 0 1px rgba(15, 23, 42, 0.03) !important;
 }
 
-.light #apps .app-card:not(:has(.bg-gradient-to-r)) {
-  border-color: rgba(15, 23, 42, 0.10) !important;
+html.light #apps .app-card-icon {
+  background: #f8fafc !important;
 }
 
-.light #apps .app-card h3 {
-  color: rgb(15 23 42) !important;
+html.light #apps .app-card-meta {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
 }
 
-.light #apps .app-card p {
-  color: rgb(71 85 105);
+html.light #apps .app-card h3 {
+  color: #0f172a !important;
 }
 
-.light #apps .app-card > .p-6 .bg-slate-950\/80,
-.light #apps .app-card > .p-6 .bg-slate-950\/60,
-.light #apps .app-card > .p-6 .bg-slate-950\/40 {
-  background: rgb(248 250 252) !important;
-  border-color: rgb(226 232 240) !important;
+html.light #apps .app-card p {
+  color: #475569;
 }
 
-.light #apps .app-card .text-slate-100,
-.light #apps .app-card .text-slate-200,
-.light #apps .app-card .text-slate-300 {
-  color: rgb(51 65 85) !important;
+html.light #apps .app-card .text-slate-100,
+html.light #apps .app-card .text-slate-200,
+html.light #apps .app-card .text-slate-300 {
+  color: #334155 !important;
 }
 
-.light #apps .app-card .text-slate-400 {
-  color: rgb(100 116 139) !important;
+html.light #apps .app-card .text-slate-400,
+html.light #apps .app-card .text-slate-500 {
+  color: #64748b !important;
 }
 
-.light #apps .app-card .text-slate-500 {
-  color: rgb(100 116 139) !important;
+html.light #apps .app-card .border-slate-800,
+html.light #apps .app-card .border-slate-800\/80,
+html.light #apps .app-card .border-slate-800\/60,
+html.light #apps .app-card .border-slate-800\/50,
+html.light #apps .app-card .border-slate-700 {
+  border-color: #e2e8f0 !important;
 }
 
-.light #apps .app-card .border-slate-800,
-.light #apps .app-card .border-slate-800\/80,
-.light #apps .app-card .border-slate-800\/60,
-.light #apps .app-card .border-slate-800\/50 {
-  border-color: rgb(226 232 240) !important;
+html.light #apps .app-card a.bg-slate-950,
+html.light #apps .app-card button.bg-slate-950,
+html.light #apps .app-card a.bg-slate-950\/40,
+html.light #apps .app-card button.bg-slate-950\/40 {
+  background: #f1f5f9 !important;
+  color: #1e293b !important;
+  border-color: #cbd5e1 !important;
 }
 
-.light #apps .app-card a.bg-slate-950,
-.light #apps .app-card button.bg-slate-950 {
-  background: rgb(241 245 249) !important;
-  color: rgb(30 41 59) !important;
-  border-color: rgb(203 213 225) !important;
+html.light #apps .app-card a.bg-slate-950:hover,
+html.light #apps .app-card button.bg-slate-950:hover,
+html.light #apps .app-card a.bg-slate-950\/40:hover,
+html.light #apps .app-card button.bg-slate-950\/40:hover {
+  background: #e2e8f0 !important;
+  color: #0f172a !important;
 }
 
-.light #apps .app-card a.bg-slate-950:hover,
-.light #apps .app-card button.bg-slate-950:hover {
-  background: rgb(226 232 240) !important;
-  color: rgb(15 23 42) !important;
+html.light #apps .app-card .bg-slate-800 {
+  background: #e2e8f0 !important;
+  color: #64748b !important;
+  border-color: #cbd5e1 !important;
 }
 
-.light #apps .app-card .bg-slate-800 {
-  background: rgb(226 232 240) !important;
-  color: rgb(100 116 139) !important;
-  border-color: rgb(203 213 225) !important;
+html.light #apps .app-card code {
+  background: #f1f5f9 !important;
+  color: #059669 !important;
 }
 
-.light #apps .app-card code {
-  background: rgb(241 245 249) !important;
-  color: rgb(5 150 105) !important;
+/* The featured ribbon intentionally stays colorful in both themes. */
+html.light #apps .app-card > .bg-gradient-to-r {
+  color: #ffffff !important;
 }

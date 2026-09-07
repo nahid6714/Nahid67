@@ -218,7 +218,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                     delay: index * 0.12,
                     ease: [0.25, 1, 0.5, 1],
                   }}
-                  className={`app-card relative rounded-2xl flex flex-col justify-between transition-all duration-300 h-full ${
+                  className={`app-card app-card-surface relative rounded-2xl flex flex-col justify-between transition-all duration-300 h-full ${
                     isFeaturedApp
                       ? 'bg-slate-900/90 dark:bg-slate-900/90 light:bg-white border-2 border-emerald-500/50 shadow-xl shadow-emerald-500/10'
                       : 'bg-slate-900/60 dark:bg-slate-900/60 light:bg-white border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 shadow-sm'
@@ -244,7 +244,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                     <div className="flex items-center gap-3.5">
                       {/* App Icon */}
                       <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-600 to-blue-600 p-0.5 shadow-md shadow-emerald-500/20 flex items-center justify-center overflow-hidden">
-                        <div className="w-full h-full rounded-[14px] bg-slate-950 flex items-center justify-center overflow-hidden">
+                        <div className="app-card-icon w-full h-full rounded-[14px] bg-slate-950 flex items-center justify-center overflow-hidden">
                           {(() => {
                             const iconCandidates = getAppIconCandidates(app);
                             const currentIndex = iconFallbackIndex[app.id] ?? 0;
@@ -306,7 +306,7 @@ export const AppsSection: React.FC<AppsSectionProps> = ({ onShowToast }) => {
                   </p>
 
                   {/* Technical Metadata Box (Direct format matching requested card) */}
-                  <div className="p-4 rounded-xl bg-slate-950/80 dark:bg-slate-950/80 light:bg-slate-50 border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 mb-5 space-y-2.5 font-mono text-xs">
+                  <div className="app-card-meta p-4 rounded-xl bg-slate-950/80 dark:bg-slate-950/80 light:bg-slate-50 border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 mb-5 space-y-2.5 font-mono text-xs">
                     
                     {/* Latest Version */}
                     <div className="flex items-center justify-between text-slate-300 dark:text-slate-300 light:text-slate-700">
