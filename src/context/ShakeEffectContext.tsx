@@ -1,30 +1,18 @@
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
-import { playGlassCrackSound, playCollapseSound } from '../utils/shakeSounds';
-
-export type ShakeMode = 'cracked' | 'collapse' | 'disabled';
+import { playGlassCrackSound } from '../utils/shakeSounds';
 
 interface ShakeEffectContextType {
-  shakeMode: ShakeMode;
-  setShakeMode: (mode: ShakeMode) => void;
   isTriggered: boolean;
-  activeAnimation: 'cracked' | 'collapse' | null;
-  triggerShake: (specificMode?: 'cracked' | 'collapse') => void;
+  triggerShake: () => void;
   resetShake: () => void;
-  shakeProgress: number; // 0 to 4 (shakes counted)
+  shakeProgress: number; // 0 to 3
   isMotionActive: boolean;
 }
 
 const ShakeEffectContext = createContext<ShakeEffectContextType | undefined>(undefined);
 
 export const ShakeEffectProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // User selected mode (stored in localStorage for persistence)
-  const [shakeMode, setShakeModeState] = useState<ShakeMode>(() => {
-    const saved = localStorage.getItem('nh_shake_mode');
-    return (saved as ShakeMode) || 'cracked';
-  });
-
   const [isTriggered, setIsTriggered] = useState(false);
-  const [activeAnimation, setActiveAnimation] = useState<'cracked' | 'collapse' | null>(null);
   const [shakeProgress, setShakeProgress] = useState(0);
   const [isMotionActive, setIsMotionActive] = useState(false);
 
@@ -35,14 +23,7 @@ export const ShakeEffectProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const lastZRef = useRef(0);
   const resetTimerRef = useRef<number | null>(null);
 
-  const setShakeMode = (mode: ShakeMode) => {
-    setShakeModeState(mode);
-    localStorage.setItem('nh_shake_mode', mode);
-  };
-
-  const triggerShake = useCallback((specificMode?: 'cracked' | 'collapse') => {
-    const targetMode = specificMode || (shakeMode === 'disabled' ? 'cracked' : shakeMode);
-    setActiveAnimation(targetMode);
+  const triggerShake = useCallback(() => {
     setIsTriggered(true);
 
     // Haptic feedback
@@ -54,22 +35,17 @@ export const ShakeEffectProvider: React.FC<{ children: React.ReactNode }> = ({ c
       // Ignored
     }
 
-    // Audio feedback
-    if (targetMode === 'cracked') {
-      playGlassCrackSound();
-    } else if (targetMode === 'collapse') {
-      playCollapseSound();
-    }
-  }, [shakeMode]);
+    // Audio feedback: realistic shatter/crack sound
+    playGlassCrackSound();
+  }, []);
 
   const resetShake = useCallback(() => {
     setIsTriggered(false);
-    setActiveAnimation(null);
     setShakeProgress(0);
     shakeCountRef.current = 0;
   }, []);
 
-  // Motion shake detector
+  // Motion shake detector for mobile devices
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -77,7 +53,7 @@ export const ShakeEffectProvider: React.FC<{ children: React.ReactNode }> = ({ c
     const SHAKE_TIMEOUT = 1400;   // Reset count if no shake within 1.4s
 
     const handleDeviceMotion = (e: DeviceMotionEvent) => {
-      if (shakeMode === 'disabled' || isTriggered) return;
+      if (isTriggered) return;
 
       setIsMotionActive(true);
 
@@ -109,7 +85,7 @@ export const ShakeEffectProvider: React.FC<{ children: React.ReactNode }> = ({ c
             setShakeProgress(0);
           }, SHAKE_TIMEOUT);
 
-          // If shaken 3 to 4 times, fire the animation!
+          // If shaken 3 times, break the screen!
           if (shakeCountRef.current >= 3) {
             shakeCountRef.current = 0;
             setShakeProgress(0);
@@ -125,19 +101,16 @@ export const ShakeEffectProvider: React.FC<{ children: React.ReactNode }> = ({ c
       window.removeEventListener('devicemotion', handleDeviceMotion);
       if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
     };
-  }, [shakeMode, isTriggered, triggerShake]);
+  }, [isTriggered, triggerShake]);
 
   return (
     <ShakeEffectContext.Provider
       value={{
-        shakeMode,
-        setShakeMode,
         isTriggered,
-        activeAnimation,
         triggerShake,
         resetShake,
         shakeProgress,
-        isMotionActive
+        isMotionActive,
       }}
     >
       {children}

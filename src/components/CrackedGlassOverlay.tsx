@@ -11,10 +11,10 @@ interface CrackPoint {
 }
 
 export const CrackedGlassOverlay: React.FC = () => {
-  const { isTriggered, activeAnimation, resetShake } = useShakeEffect();
+  const { isTriggered, resetShake } = useShakeEffect();
   const [extraCracks, setExtraCracks] = useState<CrackPoint[]>([]);
 
-  if (!isTriggered || activeAnimation !== 'cracked') {
+  if (!isTriggered) {
     return null;
   }
 
