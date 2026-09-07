@@ -22,39 +22,39 @@ import { SKILLS } from '../data/portfolioData';
 import { SectionHeaderReveal, ScrollReveal, CurvedRollItem } from './ScrollAnimation';
 
 const iconLookup: Record<string, React.ReactNode> = {
-  smartphone: <Smartphone className="w-5 h-5 text-emerald-400" />,
-  'code-2': <Code2 className="w-5 h-5 text-indigo-400" />,
-  layers: <Layers className="w-5 h-5 text-sky-400" />,
-  database: <Database className="w-5 h-5 text-cyan-400" />,
-  'package-check': <PackageCheck className="w-5 h-5 text-teal-400" />,
-  'git-branch': <GitBranch className="w-5 h-5 text-amber-400" />,
-  github: <Github className="w-5 h-5 text-purple-400" />,
-  'play-circle': <PlayCircle className="w-5 h-5 text-blue-400" />,
-  laptop: <Laptop className="w-5 h-5 text-emerald-400" />,
-  monitor: <Monitor className="w-5 h-5 text-slate-400" />,
-  globe: <Globe className="w-5 h-5 text-sky-400" />,
-  'file-code': <FileCode className="w-5 h-5 text-orange-400" />,
-  palette: <Palette className="w-5 h-5 text-pink-400" />,
-  braces: <Braces className="w-5 h-5 text-yellow-400" />,
-  flame: <Flame className="w-5 h-5 text-amber-500" />,
-  wrench: <Wrench className="w-5 h-5 text-rose-400" />,
+  smartphone: <Smartphone className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+  'code-2': <Code2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+  layers: <Layers className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+  database: <Database className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+  'package-check': <PackageCheck className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+  'git-branch': <GitBranch className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+  github: <Github className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+  'play-circle': <PlayCircle className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+  laptop: <Laptop className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+  monitor: <Monitor className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+  globe: <Globe className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+  'file-code': <FileCode className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+  palette: <Palette className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+  braces: <Braces className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+  flame: <Flame className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+  wrench: <Wrench className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
 };
 
 const levelBadgeStyles: Record<string, { bg: string; text: string; border: string }> = {
   Experienced: {
-    bg: 'bg-emerald-500/10 dark:bg-emerald-500/15 light:bg-emerald-50',
-    text: 'text-emerald-400 dark:text-emerald-400 light:text-emerald-700',
-    border: 'border-emerald-500/30',
+    bg: 'bg-blue-50 dark:bg-blue-950/40',
+    text: 'text-blue-700 dark:text-blue-400',
+    border: 'border-blue-200 dark:border-blue-800/40',
   },
   Intermediate: {
-    bg: 'bg-blue-500/10 dark:bg-blue-500/15 light:bg-blue-50',
-    text: 'text-blue-400 dark:text-blue-400 light:text-blue-700',
-    border: 'border-blue-500/30',
+    bg: 'bg-slate-100 dark:bg-slate-800',
+    text: 'text-slate-700 dark:text-slate-300',
+    border: 'border-slate-200 dark:border-slate-700',
   },
   Learning: {
-    bg: 'bg-amber-500/10 dark:bg-amber-500/15 light:bg-amber-50',
-    text: 'text-amber-400 dark:text-amber-400 light:text-amber-700',
-    border: 'border-amber-500/30',
+    bg: 'bg-slate-100 dark:bg-slate-800',
+    text: 'text-slate-600 dark:text-slate-400',
+    border: 'border-slate-200 dark:border-slate-700',
   },
 };
 
@@ -117,25 +117,25 @@ export const Skills: React.FC = () => {
                     delay: (index % 4) * 0.07,
                     ease: [0.25, 1, 0.5, 1],
                   }}
-                  className="p-4 rounded-xl bg-slate-900/60 dark:bg-slate-900/60 light:bg-white border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 hover:border-slate-700 dark:hover:border-slate-700 light:hover:border-slate-300 transition-all duration-200 hover:-translate-y-0.5 group flex flex-col justify-between h-full"
+                  className="p-4 rounded-xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 hover:border-blue-400/60 dark:hover:border-slate-700 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 group flex flex-col justify-between h-full"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-3">
-                      <div className="p-2.5 rounded-lg bg-slate-950 dark:bg-slate-950 light:bg-slate-100 border border-slate-800/80 group-hover:scale-105 transition-transform">
-                        {iconLookup[skill.icon] || <Wrench className="w-5 h-5 text-blue-400" />}
+                      <div className="p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-blue-600 dark:text-blue-400 group-hover:scale-105 transition-transform">
+                        {iconLookup[skill.icon] || <Wrench className="w-5 h-5 text-blue-600 dark:text-blue-400" />}
                       </div>
                       <span
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${badge.bg} ${badge.text} ${badge.border}`}
+                        className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${badge.bg} ${badge.text} ${badge.border}`}
                       >
                         {skill.level}
                       </span>
                     </div>
 
-                    <h3 className="text-sm font-semibold text-slate-100 dark:text-slate-100 light:text-slate-900 group-hover:text-blue-400 transition-colors mb-1">
+                    <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors mb-1">
                       {skill.name}
                     </h3>
 
-                    <p className="text-xs text-slate-400 dark:text-slate-400 light:text-slate-600 line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">
                       {skill.description}
                     </p>
                   </div>

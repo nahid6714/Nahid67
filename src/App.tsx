@@ -6,8 +6,12 @@ import { ScrollToTop } from './components/ScrollToTop';
 import { ScrollProgress } from './components/ScrollProgress';
 import { Toast, ToastMessage } from './components/Toast';
 import { RoadPerspectiveProvider } from './context/RoadPerspectiveContext';
+import { GitHubPortfolioProvider } from './context/GitHubPortfolioContext';
+import { ShakeEffectProvider } from './context/ShakeEffectContext';
 import { RoadPerspectiveStage } from './components/RoadPerspectiveStage';
 import { Rotation3DControls } from './components/Rotation3DControls';
+import { CrackedGlassOverlay } from './components/CrackedGlassOverlay';
+import { WebsiteCollapseOverlay } from './components/WebsiteCollapseOverlay';
 import { PageErrorBoundary } from './components/PageErrorBoundary';
 
 // Dedicated Separate Pages
@@ -81,47 +85,57 @@ export default function App() {
   return (
     <HashRouter>
       <RoadPerspectiveProvider>
-        <ScrollToTop />
-        <ScrollProgress />
+        <GitHubPortfolioProvider>
+          <ShakeEffectProvider>
+            <ScrollToTop />
+            <ScrollProgress />
 
-        <RoadPerspectiveStage>
-          {/* Consistent Top Navigation Across All Pages - Tilts in 3D along with header */}
-          <Navbar
-            theme={theme}
-            onToggleTheme={toggleTheme}
-          />
-
-          {/* Dedicated Route Views */}
-          <main className="flex-grow">
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <PageErrorBoundary pageName="Home">
-                    <HomePage theme={theme} onShowToast={showToast} />
-                  </PageErrorBoundary>
-                }
+            <RoadPerspectiveStage>
+              {/* Consistent Top Navigation Across All Pages - Tilts in 3D along with header */}
+              <Navbar
+                theme={theme}
+                onToggleTheme={toggleTheme}
               />
-              <Route path="/about" element={<PageErrorBoundary pageName="About"><AboutPage /></PageErrorBoundary>} />
-              <Route path="/skills" element={<PageErrorBoundary pageName="Skills"><SkillsPage /></PageErrorBoundary>} />
-              <Route path="/projects" element={<PageErrorBoundary pageName="Projects"><ProjectsPage /></PageErrorBoundary>} />
-              <Route path="/apps" element={<PageErrorBoundary pageName="Apps"><AppsPage onShowToast={showToast} /></PageErrorBoundary>} />
-              <Route path="/experience" element={<PageErrorBoundary pageName="Experience"><ExperiencePage /></PageErrorBoundary>} />
-              <Route path="/certificates" element={<PageErrorBoundary pageName="Certificates"><CertificatesPage /></PageErrorBoundary>} />
-              <Route path="/contact" element={<PageErrorBoundary pageName="Contact"><ContactPage onShowToast={showToast} /></PageErrorBoundary>} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </main>
 
-          {/* Consistent Footer Across All Pages */}
-          <Footer />
-        </RoadPerspectiveStage>
+              {/* Dedicated Route Views */}
+              <main className="flex-grow">
+                <Routes>
+                  <Route
+                    path="/"
+                    element={
+                      <PageErrorBoundary pageName="Home">
+                        <HomePage theme={theme} onShowToast={showToast} />
+                      </PageErrorBoundary>
+                    }
+                  />
+                  <Route path="/about" element={<PageErrorBoundary pageName="About"><AboutPage /></PageErrorBoundary>} />
+                  <Route path="/skills" element={<PageErrorBoundary pageName="Skills"><SkillsPage /></PageErrorBoundary>} />
+                  <Route path="/projects" element={<PageErrorBoundary pageName="Projects"><ProjectsPage /></PageErrorBoundary>} />
+                  <Route path="/apps" element={<PageErrorBoundary pageName="Apps"><AppsPage onShowToast={showToast} /></PageErrorBoundary>} />
+                  <Route path="/experience" element={<PageErrorBoundary pageName="Experience"><ExperiencePage /></PageErrorBoundary>} />
+                  <Route path="/certificates" element={<PageErrorBoundary pageName="Certificates"><CertificatesPage /></PageErrorBoundary>} />
+                  <Route path="/contact" element={<PageErrorBoundary pageName="Contact"><ContactPage onShowToast={showToast} /></PageErrorBoundary>} />
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+              </main>
 
-        {/* Global 360° Rotate/Zoom Control Panel (visible only when enabled) */}
-        <Rotation3DControls />
+              {/* Consistent Footer Across All Pages */}
+              <Footer />
+            </RoadPerspectiveStage>
 
-        {/* Global Interactive Notification Toasts */}
-        <Toast toasts={toasts} onDismiss={dismissToast} />
+            {/* Global 360° Rotate/Zoom Control Panel & Degree Indicators */}
+            <Rotation3DControls />
+
+            {/* Screen Crack Glass Effect Overlay */}
+            <CrackedGlassOverlay />
+
+            {/* Broken Text & Falling Website Collapse Overlay */}
+            <WebsiteCollapseOverlay />
+
+            {/* Global Interactive Notification Toasts */}
+            <Toast toasts={toasts} onDismiss={dismissToast} />
+          </ShakeEffectProvider>
+        </GitHubPortfolioProvider>
       </RoadPerspectiveProvider>
     </HashRouter>
   );

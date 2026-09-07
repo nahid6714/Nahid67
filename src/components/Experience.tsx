@@ -21,7 +21,7 @@ export const Experience: React.FC = () => {
         {/* Section Header */}
         <SectionHeaderReveal
           badge={
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-semibold tracking-wide uppercase border border-blue-500/20">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 text-xs font-semibold tracking-wide uppercase border border-blue-200 dark:border-blue-800/40">
               <Briefcase className="w-3.5 h-3.5" />
               <span>Career Pathway</span>
             </div>
@@ -33,11 +33,11 @@ export const Experience: React.FC = () => {
         <ScrollReveal yOffset={20} className="flex flex-col items-center mb-12 -mt-4">
           <div className="flex items-center gap-3">
             <span className="text-xs text-slate-500">
-              Role status: <strong className="text-slate-300 dark:text-slate-300 light:text-slate-700">{PERSONAL_INFO.role}</strong>
+              Role status: <strong className="text-slate-700 dark:text-slate-300">{PERSONAL_INFO.role}</strong>
             </span>
             <button
               onClick={() => setShowHelper(!showHelper)}
-              className="text-xs text-blue-400 hover:text-blue-300 inline-flex items-center gap-1 underline underline-offset-4"
+              className="text-xs text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"
             >
               <HelpCircle className="w-3.5 h-3.5" />
               <span>{showHelper ? 'Hide formatting details' : 'How to update this section'}</span>
@@ -48,13 +48,13 @@ export const Experience: React.FC = () => {
         {/* Developer Guide Callout if toggled */}
         {showHelper && (
           <ScrollReveal yOffset={20}>
-            <div className="max-w-3xl mx-auto mb-10 p-4 rounded-xl bg-blue-950/40 dark:bg-blue-950/40 light:bg-blue-50 border border-blue-800/60 dark:border-blue-800/60 light:border-blue-200 text-xs text-slate-300 dark:text-slate-300 light:text-blue-950 space-y-2">
-              <div className="flex items-center gap-2 font-bold text-blue-400">
+            <div className="max-w-3xl mx-auto mb-10 p-4 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/60 text-xs text-slate-700 dark:text-slate-300 space-y-2">
+              <div className="flex items-center gap-2 font-bold text-blue-600 dark:text-blue-400">
                 <Edit3 className="w-4 h-4" />
                 <span>Updating Experience Information</span>
               </div>
               <p>
-                To update employment history or internships, simply edit <code className="font-mono bg-blue-900/40 px-1 py-0.5 rounded text-blue-300">src/data/portfolioData.ts</code> in the <code className="font-mono bg-blue-900/40 px-1 py-0.5 rounded text-blue-300">WORK_EXPERIENCE</code> array. Add real job titles, companies, durations, and key responsibilities.
+                To update employment history or internships, simply edit <code className="font-mono bg-blue-100 dark:bg-blue-900/40 px-1 py-0.5 rounded text-blue-700 dark:text-blue-300">src/data/portfolioData.ts</code> in the <code className="font-mono bg-blue-100 dark:bg-blue-900/40 px-1 py-0.5 rounded text-blue-700 dark:text-blue-300">WORK_EXPERIENCE</code> array. Add real job titles, companies, durations, and key responsibilities.
               </p>
             </div>
           </ScrollReveal>
@@ -73,45 +73,45 @@ export const Experience: React.FC = () => {
                 delay: index * 0.15,
                 ease: [0.25, 1, 0.5, 1],
               }}
-              className="relative p-6 sm:p-8 rounded-2xl bg-slate-900/60 dark:bg-slate-900/60 light:bg-white border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 shadow-sm hover:border-slate-700 transition-colors"
+              className="relative p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 shadow-sm hover:border-blue-400/60 dark:hover:border-slate-700 hover:shadow-md transition-all"
             >
               {/* Header badge for status */}
               <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
                 <div className="flex items-center gap-2.5">
-                  <div className="p-2.5 rounded-xl bg-blue-600/10 text-blue-400 border border-blue-500/20">
+                  <div className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-blue-600 dark:text-blue-400 border border-slate-200 dark:border-slate-700">
                     <Briefcase className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-slate-100 dark:text-slate-100 light:text-slate-900">
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
                       {exp.position}
                     </h3>
-                    <p className="text-sm font-semibold text-blue-400">
+                    <p className="text-sm font-semibold text-blue-600 dark:text-blue-400">
                       {exp.company}
                     </p>
                   </div>
                 </div>
 
                 <div className="flex flex-col sm:flex-end text-left sm:text-right">
-                  <div className="inline-flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-400 light:text-slate-600 font-medium">
-                    <Calendar className="w-3.5 h-3.5 text-indigo-400" />
+                  <div className="inline-flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-400 font-medium">
+                    <Calendar className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                     <span>{exp.duration}</span>
                   </div>
                   <div className="inline-flex items-center gap-1.5 text-xs text-slate-500 mt-0.5">
-                    <MapPin className="w-3.5 h-3.5 text-rose-400" />
+                    <MapPin className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                     <span>{exp.location}</span>
                   </div>
                 </div>
               </div>
 
               {/* Responsibilities */}
-              <div className="space-y-3 mt-4 pt-4 border-t border-slate-800/80 dark:border-slate-800/80 light:border-slate-200">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-400 light:text-slate-600">
+              <div className="space-y-3 mt-4 pt-4 border-t border-slate-200 dark:border-slate-800/80">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                   Responsibilities
                 </h4>
-                <ul className="space-y-2 text-xs sm:text-sm text-slate-300 dark:text-slate-300 light:text-slate-700">
+                <ul className="space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300">
                   {exp.responsibilities.map((resp, idx) => (
                     <li key={idx} className="flex items-start gap-2.5">
-                      <span className="text-blue-400 font-bold mt-0.5">•</span>
+                      <span className="text-blue-600 dark:text-blue-400 font-bold mt-0.5">•</span>
                       <span>{resp}</span>
                     </li>
                   ))}
@@ -120,14 +120,14 @@ export const Experience: React.FC = () => {
 
               {/* Achievements if any */}
               {exp.achievements && exp.achievements.length > 0 && (
-                <div className="space-y-2 mt-4 pt-3 border-t border-slate-800/60 dark:border-slate-800/60 light:border-slate-100">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-400 light:text-slate-600">
+                <div className="space-y-2 mt-4 pt-3 border-t border-slate-200 dark:border-slate-800/60">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                     Achievements & Highlights
                   </h4>
-                  <ul className="space-y-1.5 text-xs sm:text-sm text-slate-300 dark:text-slate-300 light:text-slate-700">
+                  <ul className="space-y-1.5 text-xs sm:text-sm text-slate-600 dark:text-slate-300">
                     {exp.achievements.map((ach, idx) => (
                       <li key={idx} className="flex items-start gap-2.5">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
                         <span>{ach}</span>
                       </li>
                     ))}

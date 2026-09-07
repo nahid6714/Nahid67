@@ -63,10 +63,20 @@ export const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme }) => {
     };
   }, [isMobileMenuOpen]);
 
-  // Close mobile menu on page navigation
+  // Close mobile menu on page navigation or screen resize to desktop
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <header

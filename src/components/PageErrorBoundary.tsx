@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 interface PageErrorBoundaryProps {
   children: React.ReactNode;
@@ -13,11 +13,14 @@ interface PageErrorBoundaryState {
  * Keeps one broken page from taking down the entire portfolio.
  * A refresh button lets visitors retry after a transient browser/runtime issue.
  */
-export class PageErrorBoundary extends React.Component<
+export class PageErrorBoundary extends Component<
   PageErrorBoundaryProps,
   PageErrorBoundaryState
 > {
-  state: PageErrorBoundaryState = { hasError: false };
+  constructor(props: PageErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false };
+  }
 
   static getDerivedStateFromError(): PageErrorBoundaryState {
     return { hasError: true };

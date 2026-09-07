@@ -84,156 +84,91 @@ body {
 }
 
 
-/* Apps section: force a clean, high-contrast light theme for cards.
-   Some mixed bg-* + light:* utility combinations can retain the dark base
-   surface depending on generated utility ordering, so these semantic rules
-   provide a deterministic light-mode surface while preserving dark mode. */
-.light #apps .app-card {
-  background: rgba(255, 255, 255, 0.96) !important;
-  border-color: rgba(16, 185, 129, 0.35) !important;
-  box-shadow: 0 20px 55px rgba(15, 23, 42, 0.10), 0 0 0 1px rgba(15, 23, 42, 0.03);
-  color: rgb(15 23 42);
+/* Unified Card Styling System (Deterministic across Light & Dark modes)
+   Ensures consistent surfaces, borders, typography, and interactive states
+   without disparate rainbow borders or clashing dark gradients in light mode. */
+
+.light .app-card,
+.light .project-card,
+.light .glass-card {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 0 0 1px rgba(15, 23, 42, 0.03) !important;
+  color: #0f172a !important;
 }
 
-.light #apps .app-card:not(:has(.bg-gradient-to-r)) {
-  border-color: rgba(15, 23, 42, 0.10) !important;
+.light .app-card:hover,
+.light .project-card:hover {
+  border-color: #93c5fd !important;
+  box-shadow: 0 10px 28px -4px rgba(15, 23, 42, 0.08) !important;
 }
 
-.light #apps .app-card h3 {
-  color: rgb(15 23 42) !important;
+.light .app-card h3,
+.light .project-card h3 {
+  color: #0f172a !important;
 }
 
-.light #apps .app-card p {
-  color: rgb(71 85 105);
+.light .app-card p,
+.light .project-card p {
+  color: #475569 !important;
 }
 
-.light #apps .app-card > .p-6 .bg-slate-950\/80,
-.light #apps .app-card > .p-6 .bg-slate-950\/60,
-.light #apps .app-card > .p-6 .bg-slate-950\/40 {
-  background: rgb(248 250 252) !important;
-  border-color: rgb(226 232 240) !important;
+/* Inner technical spec boxes, chips & code blocks inside cards */
+.light .app-card > .p-6 .bg-slate-950\/80,
+.light .app-card > .p-6 .bg-slate-950\/60,
+.light .app-card > .p-6 .bg-slate-950\/40,
+.light .app-card .bg-slate-950,
+.light .project-card .bg-slate-950,
+.light .project-card .bg-slate-950\/70,
+.light .project-card .bg-slate-950\/40 {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
 }
 
-.light #apps .app-card .text-slate-100,
-.light #apps .app-card .text-slate-200,
-.light #apps .app-card .text-slate-300 {
-  color: rgb(51 65 85) !important;
+.light .app-card .text-slate-100,
+.light .app-card .text-slate-200,
+.light .app-card .text-slate-300,
+.light .project-card .text-slate-100,
+.light .project-card .text-slate-200,
+.light .project-card .text-slate-300 {
+  color: #334155 !important;
 }
 
-.light #apps .app-card .text-slate-400 {
-  color: rgb(100 116 139) !important;
+.light .app-card .text-slate-400,
+.light .app-card .text-slate-500,
+.light .project-card .text-slate-400,
+.light .project-card .text-slate-500 {
+  color: #64748b !important;
 }
 
-.light #apps .app-card .text-slate-500 {
-  color: rgb(100 116 139) !important;
+.light .app-card .border-slate-800,
+.light .app-card .border-slate-800\/80,
+.light .app-card .border-slate-800\/60,
+.light .app-card .border-slate-800\/50,
+.light .project-card .border-slate-800,
+.light .project-card .border-slate-800\/80,
+.light .project-card .border-slate-800\/60,
+.light .project-card .border-slate-800\/50 {
+  border-color: #e2e8f0 !important;
 }
 
-.light #apps .app-card .border-slate-800,
-.light #apps .app-card .border-slate-800\/80,
-.light #apps .app-card .border-slate-800\/60,
-.light #apps .app-card .border-slate-800\/50 {
-  border-color: rgb(226 232 240) !important;
+/* Secondary action buttons inside cards */
+.light .app-card a.bg-slate-950,
+.light .app-card button.bg-slate-950,
+.light .project-card a.bg-slate-950 {
+  background: #f1f5f9 !important;
+  color: #1e293b !important;
+  border-color: #cbd5e1 !important;
 }
 
-.light #apps .app-card a.bg-slate-950,
-.light #apps .app-card button.bg-slate-950 {
-  background: rgb(241 245 249) !important;
-  color: rgb(30 41 59) !important;
-  border-color: rgb(203 213 225) !important;
+.light .app-card a.bg-slate-950:hover,
+.light .app-card button.bg-slate-950:hover,
+.light .project-card a.bg-slate-950:hover {
+  background: #e2e8f0 !important;
+  color: #0f172a !important;
 }
 
-.light #apps .app-card a.bg-slate-950:hover,
-.light #apps .app-card button.bg-slate-950:hover {
-  background: rgb(226 232 240) !important;
-  color: rgb(15 23 42) !important;
-}
-
-.light #apps .app-card .bg-slate-800 {
-  background: rgb(226 232 240) !important;
-  color: rgb(100 116 139) !important;
-  border-color: rgb(203 213 225) !important;
-}
-
-.light #apps .app-card code {
-  background: rgb(241 245 249) !important;
-  color: rgb(5 150 105) !important;
-}
-
-
-/* Strong light-mode overrides for interactive app surfaces. These rules make
-   sure dark hover utilities cannot leak into the light theme on mobile Chrome. */
-.light #apps .app-card button.bg-slate-950:hover,
-.light #apps .app-card a.bg-slate-950:hover,
-.light #apps .app-card button.bg-slate-950\/40:hover {
-  background: rgb(226 232 240) !important;
-  color: rgb(15 23 42) !important;
-}
-
-.light #apps .app-card .bg-slate-950 {
-  background: rgb(241 245 249) !important;
-}
-
-.light #apps .app-card .bg-slate-950\/80,
-.light #apps .app-card .bg-slate-950\/60,
-.light #apps .app-card .bg-slate-950\/40 {
-  background: rgb(248 250 252) !important;
-}
-
-.light #apps .app-card .hover\\:bg-slate-800:hover {
-  background: rgb(226 232 240) !important;
-}
-
-
-/* Projects: deterministic light-mode card colors.
-   The featured Tools card uses a dark gradient as its base class; these
-   semantic overrides ensure that gradient and dark text utilities cannot
-   leak into light mode on mobile Chrome. */
-.light #projects .project-card {
-  background: rgba(255, 255, 255, 0.98) !important;
-  color: rgb(15 23 42) !important;
-  border-color: rgba(37, 99, 235, 0.28) !important;
-  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08) !important;
-}
-
-.light #projects .project-card h3,
-.light #projects .project-card .text-slate-100,
-.light #projects .project-card .text-slate-200 {
-  color: rgb(15 23 42) !important;
-}
-
-.light #projects .project-card p.text-slate-300,
-.light #projects .project-card p.text-slate-400 {
-  color: rgb(71 85 105) !important;
-}
-
-.light #projects .project-card .bg-slate-950,
-.light #projects .project-card .bg-slate-950\/70,
-.light #projects .project-card .bg-slate-950\/40 {
-  background: rgb(248 250 252) !important;
-  border-color: rgb(226 232 240) !important;
-}
-
-.light #projects .project-card .text-slate-300,
-.light #projects .project-card .text-slate-400,
-.light #projects .project-card .text-slate-500 {
-  color: rgb(71 85 105) !important;
-}
-
-.light #projects .project-card .border-slate-800,
-.light #projects .project-card .border-slate-800\/80,
-.light #projects .project-card .border-slate-800\/60,
-.light #projects .project-card .border-slate-800\/50 {
-  border-color: rgb(226 232 240) !important;
-}
-
-.light #projects .project-card a.bg-slate-950,
-.light #projects .project-card a.bg-slate-950\/70 {
-  background: rgb(241 245 249) !important;
-  color: rgb(30 41 59) !important;
-  border-color: rgb(203 213 225) !important;
-}
-
-.light #projects .project-card a.bg-slate-950:hover {
-  background: rgb(226 232 240) !important;
-  color: rgb(15 23 42) !important;
+.light .app-card code {
+  background: #f1f5f9 !important;
+  color: #2563eb !important;
 }

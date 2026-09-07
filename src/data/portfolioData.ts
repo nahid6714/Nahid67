@@ -176,46 +176,62 @@ export const SKILLS: SkillItem[] = [
 
 export const PROJECTS: ProjectItem[] = [
   {
-    id: 'tools',
-    name: 'Tools',
+    id: 'nahid67-website',
+    name: 'Nahid67 Portfolio & Web App',
     description:
-      'A collection of useful Android tools and utilities developed as a practical software project.',
+      'Personal web development portfolio and interactive application deployed live on Vercel with responsive modern UI.',
+    longDescription:
+      'A high-performance modern web application built using TypeScript, React 19, Tailwind CSS, and Vite. Configured for automatic continuous deployment on Vercel.',
+    technologies: ['TypeScript', 'React', 'Tailwind CSS', 'Vite', 'Vercel'],
+    githubUrl: 'https://github.com/nahid6714/Nahid67',
+    liveUrl: 'https://nahid67.vercel.app',
+    featured: true,
+    category: 'Web Development',
+    iconType: 'globe',
+  },
+  {
+    id: 'anys-beauty-corner',
+    name: "Any's Beauty Corner",
+    description:
+      'A modern responsive beauty and cosmetics storefront website with dynamic catalog showcases, deployed on Netlify.',
+    longDescription:
+      'Live e-commerce showcase featuring a curated beauty product catalog, mobile-first responsive layout, smooth navigation transitions, and clean performance optimization deployed on Netlify.',
+    technologies: ['TypeScript', 'React', 'Tailwind CSS', 'Netlify', 'Responsive Design'],
+    githubUrl: 'https://github.com/nahid6714/Anysbeautycornerok',
+    liveUrl: 'https://Anysbeautycorner.netlify.app',
+    featured: true,
+    category: 'Web Development',
+    iconType: 'globe',
+  },
+  {
+    id: 'tools',
+    name: 'Tools Android Utility',
+    description:
+      'A collection of useful Android tools and utilities with automated CI/CD APK packaging on GitHub Actions.',
     longDescription:
       'An all-in-one productivity Android application built with Kotlin and Jetpack Compose. Features a Food Bill Manager with drag-to-reorder quick presets, a Smart Document Scanner for NID & ID cards, PDF export, thermal printing support, and offline-first Room Database storage.',
     technologies: ['Kotlin', 'Jetpack Compose', 'Room Database', 'Android SDK', 'GitHub Actions'],
     githubUrl: 'https://github.com/nahid6714/tools',
-    apkUrl: 'https://github.com/nahid6714/tools/releases/download/v1.0.184/app-release.apk',
+    apkUrl: 'https://github.com/nahid6714/tools/releases/download/v1.0.212/app-release.apk',
     apkSize: '2.44 MB',
     featured: true,
     category: 'Android App',
     iconType: 'smartphone',
   },
   {
-    id: 'anys-beauty-corner',
-    name: "Any's Beauty Corner",
+    id: 'edu-library',
+    name: 'Edu Library',
     description:
-      'A modern responsive beauty and cosmetics storefront website with dynamic catalog showcases.',
+      'Android education library application with direct release distribution through GitHub Actions pipeline.',
     longDescription:
-      'Live commercial showcase website featuring a curated beauty product catalog, mobile-first responsive layout, smooth navigation transitions, and clean performance optimization.',
-    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Responsive Web Design', 'Netlify'],
-    githubUrl: 'https://github.com/nahid6714',
-    liveUrl: 'https://anysbeautycorner.netlify.app',
+      'Educational resource manager for Android users with offline caching, document handling, and automatic build distribution via GitHub Releases.',
+    technologies: ['Kotlin', 'Android Studio', 'Jetpack', 'GitHub Releases'],
+    githubUrl: 'https://github.com/nahid6714/Edu-library-',
+    apkUrl: 'https://github.com/nahid6714/Edu-library-/releases/download/v1.0.30/EduLibrary-latest.apk',
+    apkSize: '8.28 MB',
     featured: true,
-    category: 'Web Development',
-    iconType: 'globe',
-  },
-  {
-    id: 'calculator-converter',
-    name: 'Smart Calculator & Unit Converter',
-    description:
-      'Practical utility application featuring scientific arithmetic, unit conversion engines, and history tape.',
-    longDescription:
-      'Designed with modern Material Design principles for fast daily computations, currency ratios, and exportable calculation histories.',
-    technologies: ['Kotlin', 'Android Studio', 'Material 3', 'Unit Test'],
-    githubUrl: 'https://github.com/nahid6714/calculator-app',
-    featured: false,
-    category: 'Software Tool',
-    iconType: 'calculator',
+    category: 'Android App',
+    iconType: 'smartphone',
   },
 ];
 
